@@ -1,17 +1,17 @@
 import { createClient } from "@/utils/supabase/client";
 
-export default async function Users() {
+export default async function Players() {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from("users")
+    .from("players")
     .select("*")
     .throwOnError();
 
   return (
     <>
-      <h1>Users</h1>
+      <h1>Pelaajat</h1>
       {data.map((x) => x.name)}
-      <p>Ville has left the building</p>
+      <p>Error: {error}</p>
     </>
   );
 }
