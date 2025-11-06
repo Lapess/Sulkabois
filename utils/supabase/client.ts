@@ -96,8 +96,8 @@ export async function getSessions(): Promise<Session[]> {
   );
 }
 export type GameTeams = GameRow & {
-  teamLeft: Team | null;
-  teamRight: Team | null;
+  teamLeft: Team[] | null;
+  teamRight: Team[] | null;
 };
 export async function getGames(): Promise<GameTeams[]> {
   const supabase = await createClient();
@@ -111,8 +111,8 @@ export async function getGames(): Promise<GameTeams[]> {
   return (
     data?.map((s) => ({
       id: s.id,
-      teamLeft: s.team.find((x) => x.court_side == 0) ?? null,
-      teamRight: s.team.find((x) => x.court_side == 1) ?? null,
+      teamLeft: s.team.filter((x) => x.court_side == 0) ?? null,
+      teamRight: s.team.filter((x) => x.court_side == 1) ?? null,
       created_at: s.created_at,
       full_game: s.full_game,
       session_id: s.session_id,

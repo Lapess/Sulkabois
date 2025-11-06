@@ -31,9 +31,10 @@ export default async function PlayerList() {
       {games.map((x) => (
         <VStack key={x.id}>
           <Text>game id: {x.id}</Text>
-          team left: <TeamPlayers gameId={x.id} courtSide={0} />
-          <Text>{x.teamLeft?.id}</Text>
-          team right: <TeamPlayers gameId={x.id} courtSide={1} />
+          team left:{" "}
+          {/* <TeamPlayers gameId={x.id} courtSide={0} heading="Joukkue 1" />  */}
+          team right:{" "}
+          {/* <TeamPlayers gameId={x.id} courtSide={1} heading="Joukkue 2" /> */}
         </VStack>
       ))}
     </VStack>
