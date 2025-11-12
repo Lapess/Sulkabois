@@ -1,11 +1,7 @@
-import {
-  getGames,
-  getPlayers,
-  getSessions,
-  getTeamPlayers,
-} from "@/utils/supabase/client";
+import { getSessions } from "@/utils/supabase/client";
 import { Heading, VStack, Text } from "@chakra-ui/react";
-import TeamPlayers from "./TeamPlayers";
+import { getPlayers } from "@/utils/supabase/browser/players";
+import { getGames } from "@/utils/supabase/browser/games";
 
 export default async function PlayerList() {
   const players = await getPlayers();

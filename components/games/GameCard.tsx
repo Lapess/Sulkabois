@@ -1,6 +1,6 @@
-import { GameTeams } from "@/utils/supabase/client";
 import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import TeamPlayers from "../players/TeamPlayers";
+import { GameTeams } from "@/types/Game";
 
 interface Props {
   game: GameTeams;
@@ -16,25 +16,25 @@ const GameCard = ({ game }: Props) => {
       <Flex justify={"space-between"}>
         <VStack>
           <Heading>Joukkue 1</Heading>
-          <TeamPlayers
+          {/* <TeamPlayers
             playerIds={
               game.teamLeft
                 ?.map((x) => x.player_id)
                 .filter((id) => id != null) ?? []
             }
             heading="Joukkue 1"
-          />
+          /> */}
         </VStack>
         <VStack>
           <Heading>Joukkue 2</Heading>
-          <TeamPlayers
+          {/* <TeamPlayers
             playerIds={
               game.teamRight
                 ?.map((x) => x.player_id)
                 .filter((id) => id != null) ?? []
             }
             heading="Joukkue 2"
-          />
+          /> */}
         </VStack>
       </Flex>
     </VStack>

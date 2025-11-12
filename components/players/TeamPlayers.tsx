@@ -1,11 +1,17 @@
-import { getPlayers } from "@/utils/supabase/client";
+"use client";
+import { GroupType } from "@/enums/GroupType";
+import { Player } from "@/types/Player";
 import { Heading, VStack, Text } from "@chakra-ui/react";
 interface Props {
   heading: string;
-  playerIds: number[];
+  players: Player[];
+  groupType: GroupType;
 }
-export default async function TeamPlayers({ playerIds, heading }: Props) {
-  const players = (await getPlayers()).filter((x) => playerIds.includes(x.id));
+export default function TeamPlayers({ players, heading, groupType }: Props) {
+  // const [players, setPlayers] = useState<Player[]>([]);
+  // useEffect(() => {
+  //   const data = getPlayers().then(setPlayers);
+  // }, []);
   return (
     <VStack>
       <Heading>{heading}</Heading>
