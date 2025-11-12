@@ -1,6 +1,7 @@
 "use client";
 import {
   Button,
+  Center,
   Checkbox,
   CheckboxGroup,
   createListCollection,
@@ -21,10 +22,11 @@ import { Player } from "@/types/Player";
 interface Props {
   sessionId: number;
   sessionPlayers: Player[];
+  onGameAdded: (gameId: number | null) => void;
 }
 
-const NewGameForm = ({ sessionId, sessionPlayers }: Props) => {
-  const { handleSubmit, control } = useForm();
+const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
+  const { handleSubmit, control, reset } = useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSubmit = async (data: any) => {
@@ -49,7 +51,10 @@ const NewGameForm = ({ sessionId, sessionPlayers }: Props) => {
       teams: teams,
     };
     console.log(payload);
-    await addGame(payload);
+    const id = await addGame(payload);
+    onGameAdded(id);
+    reset();
+
     setIsLoading(false);
   };
   const team1Controller = useController({
@@ -108,7 +113,7 @@ const NewGameForm = ({ sessionId, sessionPlayers }: Props) => {
                         name={field.name}
                         value={field.value}
                         onValueChange={({ value }) => field.onChange(value)}
-                        collection={options}
+                        collection={scoreOptions}
                       >
                         <Select.HiddenSelect />
                         <Select.Label>Pisteet</Select.Label>
@@ -123,7 +128,7 @@ const NewGameForm = ({ sessionId, sessionPlayers }: Props) => {
                         <Portal>
                           <Select.Positioner>
                             <Select.Content>
-                              {options.items.map((value) => (
+                              {scoreOptions.items.map((value) => (
                                 <Select.Item item={value} key={value.value}>
                                   {value.label}
                                   <Select.ItemIndicator />
@@ -167,7 +172,7 @@ const NewGameForm = ({ sessionId, sessionPlayers }: Props) => {
                         name={field.name}
                         value={field.value}
                         onValueChange={({ value }) => field.onChange(value)}
-                        collection={options}
+                        collection={scoreOptions}
                       >
                         <Select.HiddenSelect />
                         <Select.Label>Pisteet</Select.Label>
@@ -182,7 +187,7 @@ const NewGameForm = ({ sessionId, sessionPlayers }: Props) => {
                         <Portal>
                           <Select.Positioner>
                             <Select.Content>
-                              {options.items.map((value) => (
+                              {scoreOptions.items.map((value) => (
                                 <Select.Item item={value} key={value.value}>
                                   {value.label}
                                   <Select.ItemIndicator />
@@ -198,19 +203,22 @@ const NewGameForm = ({ sessionId, sessionPlayers }: Props) => {
               </HStack>
             </Fieldset.Content>
           </Fieldset.Root>
-          {isLoading ? (
-            <Spinner size={"sm"} />
-          ) : (
-            <Button type="submit">Tallenna</Button>
-          )}
+          <Center mt={10}>
+            {isLoading ? (
+              <Spinner size={"sm"} />
+            ) : (
+              <Button type="submit">Tallenna</Button>
+            )}
+          </Center>
         </form>
       </VStack>
     </>
   );
 };
 
-const options = createListCollection({
+const scoreOptions = createListCollection({
   items: [
+    { label: "-", value: 0 },
     { label: 1, value: 1 },
     { label: 2, value: 2 },
     { label: 3, value: 3 },

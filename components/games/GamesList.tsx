@@ -6,20 +6,21 @@ import { useEffect, useState } from "react";
 
 interface Props {
   sessionId: number;
+  newGameId: number | null;
 }
-export function GamesList({ sessionId }: Props) {
+export function GamesList({ sessionId, newGameId }: Props) {
   const [games, setGames] = useState<GameTeams[]>([]);
   useEffect(() => {
-    getGames().then(setGames);
-  }, []);
+    getGames().then((data) =>
+      setGames(data.filter((x) => x.session_id == sessionId))
+    );
+  }, [newGameId]);
 
-  return games
-    .filter((x) => x.session_id == sessionId)
-    .map((g, index) => (
-      <Link key={g.id} href={"/sessions/" + sessionId + "/" + g.id}>
-        Peli {index + 1}
-      </Link>
-    ));
+  return games.map((g, index) => (
+    <Link key={g.id} href={"/sessions/" + sessionId + "/" + g.id}>
+      Peli {index + 1}
+    </Link>
+  ));
 }
 
 export default GamesList;

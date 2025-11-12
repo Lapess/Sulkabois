@@ -15,3 +15,24 @@ export async function getPlayers(): Promise<Player[]> {
   console.log("players: " + players.map((x) => x.id));
   return players;
 }
+
+export async function getTeamPlayers(
+  gameId: number,
+  courtSide: number
+): Promise<Player[]> {
+  const { data, error } = await supabase
+    .from("team")
+    .select("id, player(created_at, id, name, games_won_total)")
+    .eq("game_id", gameId)
+    .eq("court_side", courtSide)
+    .throwOnError();
+
+  console.log(
+    "team players:",
+    data.map((x) => x.player)
+  );
+  const players: Player[] = data
+    .flatMap((team) => team.player)
+    .filter((x) => x != null);
+  return players;
+}

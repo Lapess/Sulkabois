@@ -1,5 +1,7 @@
 import GamePageContainer from "@/components/games/GamePageContainer";
-import { Heading, VStack } from "@chakra-ui/react";
+import SessionDeleteButton from "@/components/sessions/SessionDeleteButton";
+import SessionHeading from "@/components/sessions/SessionHeading";
+import { VStack } from "@chakra-ui/react";
 
 async function SessionPage({
   params,
@@ -10,8 +12,9 @@ async function SessionPage({
 
   return (
     <VStack>
-      <Heading>Session id: {sessionId}</Heading>
+      <SessionHeading sessionId={sessionId} />
       <GamePageContainer sessionId={sessionId} />
+      <SessionDeleteButton sessionId={sessionId} />
     </VStack>
   );
 }

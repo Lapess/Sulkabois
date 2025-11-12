@@ -1,8 +1,6 @@
-import { Button, Heading, Link, VStack } from "@chakra-ui/react";
-import { getSessions } from "@/utils/supabase/client";
-
+import SessionPageContainer from "@/components/sessions/SessionPageContainer";
+import { Heading, VStack } from "@chakra-ui/react";
 export default async function Home() {
-  const sessions = await getSessions();
   return (
     <>
       <VStack>
@@ -11,14 +9,7 @@ export default async function Home() {
         </Heading>
         {/* MOVE TO THE MENU <Link href="/players">Pelaajat</Link> */}
 
-        {sessions?.map((s) => (
-          <Link fontSize={"2xl"} href={"/sessions/" + s.id}>
-            {s.session_date}
-          </Link>
-        ))}
-        <Button size={"xl"} color={"green"} variant={"outline"}>
-          Uusi
-        </Button>
+        <SessionPageContainer />
       </VStack>
     </>
   );

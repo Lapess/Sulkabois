@@ -23,14 +23,16 @@ export async function getGames(): Promise<GameTeams[]> {
     })) ?? []
   );
 }
-export async function addGame(game: GamePost) {
+export async function addGame(game: GamePost): Promise<number | null> {
   console.log("teams" + game.teams);
   // Insert game
   const { data: gameData, error: gameError } = await supabase
     .from("game")
     .insert({ session_id: game.sessionId, full_game: game.fullGame })
-    .select("id");
-  if (!gameData) return;
+    .select(
+      "created_at, full_game, session_id, id, team(id, created_at, game_id, player_id, points, court_side)"
+    );
+  if (!gameData) return null;
   if (gameError) console.log(gameError);
   // Insert teams
   const { data: teamData, error: teamError } = await supabase
@@ -44,22 +46,5 @@ export async function addGame(game: GamePost) {
       }))
     );
   if (teamError) console.log(teamError);
-  // const { data, error } = await supabase.from("game").insert([
-  //   {
-  //     session_id: game.sessionId,
-  //     full_game: game.fullGame,
-  //     team: {
-  //       data: game.teams.map((x) => ({
-  //         points: x.points,
-  //         court_side: x.courtSide,
-  //         player_id: x.playerId,
-  //       })),
-  //     },
-  //   },
-  // ]).select(`
-  //   id,
-  //   session_id,
-  //   full_game,
-  //   team (id, points, court_side, player_id)
-  // `);
+  return gameData[0].id;
 }

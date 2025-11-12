@@ -10,13 +10,20 @@ interface Props {
 }
 const GamePageContainer = ({ sessionId }: Props) => {
   const [sessionPlayers, setSessionPlayers] = useState<Player[]>([]);
+  const [newGameId, setNewGameId] = useState<number | null>(null);
   useEffect(() => {
     getPlayers().then(setSessionPlayers);
   }, []);
   return (
     <>
-      <GamesList sessionId={sessionId} />
-      <NewGameForm sessionId={sessionId} sessionPlayers={sessionPlayers} />
+      <GamesList sessionId={sessionId} newGameId={newGameId} />
+      <NewGameForm
+        sessionId={sessionId}
+        sessionPlayers={sessionPlayers}
+        onGameAdded={function (gameId: number | null): void {
+          setNewGameId(gameId);
+        }}
+      />
     </>
   );
 };
