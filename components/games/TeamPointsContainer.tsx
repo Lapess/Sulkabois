@@ -25,7 +25,7 @@ const TeamPointsContainer = ({ game }: Props) => {
       borderWidth={1}
       borderColor={"orange"}
       py={2}
-      w={"400px"}
+      w={"310px"}
       justify={"space-evenly"}
     >
       <TeamPoints
