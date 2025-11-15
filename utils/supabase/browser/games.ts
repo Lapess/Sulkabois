@@ -1,27 +1,14 @@
-import { GameTeams } from "@/types/Game";
+import { GameTeams, GameWithTeams } from "@/types/Game";
 import { createSupabaseBrowserClient } from "../browserClient";
 import { GamePost } from "@/interfaces/GamePost";
 
 const supabase = createSupabaseBrowserClient();
 
-export async function getGames(): Promise<GameTeams[]> {
+export async function getGamesWithTeamsFull(): Promise<GameWithTeams[] | null> {
   const { data, error } = await supabase
     .from("game")
-    .select(
-      "created_at, full_game, session_id, id, team(id, created_at, game_id, player_id, points, court_side)"
-    );
-
-  console.log("games:" + data?.map((x) => x.id));
-  return (
-    data?.map((s) => ({
-      id: s.id,
-      teamLeft: s.team.filter((x) => x.court_side == 0) ?? null,
-      teamRight: s.team.filter((x) => x.court_side == 1) ?? null,
-      created_at: s.created_at,
-      full_game: s.full_game,
-      session_id: s.session_id,
-    })) ?? []
-  );
+    .select("*, team(*, player(*))");
+  return data;
 }
 export async function addGame(game: GamePost): Promise<number | null> {
   console.log("teams" + game.teams);

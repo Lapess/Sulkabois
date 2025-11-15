@@ -8,10 +8,6 @@ interface Props {
   groupType: GroupType;
 }
 export default function TeamPlayers({ players, heading, groupType }: Props) {
-  // const [players, setPlayers] = useState<Player[]>([]);
-  // useEffect(() => {
-  //   const data = getPlayers().then(setPlayers);
-  // }, []);
   return (
     <VStack>
       <Heading>{heading}</Heading>

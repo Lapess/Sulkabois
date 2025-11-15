@@ -1,5 +1,5 @@
 "use client";
-import { Session } from "@/types/Session";
+import convertDateStringToLocaleDateString from "@/utils/dateStringConverter";
 import { getSessionById } from "@/utils/supabase/browser/sessions";
 import { Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -8,11 +8,16 @@ interface Props {
   sessionId: number;
 }
 const SessionHeading = ({ sessionId }: Props) => {
-  const [session, setSession] = useState<Session | null>();
+  const [sessionDate, setSessionDate] = useState<string>("");
+
   useEffect(() => {
-    getSessionById(sessionId).then(setSession);
+    getSessionById(sessionId).then((session) =>
+      setSessionDate(
+        convertDateStringToLocaleDateString(session?.session_date ?? "")
+      )
+    );
   }, []);
-  return <Heading>{session?.session_date}</Heading>;
+  return <Heading pb={5}>Pelisessio {sessionDate}</Heading>;
 };
 
 export default SessionHeading;

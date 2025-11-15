@@ -3,5 +3,5 @@ import { Player } from "./Player";
 
 export type TeamRow = Database["public"]["Tables"]["team"]["Row"];
 export type Team = TeamRow & {
-  players?: Player[] | null;
+  player?: Player[] | null;
 };

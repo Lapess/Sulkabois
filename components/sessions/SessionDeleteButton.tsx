@@ -11,7 +11,6 @@ const SessionDeleteButton = ({ sessionId }: Props) => {
   const router = useRouter();
   const [error, setError] = useState<string>();
   function handleDelete(): void {
-    console.log("Poistetaan");
     deleteSession(sessionId).then((data) => {
       if (data === true) router.push("/");
       else {
