@@ -1,4 +1,4 @@
-import { GameTeams, GameWithTeams } from "@/types/Game";
+import { GameWithTeams } from "@/types/Game";
 import { createSupabaseBrowserClient } from "../browserClient";
 import { GamePost } from "@/interfaces/GamePost";
 
@@ -11,7 +11,6 @@ export async function getGamesWithTeamsFull(): Promise<GameWithTeams[] | null> {
   return data;
 }
 export async function addGame(game: GamePost): Promise<number | null> {
-  console.log("teams" + game.teams);
   // Insert game
   const { data: gameData, error: gameError } = await supabase
     .from("game")

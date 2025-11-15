@@ -1,4 +1,4 @@
-import { Flex, Float, HStack, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import TeamPoints from "./TeamPoints";
 import { CourtSide } from "@/enums/CourtSide";
 import { GameWithTeams } from "@/types/Game";

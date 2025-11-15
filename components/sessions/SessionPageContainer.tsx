@@ -17,7 +17,9 @@ import convertDateStringToLocaleDateString from "@/utils/dateStringConverter";
 const SessionPageContainer = () => {
   const [sessions, setSessions] = useState<Session[]>([]);
   useEffect(() => {
-    getSessions().then(setSessions);
+    getSessions().then((sessions) =>
+      setSessions(sessions?.filter((x) => x != null) ?? [])
+    );
   }, []);
 
   function createSession() {
@@ -31,7 +33,7 @@ const SessionPageContainer = () => {
             <Flex justify={"space-between"}>
               <Text>{convertDateStringToLocaleDateString(s.session_date)}</Text>
               <HStack>
-                <Text pr={4}>{s.games?.length} peliä</Text>
+                <Text pr={4}>{s.game?.length} peliä</Text>
                 <ArrowRight />
               </HStack>
             </Flex>

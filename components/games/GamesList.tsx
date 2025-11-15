@@ -1,8 +1,6 @@
 "use client";
-import { CourtSide } from "@/enums/CourtSide";
 import { GameWithTeams } from "@/types/Game";
 import { getGamesWithTeamsFull } from "@/utils/supabase/browser/games";
-import { HStack, Link, SimpleGrid } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import TeamPointsContainer from "./TeamPointsContainer";
 
@@ -18,11 +16,7 @@ export function GamesList({ sessionId, newGameId }: Props) {
     });
   }, [newGameId]);
 
-  return games.map((g) => (
-    <Link key={g.id} href={"/sessions/" + sessionId + "/" + g.id} mx={0}>
-      <TeamPointsContainer game={g} />
-    </Link>
-  ));
+  return games.map((g) => <TeamPointsContainer game={g} />);
 }
 
 export default GamesList;

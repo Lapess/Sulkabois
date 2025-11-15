@@ -7,7 +7,7 @@ interface Props {
   players: Player[];
   groupType: GroupType;
 }
-export default function TeamPlayers({ players, heading, groupType }: Props) {
+export default function TeamPlayers({ players, heading }: Props) {
   return (
     <VStack>
       <Heading>{heading}</Heading>

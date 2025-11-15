@@ -13,31 +13,12 @@ export async function getSessionById(
     )
     .eq("id", sessionId);
 
-  return data
-    ? {
-        id: data[0].id,
-        games: [],
-        created_at: data[0].created_at,
-        session_date: data[0].session_date,
-      }
-    : null;
+  return data ? data[0] : null;
 }
-export async function getSessions(): Promise<Session[]> {
-  const { data, error } = await supabase
-    .from("session")
-    .select(
-      "created_at, session_date, id, game(id, created_at, session_id, full_game)"
-    );
+export async function getSessions(): Promise<Session[] | null> {
+  const { data, error } = await supabase.from("session").select("*, game(*)");
 
-  console.log("sessions:" + data?.map((x) => x.id));
-  return (
-    data?.map((s) => ({
-      id: s.id,
-      games: s.game,
-      created_at: s.created_at,
-      session_date: s.session_date,
-    })) ?? []
-  );
+  return data;
 }
 export async function addSession(): Promise<Session | null> {
   const { data, error } = await supabase
@@ -47,14 +28,7 @@ export async function addSession(): Promise<Session | null> {
       "id, session_date, created_at, game(id, created_at, session_id, full_game)"
     );
   if (error) console.log(error);
-  return data
-    ? {
-        id: data[0].id,
-        games: [],
-        created_at: data[0].created_at,
-        session_date: data[0].session_date,
-      }
-    : null;
+  return data ? data[0] : null;
 }
 
 export async function deleteSession(sessionId: number): Promise<boolean> {
