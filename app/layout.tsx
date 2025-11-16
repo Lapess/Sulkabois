@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Provider } from "@/components/ui/provider";
-import { Button, Heading, Link } from "@chakra-ui/react";
-import MainMenu from "@/components/navigation/MainMenu";
+import { Heading } from "@chakra-ui/react";
 
 export const metadata: Metadata = {
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Sulkabois",
+  description:
+    "Leaderboard-äppi paljastamaan kauden paras (ja huonoin) pelaaja.",
 };
 
 const geistSans = Geist({
