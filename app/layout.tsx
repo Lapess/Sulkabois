@@ -3,6 +3,8 @@ import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Provider } from "@/components/ui/provider";
+import { Button, Heading, Link } from "@chakra-ui/react";
+import MainMenu from "@/components/navigation/MainMenu";
 
 export const metadata: Metadata = {
   title: "Next.js and Supabase Starter Kit",
@@ -23,7 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased`}>
-        <Provider>{children}</Provider>
+        <Provider>
+          {/* <MainMenu /> */}
+          <Heading p={5} fontSize={"3xl"}></Heading>
+          {children}
+        </Provider>
       </body>
     </html>
   );

@@ -28,7 +28,7 @@ const SessionPageContainer = () => {
   return (
     <>
       {sessions?.map((s) => (
-        <Link fontSize={"2xl"} href={"/sessions/" + s.id} w={"90%"}>
+        <Link key={s.id} fontSize={"2xl"} href={"/sessions/" + s.id} w={"90%"}>
           <Box borderWidth={1} borderColor={"orange"} p={5} w={"100%"}>
             <Flex justify={"space-between"}>
               <Text>{convertDateStringToLocaleDateString(s.session_date)}</Text>
