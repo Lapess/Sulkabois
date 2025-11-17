@@ -8,9 +8,7 @@ export async function getSessionById(
 ): Promise<Session | null> {
   const { data, error } = await supabase
     .from("session")
-    .select(
-      "created_at, session_date, id, game(id, created_at, session_id, full_game)"
-    )
+    .select("*, game(*)")
     .eq("id", sessionId);
 
   return data ? data[0] : null;
@@ -23,11 +21,22 @@ export async function getSessions(): Promise<Session[] | null> {
 export async function addSession(): Promise<Session | null> {
   const { data, error } = await supabase
     .from("session")
-    .insert({ session_date: new Date().toDateString() })
-    .select(
-      "id, session_date, created_at, game(id, created_at, session_id, full_game)"
-    );
+    .insert({ session_date: new Date().toDateString(), is_locked: false })
+    .select("*, game(*)");
   if (error) console.log(error);
+  return data ? data[0] : null;
+}
+export async function updateSession(
+  sessionId: number,
+  isLocked: boolean
+): Promise<Session | null> {
+  const { data, error } = await supabase
+    .from("session")
+    .update({ is_locked: isLocked })
+    .eq("id", sessionId)
+    .select("*, game(*)");
+  if (error) console.log(error);
+  console.log("Updating " + data![0].id + " locked: " + isLocked);
   return data ? data[0] : null;
 }
 

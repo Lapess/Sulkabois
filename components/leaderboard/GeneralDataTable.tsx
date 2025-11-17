@@ -1,31 +1,30 @@
 "use client";
+import { GeneralDataTableItem } from "@/interfaces/GeneralDataTableItem";
+import { getGeneralDataTableItems } from "@/leaderboard/generalData";
 import { getGamesWithTeamsFull } from "@/utils/supabase/browser/games";
 import { getSessions } from "@/utils/supabase/browser/sessions";
-import { Table } from "@chakra-ui/react";
+import { Spinner, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-interface TableItem {
-  id: number;
-  title: string;
-  value: number;
-}
-const GeneralDataTable = () => {
-  const [tableItems, setTableItems] = useState<TableItem[]>([]);
 
+const GeneralDataTable = () => {
+  const [tableItems, setTableItems] = useState<GeneralDataTableItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     async function load() {
+      setIsLoading(true);
       const [sessions, games] = await Promise.all([
         getSessions(),
         getGamesWithTeamsFull(),
       ]);
 
-      setTableItems([
-        { id: 0, title: "Sessioiden lukumäärä", value: sessions?.length ?? 0 },
-        { id: 1, title: "Pelien lukumäärä", value: games?.length ?? 0 },
-      ]);
+      setTableItems(getGeneralDataTableItems(games ?? [], sessions ?? []));
+      setIsLoading(false);
     }
     load();
   }, []);
-  return (
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <Table.Root size="sm" my={5}>
       <Table.Caption captionSide="top">Yleistä</Table.Caption>
       <Table.Header>

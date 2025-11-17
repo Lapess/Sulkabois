@@ -94,16 +94,19 @@ export type Database = {
           created_at: string;
           id: number;
           session_date: string;
+          is_locked: boolean;
         };
         Insert: {
           created_at?: string;
           id?: number;
           session_date: string;
+          is_locked: boolean;
         };
         Update: {
           created_at?: string;
           id?: number;
           session_date?: string;
+          is_locked: boolean;
         };
         Relationships: [];
       };

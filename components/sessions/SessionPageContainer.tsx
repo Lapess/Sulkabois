@@ -11,7 +11,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LockIcon } from "lucide-react";
 import convertDateStringToLocaleDateString from "@/utils/dateStringConverter";
 
 const SessionPageContainer = () => {
@@ -33,8 +33,10 @@ const SessionPageContainer = () => {
             <Flex justify={"space-between"}>
               <Text>{convertDateStringToLocaleDateString(s.session_date)}</Text>
               <HStack>
-                <Text pr={4}>{s.game?.length} peliä</Text>
-                <ArrowRight />
+                <Text pr={4}>
+                  {s.game?.length! > 0 ? s.game?.length + " peliä" : ""}
+                </Text>
+                {s.is_locked ? <LockIcon /> : <ArrowRight />}
               </HStack>
             </Flex>
           </Box>

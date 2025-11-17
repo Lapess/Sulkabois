@@ -16,7 +16,7 @@ export function GamesList({ sessionId, newGameId }: Props) {
     });
   }, [newGameId]);
 
-  return games.map((g) => <TeamPointsContainer game={g} />);
+  return games.map((g) => <TeamPointsContainer key={g.id} game={g} />);
 }
 
 export default GamesList;

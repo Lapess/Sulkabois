@@ -12,7 +12,6 @@ export async function getPlayers(): Promise<Player[]> {
   const { data, error } = await playersQuery;
   if (error) throw error;
   const players: Players = data;
-  console.log("players: " + players.map((x) => x.id));
   return players;
 }
 
