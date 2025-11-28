@@ -1,15 +1,20 @@
 import GamePageContainer from "@/components/games/GamePageContainer";
-import SessionDeleteButton from "@/components/sessions/SessionDeleteButton";
+import SessionDeleteDialog from "@/components/sessions/SessionDeleteDialog";
 import SessionHeading from "@/components/sessions/SessionHeading";
 import { Link, VStack } from "@chakra-ui/react";
 import { ArrowLeftCircle } from "lucide-react";
-
-async function SessionPage({
-  params,
-}: {
+interface Props {
+  searchParams: Promise<{ players?: string[] | string }>;
   params: Promise<{ sessionId: number }>;
-}) {
+}
+async function SessionPage({ params, searchParams }: Props) {
   const { sessionId } = await params;
+  const { players } = await searchParams;
+  let playerIds: string[] = [];
+
+  if (players) {
+    playerIds = Array.isArray(players) ? players : [players];
+  }
 
   return (
     <VStack>
@@ -17,8 +22,8 @@ async function SessionPage({
         <ArrowLeftCircle />
       </Link>
       <SessionHeading sessionId={sessionId} />
-      <GamePageContainer sessionId={sessionId} />
-      <SessionDeleteButton sessionId={sessionId} />
+      <GamePageContainer sessionId={sessionId} playerIds={playerIds} />
+      <SessionDeleteDialog sessionId={sessionId} />
     </VStack>
   );
 }

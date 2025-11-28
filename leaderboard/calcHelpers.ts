@@ -4,20 +4,20 @@ import { GameWithTeams } from "@/types/Game";
 export function getPlayerWinsCount(
   playerId: number,
   games: GameWithTeams[],
-  leaderBoardType: LeaderBoardType
+  leaderBoardType: LeaderBoardType,
 ): number {
   const playersGames = getPlayerGames(playerId, games, leaderBoardType);
   return playersGames.filter((game) => {
     const playerSide = game.team.find(
-      (x) => x.player_id == playerId
+      (x) => x.player_id == playerId,
     )?.court_side;
 
     const playersTeamPoints = game.team.find(
-      (team) => team.court_side == playerSide
+      (team) => team.court_side == playerSide,
     )?.points;
 
     const otherTeamPoints = game.team.find(
-      (team) => team.court_side != playerSide
+      (team) => team.court_side != playerSide,
     )?.points;
     return (playersTeamPoints ?? 0) > (otherTeamPoints ?? 0);
   }).length;
@@ -26,7 +26,7 @@ export function getPlayerWinsCount(
 export function getPlayerGames(
   playerId: number,
   games: GameWithTeams[],
-  leaderBoardType: LeaderBoardType
+  leaderBoardType: LeaderBoardType,
 ): GameWithTeams[] {
   switch (leaderBoardType) {
     case LeaderBoardType.Singles:
@@ -60,7 +60,7 @@ export function getPlayerGames(
 }
 export function getGamesCountByLeaderBoardType(
   games: GameWithTeams[],
-  leaderBoardType: LeaderBoardType
+  leaderBoardType: LeaderBoardType,
 ): number {
   switch (leaderBoardType) {
     case LeaderBoardType.Singles:
@@ -86,7 +86,7 @@ export function getGamesCountByLeaderBoardType(
 export function getPlayerWinPercentage(
   playerId: number,
   games: GameWithTeams[],
-  leaderBoardType: LeaderBoardType
+  leaderBoardType: LeaderBoardType,
 ): number {
   const winCount = getPlayerWinsCount(playerId, games, leaderBoardType);
   const playersGames = getPlayerGames(playerId, games, leaderBoardType).length;

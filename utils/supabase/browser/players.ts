@@ -17,7 +17,7 @@ export async function getPlayers(): Promise<Player[]> {
 
 export async function getTeamPlayers(
   gameId: number,
-  courtSide: number
+  courtSide: number,
 ): Promise<Player[]> {
   const { data, error } = await supabase
     .from("team")
@@ -28,7 +28,7 @@ export async function getTeamPlayers(
 
   console.log(
     "team players:",
-    data.map((x) => x.player)
+    data.map((x) => x.player),
   );
   const players: Player[] = data
     .flatMap((team) => team.player)

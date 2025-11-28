@@ -1,30 +1,20 @@
 "use client";
 import { Session } from "@/types/Session";
-import { addSession, getSessions } from "@/utils/supabase/browser/sessions";
-import {
-  Box,
-  Link,
-  Text,
-  Button,
-  Heading,
-  HStack,
-  Flex,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { ArrowRight, LockIcon } from "lucide-react";
 import convertDateStringToLocaleDateString from "@/utils/dateStringConverter";
+import { getSessions } from "@/utils/supabase/browser/sessions";
+import { Box, Flex, HStack, Link, Text } from "@chakra-ui/react";
+import { ArrowRight, LockIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import NewSessionForm from "../forms/NewSessionForm";
 
 const SessionPageContainer = () => {
   const [sessions, setSessions] = useState<Session[]>([]);
   useEffect(() => {
     getSessions().then((sessions) =>
-      setSessions(sessions?.filter((x) => x != null) ?? [])
+      setSessions(sessions?.filter((x) => x != null) ?? []),
     );
   }, []);
 
-  function createSession() {
-    addSession().then((data) => data && setSessions([...sessions, data]));
-  }
   return (
     <>
       {sessions?.map((s) => (
@@ -42,16 +32,8 @@ const SessionPageContainer = () => {
           </Box>
         </Link>
       ))}
-      <Button
-        m={10}
-        size={"xl"}
-        color={"black"}
-        variant={"solid"}
-        bgColor={"orange"}
-        onClick={() => createSession()}
-      >
-        Uusi
-      </Button>
+
+      <NewSessionForm />
     </>
   );
 };

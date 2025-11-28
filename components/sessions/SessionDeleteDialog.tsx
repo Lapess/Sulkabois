@@ -7,7 +7,7 @@ import { useState } from "react";
 interface Props {
   sessionId: number;
 }
-const SessionDeleteButton = ({ sessionId }: Props) => {
+const SessionDeleteDialog = ({ sessionId }: Props) => {
   const router = useRouter();
   const [error, setError] = useState<string>();
   function handleDelete(): void {
@@ -64,4 +64,4 @@ const SessionDeleteButton = ({ sessionId }: Props) => {
   );
 };
 
-export default SessionDeleteButton;
+export default SessionDeleteDialog;

@@ -7,10 +7,10 @@ interface Props {
 }
 const TeamPointsContainer = ({ game }: Props) => {
   const team1Points = game.team.filter(
-    (x) => x.court_side == CourtSide.Penkki
+    (x) => x.court_side == CourtSide.Penkki,
   )[0]?.points;
   const team2Points = game.team.filter(
-    (x) => x.court_side == CourtSide.Padel
+    (x) => x.court_side == CourtSide.Padel,
   )[0]?.points;
   const team1Players =
     game.team

@@ -4,7 +4,7 @@ import { createSupabaseBrowserClient } from "../browserClient";
 const supabase = createSupabaseBrowserClient();
 
 export async function getSessionById(
-  sessionId: number
+  sessionId: number,
 ): Promise<Session | null> {
   const { data, error } = await supabase
     .from("session")
@@ -28,7 +28,7 @@ export async function addSession(): Promise<Session | null> {
 }
 export async function updateSession(
   sessionId: number,
-  isLocked: boolean
+  isLocked: boolean,
 ): Promise<Session | null> {
   const { data, error } = await supabase
     .from("session")

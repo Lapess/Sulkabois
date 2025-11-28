@@ -1,13 +1,4 @@
-import {
-  createListCollection,
-  Field,
-  For,
-  NativeSelect,
-  Portal,
-  Select,
-  VStack,
-} from "@chakra-ui/react";
-import { Controller } from "react-hook-form";
+import { createListCollection, Portal, Select, VStack } from "@chakra-ui/react";
 
 interface Props {}
 const Score = ({}: Props) => {

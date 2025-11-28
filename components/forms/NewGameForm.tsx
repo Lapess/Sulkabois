@@ -21,8 +21,7 @@ import { GamePost } from "@/interfaces/GamePost";
 import { CourtSide } from "@/enums/CourtSide";
 import { addGame } from "@/utils/supabase/browser/games";
 import { Player } from "@/types/Player";
-import { PlayerOption } from "./PlayerOption";
-import { Repeat } from "lucide-react";
+import { PlayerOption } from "../../interfaces/PlayerOption";
 interface Props {
   sessionId: number;
   sessionPlayers: Player[];
@@ -34,10 +33,10 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [team1PlayerOptions, setTeam1PlayerOptions] = useState<PlayerOption[]>(
-    []
+    [],
   );
   const [team2PlayerOptions, setTeam2PlayerOptions] = useState<PlayerOption[]>(
-    []
+    [],
   );
   const [rotatePlayers, setRotatePlayers] = useState<boolean>(true);
   const playerOptions: PlayerOption[] = sessionPlayers.map((p) => ({
@@ -116,14 +115,14 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
     team1Controller.field.onChange(value);
     console.log(team1PlayerOptions);
     setTeam2PlayerOptions(
-      playerOptions.filter((x) => !value.includes(x.value ?? ""))
+      playerOptions.filter((x) => !value.includes(x.value ?? "")),
     );
   }
 
   function handleTeam2PlayersChange(value: string[]): void {
     team2Controller.field.onChange(value);
     setTeam1PlayerOptions(
-      playerOptions.filter((x) => !value.includes(x.value ?? ""))
+      playerOptions.filter((x) => !value.includes(x.value ?? "")),
     );
   }
   function initializePlayerOptions() {

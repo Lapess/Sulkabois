@@ -16,7 +16,7 @@ export async function addGame(game: GamePost): Promise<number | null> {
     .from("game")
     .insert({ session_id: game.sessionId, full_game: game.fullGame })
     .select(
-      "created_at, full_game, session_id, id, team(id, created_at, game_id, player_id, points, court_side)"
+      "created_at, full_game, session_id, id, team(id, created_at, game_id, player_id, points, court_side)",
     );
   if (!gameData) return null;
   if (gameError) console.log(gameError);
@@ -29,7 +29,7 @@ export async function addGame(game: GamePost): Promise<number | null> {
         points: x.points,
         court_side: x.courtSide,
         player_id: x.playerId,
-      }))
+      })),
     );
   if (teamError) console.log(teamError);
   return gameData[0].id;

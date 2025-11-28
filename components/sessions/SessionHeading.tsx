@@ -13,8 +13,8 @@ const SessionHeading = ({ sessionId }: Props) => {
   useEffect(() => {
     getSessionById(sessionId).then((session) =>
       setSessionDate(
-        convertDateStringToLocaleDateString(session?.session_date ?? "")
-      )
+        convertDateStringToLocaleDateString(session?.session_date ?? ""),
+      ),
     );
   }, []);
   return <Heading pb={5}>Pelisessio {sessionDate}</Heading>;

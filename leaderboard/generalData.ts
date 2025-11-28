@@ -6,7 +6,7 @@ import { Session } from "@/types/Session";
 
 export function getGeneralDataTableItems(
   games: GameWithTeams[],
-  sessions: Session[]
+  sessions: Session[],
 ): GeneralDataTableItem[] {
   return [
     { id: 0, title: "Sessioiden lukumäärä", value: sessions?.length ?? 0 },
@@ -16,7 +16,7 @@ export function getGeneralDataTableItems(
       title: "Kaksinpelien lukumäärä",
       value: getGamesCountByLeaderBoardType(
         games ?? [],
-        LeaderBoardType.Singles
+        LeaderBoardType.Singles,
       ),
     },
     {
@@ -24,7 +24,7 @@ export function getGeneralDataTableItems(
       title: "Nelinpelien lukumäärä",
       value: getGamesCountByLeaderBoardType(
         games ?? [],
-        LeaderBoardType.Doubles
+        LeaderBoardType.Doubles,
       ),
     },
     {
@@ -32,7 +32,7 @@ export function getGeneralDataTableItems(
       title: "1 vs 2 pelien lukumäärä",
       value: getGamesCountByLeaderBoardType(
         games ?? [],
-        LeaderBoardType.OneVSTwo
+        LeaderBoardType.OneVSTwo,
       ),
     },
   ];

@@ -1,0 +1,153 @@
+"use client";
+import {
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  CloseButton,
+  createListCollection,
+  Dialog,
+  Fieldset,
+  Portal,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { useController, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { PlayerOption } from "../../interfaces/PlayerOption";
+import { getPlayers } from "@/utils/supabase/browser/players";
+import { addSession } from "@/utils/supabase/browser/sessions";
+import { useRouter } from "next/navigation";
+import { z } from "zod";
+
+const formSchema = z.object({
+  players: z.array(z.string()).min(2, {
+    message: "Valitse vähintään kaksi pelaajaa",
+  }),
+});
+
+type FormData = z.infer<typeof formSchema>;
+
+const NewSessionForm = () => {
+  const router = useRouter();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { players: [] },
+  });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [playerOptions, setPlayerOptions] = useState<PlayerOption[]>();
+  useEffect(() => {
+    getPlayers().then((data) => {
+      if (!data || data.length === 0) return;
+      setPlayerOptions(
+        data.map((p) => ({
+          label: p.name,
+          value: p.id.toString(),
+        })),
+      );
+    });
+  }, []);
+
+  const onSubmit = async (data: any) => {
+    setIsLoading(true);
+    addSession().then((session) => {
+      setIsLoading(false);
+      if (session) {
+        const params = new URLSearchParams();
+        data.players.forEach((player: string) =>
+          params.append("players", player),
+        );
+        router.push(`/sessions/${session.id}?${params.toString()}`);
+      }
+    });
+  };
+  const playerController = useController({
+    control,
+    name: "players",
+    defaultValue: [],
+  });
+
+  const invalid = !!errors.players;
+  return (
+    <>
+      <Dialog.Root>
+        <Dialog.Trigger asChild>
+          <Button
+            m={10}
+            size={"xl"}
+            color={"black"}
+            variant={"solid"}
+            bgColor={"orange"}
+          >
+            Uusi
+          </Button>
+        </Dialog.Trigger>
+        <Portal>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Dialog.Backdrop />
+            <Dialog.Positioner>
+              <Dialog.Content>
+                <Dialog.Header>
+                  <Dialog.Title>Uusi sessio!</Dialog.Title>
+                </Dialog.Header>
+                <Dialog.Body>
+                  <Fieldset.Root invalid={invalid}>
+                    <Fieldset.Content>
+                      <VStack>
+                        <Text>Valitse paikalla olevat pelaajat</Text>{" "}
+                        <CheckboxGroup
+                          minH={"170px"}
+                          value={playerController.field.value}
+                          name={playerController.field.name}
+                          onValueChange={playerController.field.onChange}
+                        >
+                          {playerOptions?.map((item) => (
+                            <Checkbox.Root key={item.value} value={item.value}>
+                              <Checkbox.HiddenInput />
+                              <Checkbox.Control />
+                              <Checkbox.Label>{item.label}</Checkbox.Label>
+                            </Checkbox.Root>
+                          ))}
+                        </CheckboxGroup>
+                        {errors.players && (
+                          <Fieldset.ErrorText>
+                            {errors.players.message}
+                          </Fieldset.ErrorText>
+                        )}
+                      </VStack>
+                    </Fieldset.Content>
+                  </Fieldset.Root>
+                </Dialog.Body>
+                <Dialog.Footer>
+                  <Dialog.ActionTrigger asChild>
+                    <Button variant="outline">Peruuta</Button>
+                  </Dialog.ActionTrigger>{" "}
+                  <Button type="submit" colorPalette={"green"}>
+                    Aloita
+                  </Button>
+                </Dialog.Footer>
+                <Dialog.CloseTrigger asChild>
+                  <CloseButton size="sm" />
+                </Dialog.CloseTrigger>
+              </Dialog.Content>
+            </Dialog.Positioner>
+          </form>
+        </Portal>
+      </Dialog.Root>
+    </>
+  );
+};
+
+const playerOptions = createListCollection({
+  items: [
+    {
+      label: "",
+      value: 0,
+    },
+  ],
+});
+export default NewSessionForm;

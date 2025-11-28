@@ -1,20 +1,22 @@
 "use client";
-import GamesList from "./GamesList";
-import NewGameForm from "../forms/NewGameForm";
-import { getPlayers } from "@/utils/supabase/browser/players";
-import { useEffect, useState } from "react";
 import { Player } from "@/types/Player";
-import { Button, Center, Separator, Spinner } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { getPlayers } from "@/utils/supabase/browser/players";
 import {
   getSessionById,
   updateSession,
 } from "@/utils/supabase/browser/sessions";
+import { Button, Center, Separator, Spinner, Text } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import NewGameForm from "../forms/NewGameForm";
+import GamesList from "./GamesList";
 
 interface Props {
+  playerIds: string[];
   sessionId: number;
 }
-const GamePageContainer = ({ sessionId }: Props) => {
+const GamePageContainer = ({ playerIds, sessionId }: Props) => {
   const [sessionPlayers, setSessionPlayers] = useState<Player[]>([]);
   const [newGameId, setNewGameId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -22,7 +24,13 @@ const GamePageContainer = ({ sessionId }: Props) => {
   const router = useRouter();
   useEffect(() => {
     setIsLoading(true);
-    getPlayers().then(setSessionPlayers);
+    getPlayers().then((data: Player[]) => {
+      playerIds.length > 0
+        ? setSessionPlayers(
+            data.filter((x) => playerIds.includes(x.id.toString())),
+          )
+        : setSessionPlayers(data);
+    });
     getSessionById(sessionId).then((x) => setSessionLocked(x!.is_locked));
     setIsLoading(false);
   }, []);
@@ -50,7 +58,7 @@ const GamePageContainer = ({ sessionId }: Props) => {
           const currentLocked = sessionLocked;
           setSessionLocked(currentLocked ? false : true);
           updateSession(sessionId, !currentLocked).then(
-            () => !currentLocked && router.push("/")
+            () => !currentLocked && router.push("/"),
           );
         }}
       >

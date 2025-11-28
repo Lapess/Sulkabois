@@ -3,6 +3,7 @@ import LeaderTable from "@/components/leaderboard/LeaderTable";
 import SessionPageContainer from "@/components/sessions/SessionPageContainer";
 import { LeaderBoardType } from "@/enums/LeaderBoardType";
 import { Heading, VStack } from "@chakra-ui/react";
+
 export default async function Home() {
   return (
     <>
