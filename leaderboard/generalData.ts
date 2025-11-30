@@ -9,11 +9,11 @@ export function getGeneralDataTableItems(
   sessions: Session[],
 ): GeneralDataTableItem[] {
   return [
-    { id: 0, title: "Sessioiden lukumäärä", value: sessions?.length ?? 0 },
-    { id: 1, title: "Pelien lukumäärä", value: games?.length ?? 0 },
+    { id: 0, title: "Sessiot", value: sessions?.length ?? 0 },
+    { id: 1, title: "Pelit", value: games?.length ?? 0 },
     {
       id: 2,
-      title: "Kaksinpelien lukumäärä",
+      title: "Kaksinpelit",
       value: getGamesCountByLeaderBoardType(
         games ?? [],
         LeaderBoardType.Singles,
@@ -21,7 +21,7 @@ export function getGeneralDataTableItems(
     },
     {
       id: 3,
-      title: "Nelinpelien lukumäärä",
+      title: "Nelinpelit",
       value: getGamesCountByLeaderBoardType(
         games ?? [],
         LeaderBoardType.Doubles,
@@ -29,7 +29,7 @@ export function getGeneralDataTableItems(
     },
     {
       id: 4,
-      title: "1 vs 2 pelien lukumäärä",
+      title: "1 vs 2",
       value: getGamesCountByLeaderBoardType(
         games ?? [],
         LeaderBoardType.OneVSTwo,

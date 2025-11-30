@@ -5,9 +5,7 @@ import {
   getPlayerWinPercentage,
   getPlayerWinsCount,
 } from "@/leaderboard/calcHelpers";
-import { getTableHeader } from "@/leaderboard/tableHeader";
-import { GameWithTeams } from "@/types/Game";
-import { Player } from "@/types/Player";
+import { getTableHeader } from "@/leaderboard/tableHeader"; 
 import { getGamesWithTeamsFull } from "@/utils/supabase/browser/games";
 import { getPlayers } from "@/utils/supabase/browser/players";
 import { Box, BoxProps, Spinner, Table } from "@chakra-ui/react";
