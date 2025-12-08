@@ -12,8 +12,9 @@ import {
   HStack,
   Portal,
   Select,
+  SelectPositioner,
   Spinner,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { Controller, useController, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ import { CourtSide } from "@/enums/CourtSide";
 import { addGame } from "@/utils/supabase/browser/games";
 import { Player } from "@/types/Player";
 import { PlayerOption } from "../../interfaces/PlayerOption";
+import TeamSuggestion from "../games/TeamSuggestion";
 interface Props {
   sessionId: number;
   sessionPlayers: Player[];
@@ -38,11 +40,11 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
   const [team2PlayerOptions, setTeam2PlayerOptions] = useState<PlayerOption[]>(
     [],
   );
-  const [rotatePlayers, setRotatePlayers] = useState<boolean>(true);
   const playerOptions: PlayerOption[] = sessionPlayers.map((p) => ({
     label: p.name,
     value: p.id.toString(),
   }));
+
   useEffect(() => {
     if (!sessionPlayers || sessionPlayers.length === 0) return;
     initializePlayerOptions();
@@ -69,7 +71,7 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
     const teams = [...team1, ...team2];
     const payload: GamePost = {
       sessionId: sessionId,
-      fullGame: team1Score == 21 || team2Score == 21,
+      fullGame: team1Score >= 21 || team2Score >= 21,
       teams: teams,
     };
     const id = await addGame(payload);
@@ -137,22 +139,12 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
           <Heading fontSize={"2xl"} fontWeight={"light"}>
             Uusi peli
           </Heading>
-          {/* <Repeat
-            color={rotatePlayers ? "green" : "red"}
-            onClick={() => setRotatePlayers(rotatePlayers ? false : true)}
-          /> */}
         </HStack>
+        <TeamSuggestion players={playerOptions}/>
         <Box w={"100%"}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Fieldset.Root>
               <Fieldset.Content>
-                {/* <Field.Root>
-                <TeamPlayers
-                  groupType={GroupType.Free}
-                  heading="Vapaat pelaajat"
-                  playerIds={[]}
-                />
-              </Field.Root> */}
                 <Flex justify={"space-between"}>
                   <VStack ml={5}>
                     <Heading fontWeight={"light"}>Penkki</Heading>
@@ -210,11 +202,6 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
                       )}
                     ></Controller>
                   </VStack>
-                  {/* <TeamPlayers
-                    groupType={GroupType.Padel}
-                    heading="Penkki"
-                    players={sessionPlayers}
-                  /> */}
                   <VStack mr={5}>
                     <Heading fontWeight={"light"}>Padel</Heading>
                     <CheckboxGroup

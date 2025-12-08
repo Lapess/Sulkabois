@@ -1,0 +1,129 @@
+import { Button, HStack, VStack, Box, Text } from "@chakra-ui/react";
+import { GameMode } from "@/enums/GameMode";
+import { TeamCalculationMethod } from "@/enums/TeamCalculationMethod";
+import { useState } from "react";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { CourtSide } from "@/enums/CourtSide";
+import { PlayerOption } from "@/interfaces/PlayerOption";
+
+interface TeamSuggestionProps {
+  players: PlayerOption[];
+}
+
+interface Teams {
+  [CourtSide.Padel]: PlayerOption[];
+  [CourtSide.Penkki]: PlayerOption[];
+}
+
+export default function TeamSuggestion({ players }: TeamSuggestionProps) {
+  const [gameMode, setGameMode] = useState<GameMode>(GameMode.OneVsOne);
+  const [calcMethod, setCalcMethod] = useState<TeamCalculationMethod>(TeamCalculationMethod.random);
+  const [teams, setTeams] = useState<Teams>({
+    [CourtSide.Padel]: [],
+    [CourtSide.Penkki]: [],
+  });
+  const [error, setError] = useState("");
+
+  const shuffle = (arr: PlayerOption[]) => [...arr].sort(() => Math.random() - 0.5);
+
+  const assignTeams = () => {
+    setError("");
+  
+    let requiredPlayers;
+if (gameMode === GameMode.OneVsOne) {
+  requiredPlayers = 2;
+} else if (gameMode === GameMode.TwoVsTwo) {
+  requiredPlayers = 4;
+} else {
+  requiredPlayers = 3;
+}
+
+    if (players.length < requiredPlayers) {
+      setError("Ei tarpeeksi pelaajia sessiossa, valitse toinen pelimuoto.");
+      setTeams({ [CourtSide.Padel]: [], [CourtSide.Penkki]: [] });
+      return;
+    }
+
+    const shuffled = shuffle(players);
+    let padel: PlayerOption[] = [];
+    let penkki: PlayerOption[] = [];
+
+
+  switch (gameMode) {
+    case GameMode.OneVsOne:
+      padel = shuffled.slice(0, 1);
+      penkki = shuffled.slice(1, 2);
+      break;
+
+    case GameMode.TwoVsTwo:
+      padel = shuffled.slice(0, 2);
+      penkki = shuffled.slice(2, 4);
+      break;
+
+    case GameMode.OneVsTwo:
+      if (Math.random() < 0.5) {
+        padel = shuffled.slice(0, 2);
+        penkki = shuffled.slice(2, 3);
+      } else {
+        penkki = shuffled.slice(0, 2);
+        padel = shuffled.slice(2, 3);
+      }
+      break;
+    }
+
+    console.log(players);
+    setTeams({ [CourtSide.Padel]: padel, [CourtSide.Penkki]: penkki });
+  };
+
+  return (
+    <VStack align="start">
+      <Label>Tiimiehdotus</Label>
+
+      <HStack>
+        <VStack align="start">
+          <Text>Pelimuoto</Text>
+          <select value={gameMode} onChange={(e) => setGameMode(e.target.value as GameMode)}>
+            {Object.values(GameMode).map((mode) => (
+              <option key={mode} value={mode}>
+                {mode}
+              </option>
+            ))}
+          </select>
+        </VStack>
+
+        <VStack align="start">
+          <Text>Laskentatapa</Text>
+          <select value={calcMethod} onChange={(e) => setCalcMethod(e.target.value as TeamCalculationMethod)}>
+            {Object.values(TeamCalculationMethod).map((method) => (
+              <option key={method} value={method}>
+                {method}
+              </option>
+            ))}
+          </select>
+        </VStack>
+
+        <Button colorScheme="green" onClick={assignTeams}>
+          Ehdota tiimi(t)
+        </Button>
+      </HStack>
+
+      {error && <Text color="red.500">{error}</Text>}
+
+      <HStack>
+        <VStack align="start">
+          <Box fontWeight="bold">Padel</Box>
+          {teams[CourtSide.Padel].map((p) => (
+            <Box key={p.value}>{p.label}</Box>
+          ))}
+        </VStack>
+
+        <VStack align="start">
+          <Box fontWeight="bold">Penkki</Box>
+          {teams[CourtSide.Penkki].map((p) => (
+            <Box key={p.value}>{p.label}</Box>
+          ))}
+        </VStack>
+      </HStack>
+    </VStack>
+  );
+}
