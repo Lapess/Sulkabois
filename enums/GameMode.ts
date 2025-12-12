@@ -1,6 +1,5 @@
 export enum GameMode {
-    OneVsOne = "1v1",
-    TwoVsTwo = "2v2",
-    OneVsTwo = "1v2",
-
+  OneVsOne = 0,
+  TwoVsTwo = 1,
+  OneVsTwo = 2,
 }

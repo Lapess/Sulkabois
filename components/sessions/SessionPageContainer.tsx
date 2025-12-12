@@ -11,7 +11,15 @@ const SessionPageContainer = () => {
   const [sessions, setSessions] = useState<Session[]>([]);
   useEffect(() => {
     getSessions().then((sessions) =>
-      setSessions(sessions?.filter((x) => x != null) ?? []),
+      setSessions(
+        sessions
+          ?.sort(
+            (a, b) =>
+              new Date(a.session_date).getTime() -
+              new Date(b.session_date).getTime(),
+          )
+          .filter((x) => x != null) ?? [],
+      ),
     );
   }, []);
 

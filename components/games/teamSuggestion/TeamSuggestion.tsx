@@ -5,9 +5,9 @@ import { useState } from "react";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { CourtSide } from "@/enums/CourtSide";
 import { PlayerOption } from "@/interfaces/PlayerOption";
+import shuffle from "@/utils/teamSuggestion/shuffler";
 import { teamCalculationMethodOptions } from "@/data/teamSuggestion/teamCalculationMethodOptions";
 import { gameModeOptions } from "@/data/teamSuggestion/gameModeOptions";
-import shuffle from "@/utils/teamSuggestion/shuffler";
 
 interface TeamSuggestionProps {
   players: PlayerOption[];
@@ -72,8 +72,6 @@ export default function TeamSuggestion({ players }: TeamSuggestionProps) {
         }
         break;
     }
-
-    console.log(players);
     setTeams({ [CourtSide.Padel]: padel, [CourtSide.Penkki]: penkki });
   };
 
