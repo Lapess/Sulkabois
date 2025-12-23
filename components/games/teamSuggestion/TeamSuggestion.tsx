@@ -2,7 +2,6 @@ import { Button, HStack, VStack, Box, Text } from "@chakra-ui/react";
 import { GameMode } from "@/enums/GameMode";
 import { TeamCalculationMethod } from "@/enums/TeamCalculationMethod";
 import { useState } from "react";
-import { Label } from "@radix-ui/react-dropdown-menu";
 import { CourtSide } from "@/enums/CourtSide";
 import { PlayerOption } from "@/interfaces/PlayerOption";
 import shuffle from "@/utils/teamSuggestion/shuffler";
