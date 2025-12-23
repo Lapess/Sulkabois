@@ -76,11 +76,9 @@ export default function TeamSuggestion({ players }: TeamSuggestionProps) {
   };
 
   return (
-    <VStack align="start">
-      <Label>Tiimiehdotus</Label>
-
+    <VStack>
       <HStack>
-        <VStack align="start">
+        <VStack>
           <Text>Pelimuoto</Text>
           <select
             value={gameMode}
@@ -94,7 +92,7 @@ export default function TeamSuggestion({ players }: TeamSuggestionProps) {
           </select>
         </VStack>
 
-        <VStack align="start">
+        <VStack>
           <Text>Laskentatapa</Text>
           <select
             value={calcMethod}
@@ -107,12 +105,10 @@ export default function TeamSuggestion({ players }: TeamSuggestionProps) {
             ))}
           </select>
         </VStack>
-
-        <Button colorScheme="green" onClick={assignTeams}>
-          Ehdota tiimi(t)
-        </Button>
       </HStack>
-
+      <Button colorScheme="green" onClick={assignTeams}>
+        Ehdota tiimi(t)
+      </Button>
       {error && <Text color="red.500">{error}</Text>}
 
       <HStack>

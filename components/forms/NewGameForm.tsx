@@ -79,29 +79,8 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
     setValue("team1Score", [0]);
     setValue("team2Score", [0]);
     initializePlayerOptions();
-    // if (rotatePlayers) {
-    //   handlePlayersRotate(
-    //     team1.map((x) => x.playerId.toString()),
-    //     team2.map((x) => x.playerId.toString())
-    //   );
-    // }
-
     setIsLoading(false);
   };
-  function handlePlayersRotate(team1: string[], team2: string[]): void {
-    switch (2) {
-      case 2:
-        setValue("Penkki", team2);
-        setValue("Padel", team1);
-        handleTeam1PlayersChange(team2);
-        handleTeam2PlayersChange(team1);
-        break;
-      // case 3:
-      //   break;
-      // case 4:
-      //   break;
-    }
-  }
   const team1Controller = useController({
     control,
     name: "Penkki",
