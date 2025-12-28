@@ -7,7 +7,7 @@ import { Heading } from "@chakra-ui/react";
 export const metadata: Metadata = {
   title: "Sulkabois",
   description:
-    "Leaderboard-äppi paljaa kauden parhaan (ja huonoimman) pelaajan.",
+    "Leaderboard-äppi paljastaa kauden parhaan (ja huonoimman) pelaajan.",
 };
 
 const geistSans = Geist({
