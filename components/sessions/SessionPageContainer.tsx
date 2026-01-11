@@ -1,7 +1,7 @@
 "use client";
 import { Session } from "@/types/Session";
 import convertDateStringToLocaleDateString from "@/utils/dateStringConverter";
-import { getSessions } from "@/utils/supabase/browser/sessions";
+import { getSessions } from "@/utils/supabase/sessions";
 import { Box, Flex, HStack, Link, Text } from "@chakra-ui/react";
 import { ArrowRight, LockIcon } from "lucide-react";
 import { useEffect, useState } from "react";

@@ -1,8 +1,8 @@
 "use client";
 import { GeneralDataTableItem } from "@/interfaces/GeneralDataTableItem";
 import { getGeneralDataTableItems } from "@/leaderboard/generalData";
-import { getGamesWithTeamsFull } from "@/utils/supabase/browser/games";
-import { getSessions } from "@/utils/supabase/browser/sessions";
+import { getGamesWithTeamsFull } from "@/utils/supabase/games";
+import { getSessions } from "@/utils/supabase/sessions";
 import { Spinner, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 

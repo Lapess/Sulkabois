@@ -1,3 +1,4 @@
+import Login from "@/components/forms/auth/Login";
 import GeneralDataTable from "@/components/leaderboard/GeneralDataTable";
 import LeaderTable from "@/components/leaderboard/LeaderTable";
 import SessionPageContainer from "@/components/sessions/SessionPageContainer";
@@ -9,6 +10,7 @@ export default async function Home() {
     <>
       <VStack>
         <Heading fontSize={"2xl"}>Sulkabois</Heading>
+        <Login />
         <SessionPageContainer />
         <GeneralDataTable />
         <VStack w={"100%"} gap={4}>

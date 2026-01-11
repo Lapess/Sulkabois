@@ -1,0 +1,53 @@
+import { Session } from "@/types/Session";
+import { createSupabaseBrowserClient } from "./browserClient";
+
+const supabase = createSupabaseBrowserClient();
+
+export async function getSessionById(
+  sessionId: number,
+): Promise<Session | null> {
+  const { data, error } = await supabase
+    .from("session")
+    .select("*, game(*)")
+    .eq("id", sessionId);
+
+  return data ? data[0] : null;
+}
+export async function getSessions(): Promise<Session[] | null> {
+  const { data, error } = await supabase.from("session").select("*, game(*)");
+
+  return data;
+}
+export async function addSession(): Promise<Session | null> {
+  const { data, error } = await supabase
+    .from("session")
+    .insert({ session_date: new Date().toDateString(), is_locked: false })
+    .select("*, game(*)");
+  if (error) console.log(error);
+  return data ? data[0] : null;
+}
+export async function updateSession(
+  sessionId: number,
+  isLocked: boolean,
+): Promise<Session | null> {
+  const { data, error } = await supabase
+    .from("session")
+    .update({ is_locked: isLocked })
+    .eq("id", sessionId)
+    .select("*, game(*)");
+  if (error) console.log(error);
+  console.log("Updating " + data![0].id + " locked: " + isLocked);
+  return data ? data[0] : null;
+}
+
+export async function deleteSession(sessionId: number): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("session")
+    .delete()
+    .eq("id", sessionId);
+  if (error) {
+    console.log(error);
+    return false;
+  }
+  return true;
+}
