@@ -19,7 +19,7 @@ import { Controller, useController, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { GamePost } from "@/interfaces/GamePost";
 import { CourtSide } from "@/enums/CourtSide";
-import { addGame } from "@/utils/supabase/games";
+import { addGame } from "@/services/supabase/games";
 import { Player } from "@/types/Player";
 import { PlayerOption } from "../../interfaces/PlayerOption";
 interface Props {

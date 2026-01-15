@@ -1,8 +1,8 @@
 import { Player } from "@/types/Player";
 import { QueryData } from "@supabase/supabase-js";
-import { createSupabaseBrowserClient } from "./browserClient";
+import { createSupabaseClient } from "../../lib/supabase/client";
 
-const supabase = createSupabaseBrowserClient();
+const supabase = createSupabaseClient();
 export async function getPlayers(): Promise<Player[]> {
   const playersQuery = supabase
     .from("player")

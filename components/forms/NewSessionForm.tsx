@@ -15,8 +15,8 @@ import { useController, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { PlayerOption } from "../../interfaces/PlayerOption";
-import { getPlayers } from "@/utils/supabase/players";
-import { addSession } from "@/utils/supabase/sessions";
+import { getPlayers } from "@/services/supabase/players";
+import { addSession } from "@/services/supabase/sessions";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 

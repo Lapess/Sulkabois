@@ -1,7 +1,7 @@
 "use client";
 import { Player } from "@/types/Player";
-import { getPlayers } from "@/utils/supabase/players";
-import { getSessionById, updateSession } from "@/utils/supabase/sessions";
+import { getPlayers } from "@/services/supabase/players";
+import { getSessionById, updateSession } from "@/services/supabase/sessions";
 import { Button, Center, Separator, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

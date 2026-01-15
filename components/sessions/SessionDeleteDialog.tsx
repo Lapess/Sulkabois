@@ -1,5 +1,5 @@
 "use client";
-import { deleteSession } from "@/utils/supabase/sessions";
+import { deleteSession } from "@/services/supabase/sessions";
 import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

@@ -1,7 +1,7 @@
 import { Session } from "@/types/Session";
-import { createSupabaseBrowserClient } from "./browserClient";
+import { createSupabaseClient } from "../../lib/supabase/client";
 
-const supabase = createSupabaseBrowserClient();
+const supabase = createSupabaseClient();
 
 export async function getSessionById(
   sessionId: number,

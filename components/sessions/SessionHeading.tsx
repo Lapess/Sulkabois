@@ -1,6 +1,6 @@
 "use client";
-import convertDateStringToLocaleDateString from "@/utils/dateStringConverter";
-import { getSessionById } from "@/utils/supabase/sessions";
+import convertDateStringToLocaleDateString from "@/services/dateStringConverter";
+import { getSessionById } from "@/services/supabase/sessions";
 import { Heading } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 

@@ -1,8 +1,8 @@
 import { GameWithTeams } from "@/types/Game";
-import { createSupabaseBrowserClient } from "../browserClient";
+import { createSupabaseClient } from "../../lib/supabase/client";
 import { GamePost } from "@/interfaces/GamePost";
 
-const supabase = createSupabaseBrowserClient();
+const supabase = createSupabaseClient();
 
 export async function getGamesWithTeamsFull(): Promise<GameWithTeams[] | null> {
   const { data, error } = await supabase
