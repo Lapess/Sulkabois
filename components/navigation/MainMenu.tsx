@@ -3,7 +3,6 @@ import { Button, Flex, Link } from "@chakra-ui/react";
 import { LogoutButton } from "../common/auth/LogoutButton";
 
 async function MainMenu() {
-  // This seems to be a problem in some components AT LEAST when navigating.
   const user = await getUser();
 
   return (

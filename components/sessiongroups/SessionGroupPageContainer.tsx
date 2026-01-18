@@ -3,20 +3,22 @@ import { SessionGroup } from "@/types/SessionGroup";
 import { getSessionGroupsByUserId } from "@/services/supabase/sessiongroups";
 import { Box, Flex, HStack, Link, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { getSessionUser } from "@/services/supabase/auth/session";
 import { User } from "@supabase/supabase-js";
+import { ArrowRight } from "lucide-react";
 
-interface Props {
-  user: User;
-}
-const SessionGroupPageContainer = ({ user }: Props) => {
+function SessionGroupPageContainer() {
   const [sessionGroups, setSessionGroups] = useState<SessionGroup[]>([]);
+  const [user, setUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    getSessionUser().then(setUser);
+  });
   useEffect(() => {
     getSessionGroupsByUserId(user?.id ?? "").then((sessionGroups) => {
       setSessionGroups(sessionGroups?.filter((x) => x != null) ?? []);
-      console.log("sessiongroups: " + sessionGroups?.length);
     });
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -29,16 +31,13 @@ const SessionGroupPageContainer = ({ user }: Props) => {
         >
           <Box borderWidth={1} borderColor={"orange"} p={5} w={"100%"}>
             <Flex justify={"space-between"}>
-              <Text>{s.name}</Text>
-              <HStack>
-                <Text pr={4}>Tähän tulloo peliryhmän sessiot</Text>
-              </HStack>
+              <Text>{s.name}</Text> <ArrowRight />
             </Flex>
           </Box>
         </Link>
       ))}
     </>
   );
-};
+}
 
 export default SessionGroupPageContainer;

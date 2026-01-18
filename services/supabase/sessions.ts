@@ -18,10 +18,16 @@ export async function getSessions(): Promise<Session[] | null> {
 
   return data;
 }
-export async function addSession(): Promise<Session | null> {
+export async function addSession(
+  sessionGroupId: number,
+): Promise<Session | null> {
   const { data, error } = await supabase
     .from("session")
-    .insert({ session_date: new Date().toDateString(), is_locked: false })
+    .insert({
+      session_date: new Date().toDateString(),
+      session_group_id: sessionGroupId,
+      is_locked: false,
+    })
     .select("*, game(*)");
   if (error) console.log(error);
   return data ? data[0] : null;

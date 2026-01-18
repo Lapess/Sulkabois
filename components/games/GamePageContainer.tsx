@@ -12,8 +12,9 @@ import GamesList from "./GamesList";
 interface Props {
   playerIds: string[];
   sessionId: number;
+  sessionGroupId: number;
 }
-const GamePageContainer = ({ playerIds, sessionId }: Props) => {
+const GamePageContainer = ({ playerIds, sessionId, sessionGroupId }: Props) => {
   const [sessionPlayers, setSessionPlayers] = useState<Player[]>([]);
   const [newGameId, setNewGameId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -55,7 +56,8 @@ const GamePageContainer = ({ playerIds, sessionId }: Props) => {
           const currentLocked = sessionLocked;
           setSessionLocked(currentLocked ? false : true);
           updateSession(sessionId, !currentLocked).then(
-            () => !currentLocked && router.push("/"),
+            () =>
+              !currentLocked && router.push("/sessiongroups/" + sessionGroupId),
           );
         }}
       >
