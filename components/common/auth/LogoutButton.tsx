@@ -12,7 +12,7 @@ export function LogoutButton() {
 
   return (
     <Button colorPalette={"red"} variant={"outline"} onClick={logout}>
-      Logout
+      Kirjaudu ulos
     </Button>
   );
 }
