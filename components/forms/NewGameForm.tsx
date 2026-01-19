@@ -5,7 +5,6 @@ import {
   Center,
   Checkbox,
   CheckboxGroup,
-  createListCollection,
   Fieldset,
   Flex,
   Heading,
@@ -22,6 +21,8 @@ import { CourtSide } from "@/enums/CourtSide";
 import { addGame } from "@/services/supabase/games";
 import { Player } from "@/types/Player";
 import { PlayerOption } from "../../interfaces/PlayerOption";
+import TeamSuggestion from "../games/teamSuggestion/TeamSuggestion";
+import { scoreOptions } from "@/data/game/scoreOptions";
 interface Props {
   sessionId: number;
   sessionPlayers: Player[];
@@ -38,11 +39,11 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
   const [team2PlayerOptions, setTeam2PlayerOptions] = useState<PlayerOption[]>(
     [],
   );
-  const [rotatePlayers, setRotatePlayers] = useState<boolean>(true);
   const playerOptions: PlayerOption[] = sessionPlayers.map((p) => ({
     label: p.name,
     value: p.id.toString(),
   }));
+
   useEffect(() => {
     if (!sessionPlayers || sessionPlayers.length === 0) return;
     initializePlayerOptions();
@@ -69,7 +70,7 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
     const teams = [...team1, ...team2];
     const payload: GamePost = {
       sessionId: sessionId,
-      fullGame: team1Score == 21 || team2Score == 21,
+      fullGame: team1Score >= 21 || team2Score >= 21,
       teams: teams,
     };
     const id = await addGame(payload);
@@ -78,29 +79,8 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
     setValue("team1Score", [0]);
     setValue("team2Score", [0]);
     initializePlayerOptions();
-    // if (rotatePlayers) {
-    //   handlePlayersRotate(
-    //     team1.map((x) => x.playerId.toString()),
-    //     team2.map((x) => x.playerId.toString())
-    //   );
-    // }
-
     setIsLoading(false);
   };
-  function handlePlayersRotate(team1: string[], team2: string[]): void {
-    switch (2) {
-      case 2:
-        setValue("Penkki", team2);
-        setValue("Padel", team1);
-        handleTeam1PlayersChange(team2);
-        handleTeam2PlayersChange(team1);
-        break;
-      // case 3:
-      //   break;
-      // case 4:
-      //   break;
-    }
-  }
   const team1Controller = useController({
     control,
     name: "Penkki",
@@ -137,22 +117,12 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
           <Heading fontSize={"2xl"} fontWeight={"light"}>
             Uusi peli
           </Heading>
-          {/* <Repeat
-            color={rotatePlayers ? "green" : "red"}
-            onClick={() => setRotatePlayers(rotatePlayers ? false : true)}
-          /> */}
         </HStack>
+        <TeamSuggestion players={playerOptions} />
         <Box w={"100%"}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Fieldset.Root>
               <Fieldset.Content>
-                {/* <Field.Root>
-                <TeamPlayers
-                  groupType={GroupType.Free}
-                  heading="Vapaat pelaajat"
-                  playerIds={[]}
-                />
-              </Field.Root> */}
                 <Flex justify={"space-between"}>
                   <VStack ml={5}>
                     <Heading fontWeight={"light"}>Penkki</Heading>
@@ -210,11 +180,6 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
                       )}
                     ></Controller>
                   </VStack>
-                  {/* <TeamPlayers
-                    groupType={GroupType.Padel}
-                    heading="Penkki"
-                    players={sessionPlayers}
-                  /> */}
                   <VStack mr={5}>
                     <Heading fontWeight={"light"}>Padel</Heading>
                     <CheckboxGroup
@@ -289,40 +254,4 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
     </>
   );
 };
-
-const scoreOptions = createListCollection({
-  items: [
-    { label: 0, value: 0 },
-    { label: 1, value: 1 },
-    { label: 2, value: 2 },
-    { label: 3, value: 3 },
-    { label: 4, value: 4 },
-    { label: 5, value: 5 },
-    { label: 6, value: 6 },
-    { label: 7, value: 7 },
-    { label: 8, value: 8 },
-    { label: 9, value: 9 },
-    { label: 10, value: 10 },
-    { label: 11, value: 11 },
-    { label: 12, value: 12 },
-    { label: 13, value: 13 },
-    { label: 14, value: 14 },
-    { label: 15, value: 15 },
-    { label: 16, value: 16 },
-    { label: 17, value: 17 },
-    { label: 18, value: 18 },
-    { label: 19, value: 19 },
-    { label: 20, value: 20 },
-    { label: 21, value: 21 },
-    { label: 22, value: 22 },
-    { label: 23, value: 23 },
-    { label: 24, value: 24 },
-    { label: 25, value: 25 },
-    { label: 26, value: 26 },
-    { label: 27, value: 27 },
-    { label: 28, value: 28 },
-    { label: 29, value: 29 },
-    { label: 30, value: 30 },
-  ],
-});
 export default NewGameForm;

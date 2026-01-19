@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 import NewGameForm from "../forms/NewGameForm";
 import GamesList from "./GamesList";
+import TeamSuggestion from "./teamSuggestion/TeamSuggestion";
 
 interface Props {
   playerIds: string[];
