@@ -1,7 +1,7 @@
 import { Session } from "@/types/Session";
-import { createSupabaseBrowserClient } from "../browserClient";
+import { createSupabaseClient } from "../../lib/supabase/client";
 
-const supabase = createSupabaseBrowserClient();
+const supabase = createSupabaseClient();
 
 export async function getSessionById(
   sessionId: number,
@@ -13,15 +13,26 @@ export async function getSessionById(
 
   return data ? data[0] : null;
 }
-export async function getSessions(): Promise<Session[] | null> {
-  const { data, error } = await supabase.from("session").select("*, game(*)");
+export async function getSessionsBySessionGroupId(
+  sessionGroupId: number,
+): Promise<Session[] | null> {
+  const { data, error } = await supabase
+    .from("session")
+    .select("*, game(*)")
+    .eq("session_group_id", sessionGroupId);
 
   return data;
 }
-export async function addSession(): Promise<Session | null> {
+export async function addSession(
+  sessionGroupId: number,
+): Promise<Session | null> {
   const { data, error } = await supabase
     .from("session")
-    .insert({ session_date: new Date().toDateString(), is_locked: false })
+    .insert({
+      session_date: new Date().toDateString(),
+      session_group_id: sessionGroupId,
+      is_locked: false,
+    })
     .select("*, game(*)");
   if (error) console.log(error);
   return data ? data[0] : null;

@@ -93,38 +93,49 @@ export type Database = {
         Row: {
           created_at: string;
           id: number;
-          session_date: string;
           is_locked: boolean;
+          session_date: string;
+          session_group_id: number | null;
         };
         Insert: {
           created_at?: string;
           id?: number;
+          is_locked?: boolean;
           session_date: string;
-          is_locked: boolean;
+          session_group_id?: number | null;
         };
         Update: {
           created_at?: string;
           id?: number;
+          is_locked?: boolean;
           session_date?: string;
-          is_locked: boolean;
+          session_group_id?: number | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "session_session_group_id_fkey";
+            columns: ["session_group_id"];
+            isOneToOne: false;
+            referencedRelation: "session_group";
+            referencedColumns: ["id"];
+          },
+        ];
       };
-      session_player: {
+      session_group: {
         Row: {
           created_at: string;
           id: number;
-          player_id: number;
+          name: string | null;
         };
         Insert: {
           created_at?: string;
           id?: number;
-          player_id: number;
+          name?: string | null;
         };
         Update: {
           created_at?: string;
           id?: number;
-          player_id?: number;
+          name?: string | null;
         };
         Relationships: [];
       };
@@ -134,7 +145,7 @@ export type Database = {
           created_at: string;
           game_id: number;
           id: number;
-          player_id: number | null;
+          player_id: number;
           points: number;
         };
         Insert: {
@@ -142,7 +153,7 @@ export type Database = {
           created_at?: string;
           game_id: number;
           id?: number;
-          player_id?: number | null;
+          player_id: number;
           points: number;
         };
         Update: {
@@ -150,7 +161,7 @@ export type Database = {
           created_at?: string;
           game_id?: number;
           id?: number;
-          player_id?: number | null;
+          player_id?: number;
           points?: number;
         };
         Relationships: [
@@ -166,6 +177,35 @@ export type Database = {
             columns: ["player_id"];
             isOneToOne: false;
             referencedRelation: "player";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      user_sessiongroup: {
+        Row: {
+          created_at: string;
+          id: number;
+          session_group_id: number;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          session_group_id: number;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          session_group_id?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_sessiongroup_session_group_id_fkey";
+            columns: ["session_group_id"];
+            isOneToOne: false;
+            referencedRelation: "session_group";
             referencedColumns: ["id"];
           },
         ];

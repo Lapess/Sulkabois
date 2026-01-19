@@ -15,8 +15,8 @@ import { useController, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { PlayerOption } from "../../interfaces/PlayerOption";
-import { getPlayers } from "@/utils/supabase/browser/players";
-import { addSession } from "@/utils/supabase/browser/sessions";
+import { getPlayers } from "@/services/supabase/players";
+import { addSession } from "@/services/supabase/sessions";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 
@@ -28,7 +28,11 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-const NewSessionForm = () => {
+interface Props {
+  sessionGroupId: number;
+}
+
+const NewSessionForm = ({ sessionGroupId }: Props) => {
   const router = useRouter();
   const {
     handleSubmit,
@@ -54,14 +58,16 @@ const NewSessionForm = () => {
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    addSession().then((session) => {
+    addSession(sessionGroupId).then((session) => {
       setIsLoading(false);
       if (session) {
         const params = new URLSearchParams();
         data.players.forEach((player: string) =>
           params.append("players", player),
         );
-        router.push(`/sessions/${session.id}?${params.toString()}`);
+        router.push(
+          `/sessiongroups/${sessionGroupId}/sessions/${session.id}?${params.toString()}`,
+        );
       }
     });
   };

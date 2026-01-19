@@ -1,19 +1,23 @@
 "use client";
 import { GeneralDataTableItem } from "@/interfaces/GeneralDataTableItem";
 import { getGeneralDataTableItems } from "@/leaderboard/generalData";
-import { getGamesWithTeamsFull } from "@/utils/supabase/browser/games";
-import { getSessions } from "@/utils/supabase/browser/sessions";
+import { getGamesWithTeamsFull } from "@/services/supabase/games";
+import { getSessionsBySessionGroupId } from "@/services/supabase/sessions";
 import { Spinner, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-const GeneralDataTable = () => {
+interface Props {
+  sessionGroupId: number;
+}
+
+const GeneralDataTable = ({ sessionGroupId }: Props) => {
   const [tableItems, setTableItems] = useState<GeneralDataTableItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     async function load() {
       setIsLoading(true);
       const [sessions, games] = await Promise.all([
-        getSessions(),
+        getSessionsBySessionGroupId(sessionGroupId),
         getGamesWithTeamsFull(),
       ]);
 

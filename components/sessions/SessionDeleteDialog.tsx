@@ -1,18 +1,19 @@
 "use client";
-import { deleteSession } from "@/utils/supabase/browser/sessions";
+import { deleteSession } from "@/services/supabase/sessions";
 import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface Props {
   sessionId: number;
+  sessionGroupId: number;
 }
-const SessionDeleteDialog = ({ sessionId }: Props) => {
+const SessionDeleteDialog = ({ sessionId, sessionGroupId }: Props) => {
   const router = useRouter();
   const [error, setError] = useState<string>();
   function handleDelete(): void {
     deleteSession(sessionId).then((data) => {
-      if (data === true) router.push("/");
+      if (data === true) router.push("/sessiongroups/" + sessionGroupId);
       else {
         console.log(error);
         setError("Poistaminen ei onnistu. Mitäs läksit?");
@@ -46,7 +47,6 @@ const SessionDeleteDialog = ({ sessionId }: Props) => {
                 <Button
                   colorPalette={"red"}
                   onClick={() => {
-                    console.log("Deleting...");
                     handleDelete();
                   }}
                 >

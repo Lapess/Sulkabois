@@ -1,6 +1,6 @@
 "use client";
 import { GameWithTeams } from "@/types/Game";
-import { getGamesWithTeamsFull } from "@/utils/supabase/browser/games";
+import { getGamesWithTeamsFull } from "@/services/supabase/games";
 import { useEffect, useState } from "react";
 import TeamPointsContainer from "./TeamPointsContainer";
 

@@ -5,10 +5,10 @@ import { Link, VStack } from "@chakra-ui/react";
 import { ArrowLeftCircle } from "lucide-react";
 interface Props {
   searchParams: Promise<{ players?: string[] | string }>;
-  params: Promise<{ sessionId: number }>;
+  params: Promise<{ sessionGroupId: number; sessionId: number }>;
 }
 async function SessionPage({ params, searchParams }: Props) {
-  const { sessionId } = await params;
+  const { sessionGroupId, sessionId } = await params;
   const { players } = await searchParams;
   let playerIds: string[] = [];
 
@@ -18,12 +18,24 @@ async function SessionPage({ params, searchParams }: Props) {
 
   return (
     <VStack>
-      <Link p={2} textAlign={"left"} w={"100%"} href="/">
+      <Link
+        p={2}
+        textAlign={"left"}
+        w={"100%"}
+        href={"/sessiongroups/" + sessionGroupId}
+      >
         <ArrowLeftCircle />
       </Link>
       <SessionHeading sessionId={sessionId} />
-      <GamePageContainer sessionId={sessionId} playerIds={playerIds} />
-      <SessionDeleteDialog sessionId={sessionId} />
+      <GamePageContainer
+        sessionGroupId={sessionGroupId}
+        sessionId={sessionId}
+        playerIds={playerIds}
+      />
+      <SessionDeleteDialog
+        sessionId={sessionId}
+        sessionGroupId={sessionGroupId}
+      />
     </VStack>
   );
 }
