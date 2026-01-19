@@ -1,16 +1,8 @@
 "use client";
 import { Session } from "@/types/Session";
 import convertDateStringToLocaleDateString from "@/services/dateStringConverter";
-import { getSessions } from "@/services/supabase/sessions";
-import {
-  Box,
-  Center,
-  Flex,
-  HStack,
-  Link,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { getSessionsBySessionGroupId } from "@/services/supabase/sessions";
+import { Box, Flex, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowRight, LockIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import NewSessionForm from "../forms/NewSessionForm";
@@ -20,11 +12,15 @@ interface Props {
 const SessionPageContainer = ({ sessionGroupId }: Props) => {
   const [sessions, setSessions] = useState<Session[]>([]);
   useEffect(() => {
-    getSessions().then((sessions) =>
+    getSessionsBySessionGroupId(sessionGroupId).then((sessions) =>
       setSessions(
-        sessions?.filter(
-          (x) => x.session_group_id == sessionGroupId && x != null,
-        ) ?? [],
+        sessions
+          ?.sort(
+            (a, b) =>
+              new Date(a.session_date).getTime() -
+              new Date(b.session_date).getTime(),
+          )
+          .filter((x) => x != null) ?? [],
       ),
     );
   }, []);

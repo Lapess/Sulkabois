@@ -1,5 +1,6 @@
 import { SessionGroup } from "@/types/SessionGroup";
 import { createSupabaseClient } from "../../lib/supabase/client";
+import { User } from "@supabase/supabase-js";
 
 const supabase = createSupabaseClient();
 
@@ -16,6 +17,7 @@ export async function getSessionGroupById(
 export async function getSessionGroupsByUserId(
   userId: string,
 ): Promise<SessionGroup[] | null> {
+  if (!userId) return null;
   const { data, error } = await supabase
     .from("session_group")
     .select(
@@ -33,10 +35,29 @@ export async function addSessionGroup(
   const { data, error } = await supabase
     .from("session_group")
     .insert({ name: sessionGroupName })
-    .select("*, session_group(*)");
-  if (error) console.log(error);
+    .select("*");
+  if (error) {
+    console.log(error);
+    return null;
+  }
   return data ? data[0] : null;
 }
+
+export async function addUserToSessionGroup(
+  user: User,
+  sessionGroup: SessionGroup,
+) {
+  const { data, error } = await supabase
+    .from("user_sessiongroup")
+    .insert({ user_id: user.id, session_group_id: sessionGroup.id })
+    .select("*");
+  if (error) {
+    console.log(error);
+    return null;
+  }
+  return data ? data[0] : null;
+}
+
 export async function updateSessionGroup(
   sessionGroupId: number,
   sessionGroupName: string,

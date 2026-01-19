@@ -13,8 +13,13 @@ export async function getSessionById(
 
   return data ? data[0] : null;
 }
-export async function getSessions(): Promise<Session[] | null> {
-  const { data, error } = await supabase.from("session").select("*, game(*)");
+export async function getSessionsBySessionGroupId(
+  sessionGroupId: number,
+): Promise<Session[] | null> {
+  const { data, error } = await supabase
+    .from("session")
+    .select("*, game(*)")
+    .eq("session_group_id", sessionGroupId);
 
   return data;
 }

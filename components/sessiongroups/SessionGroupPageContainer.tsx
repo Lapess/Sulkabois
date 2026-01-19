@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getSessionUser } from "@/services/supabase/auth/session";
 import { User } from "@supabase/supabase-js";
 import { ArrowRight } from "lucide-react";
+import NewSessionGroupForm from "../forms/NewSessionGroupForm";
 
 function SessionGroupPageContainer() {
   const [sessionGroups, setSessionGroups] = useState<SessionGroup[]>([]);
@@ -13,7 +14,7 @@ function SessionGroupPageContainer() {
 
   useEffect(() => {
     getSessionUser().then(setUser);
-  });
+  }, []);
   useEffect(() => {
     getSessionGroupsByUserId(user?.id ?? "").then((sessionGroups) => {
       setSessionGroups(sessionGroups?.filter((x) => x != null) ?? []);
@@ -36,6 +37,7 @@ function SessionGroupPageContainer() {
           </Box>
         </Link>
       ))}
+      <NewSessionGroupForm />
     </>
   );
 }
