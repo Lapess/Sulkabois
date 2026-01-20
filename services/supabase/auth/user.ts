@@ -3,7 +3,6 @@ import { User } from "@supabase/supabase-js";
 
 export async function getUser(): Promise<User | null> {
   const supabaseServerClient = await createClient();
-  const { data, error } = await supabaseServerClient.auth.getUser();
-  if (error) console.log("Error: " + error.message);
+  const { data } = await supabaseServerClient.auth.getUser();
   return data.user;
 }

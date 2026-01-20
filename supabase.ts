@@ -71,21 +71,21 @@ export type Database = {
       player: {
         Row: {
           created_at: string;
-          games_won_total: number | null;
           id: number;
           name: string | null;
+          user_id: string | null;
         };
         Insert: {
           created_at?: string;
-          games_won_total?: number | null;
           id?: number;
           name?: string | null;
+          user_id?: string | null;
         };
         Update: {
           created_at?: string;
-          games_won_total?: number | null;
           id?: number;
           name?: string | null;
+          user_id?: string | null;
         };
         Relationships: [];
       };
