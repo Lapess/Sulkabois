@@ -1,5 +1,6 @@
 "use client";
 
+import { UserAlreadyExists } from "@/data/auth/errorcodes";
 import SignUpDto from "@/interfaces/user/auth/SignUpDto";
 import { signUp } from "@/services/supabase/auth/session";
 import {
@@ -10,6 +11,7 @@ import {
   Spinner,
   VStack,
 } from "@chakra-ui/react";
+import { AuthError } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,11 +23,13 @@ const SignUpForm = () => {
   const [matchingPasswords, setMatchingPasswords] = useState<boolean | null>(
     null,
   );
+  const [userExists, setUserExists] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>();
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     setError(null);
+    setUserExists(null);
 
     setMatchingPasswords(data.passwordAgain === data.password);
     if (!matchingPasswords) {
@@ -40,8 +44,12 @@ const SignUpForm = () => {
     };
 
     try {
-      await signUp(payload);
-      r.push("/");
+      signUp(payload)
+        .then((x) => r.push("/"))
+        .catch((error: AuthError) => {
+          if (error.code === UserAlreadyExists) setUserExists(true);
+          setIsLoading(false);
+        });
     } catch (error: unknown) {
       setError(
         error instanceof Error
@@ -60,9 +68,14 @@ const SignUpForm = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Fieldset.Root>
             <Fieldset.Content>
-              <Field.Root>
+              <Field.Root invalid={userExists != null && userExists}>
                 <Field.Label>Sähköpostiosoite</Field.Label>
                 <Input {...register("email")} type="email" />
+                {userExists != null && userExists && (
+                  <Field.ErrorText>
+                    Käyttäjä tällä sähköpostiosoitteella on jo olemassa
+                  </Field.ErrorText>
+                )}
               </Field.Root>
               <Field.Root>
                 <Field.Label>Salasana</Field.Label>
@@ -72,10 +85,10 @@ const SignUpForm = () => {
                 invalid={matchingPasswords != null && !matchingPasswords}
               >
                 <Field.Label>Salasana uudelleen</Field.Label>
+                <Input {...register("passwordAgain")} type="password" />
                 {matchingPasswords != null && !matchingPasswords && (
                   <Field.ErrorText>Tarkista salasana</Field.ErrorText>
                 )}
-                <Input {...register("passwordAgain")} type="password" />
               </Field.Root>
 
               <Field.Root>

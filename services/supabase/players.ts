@@ -6,17 +6,11 @@ import { Player } from "@/interfaces/user/Player";
 const supabase = createSupabaseClient();
 
 export async function addPlayer(player: Player): Promise<boolean> {
-  await supabase.from("player").insert({ name: player.name }).throwOnError();
-  return true;
-}
-
-export async function playerExists(name: string): Promise<boolean> {
-  const { data } = await supabase
+  await supabase
     .from("player")
-    .select("*")
-    .eq("name", name)
+    .insert({ user_id: player.user_id, name: player.name })
     .throwOnError();
-  return data[0];
+  return true;
 }
 
 export async function getPlayers(): Promise<SupabasePlayer[]> {
