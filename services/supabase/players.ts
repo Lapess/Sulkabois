@@ -16,7 +16,7 @@ export async function playerExists(name: string): Promise<boolean> {
     .select("*")
     .eq("name", name)
     .throwOnError();
-  return !data[0];
+  return data[0];
 }
 
 export async function getPlayers(): Promise<SupabasePlayer[]> {
