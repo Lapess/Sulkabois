@@ -6,7 +6,7 @@ import {
   getPlayerWinsCount,
 } from "@/leaderboard/calcHelpers";
 import { getTableHeader } from "@/leaderboard/tableHeader";
-import { getGamesWithTeamsFull } from "@/services/supabase/games";
+import { getGamesWithTeamsFullBySessionGroupId } from "@/services/supabase/games";
 import { getPlayers } from "@/services/supabase/players";
 import { Box, BoxProps, Spinner, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -20,9 +20,10 @@ interface TableItem {
 }
 interface Props extends BoxProps {
   type: LeaderBoardType;
+  sessionGroupId: number;
 }
 
-const LeaderTable = ({ type, ...rest }: Props) => {
+const LeaderTable = ({ type, sessionGroupId, ...rest }: Props) => {
   const [tableItems, setTableItems] = useState<TableItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
@@ -30,7 +31,7 @@ const LeaderTable = ({ type, ...rest }: Props) => {
       setIsLoading(true);
       const [players, games] = await Promise.all([
         getPlayers(),
-        getGamesWithTeamsFull(),
+        getGamesWithTeamsFullBySessionGroupId(sessionGroupId),
       ]);
       let items: TableItem[] = players.map((x) => ({
         playerId: x.id,

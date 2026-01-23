@@ -11,6 +11,17 @@ export async function signIn(credentials: CredentialsDto) {
   const { data, error } = await supabase.auth.signInWithPassword(credentials);
   if (error) throw error;
 }
+export async function inviteUser(email: string) {
+  const { data, error } = await supabase.auth.signInWithOtp({
+    email: email,
+    options: {
+      // set this to false if you do not want the user to be automatically signed up
+      shouldCreateUser: true,
+      emailRedirectTo:
+        "https://sulkabois-git-feat-signup-lapes-projects.vercel.app/auth/magic-callback",
+    },
+  });
+}
 export async function signUp(credentials: SignUpDto): Promise<boolean> {
   const { data, error } = await supabase.auth.signUp(credentials);
   // TODO handle error with already existing email
