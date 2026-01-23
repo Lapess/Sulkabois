@@ -1,5 +1,5 @@
 "use client";
-import { createSupabaseClient } from "@/lib/supabase/client";
+import { exchangeCodeForSession } from "@/services/supabase/auth/session";
 import router from "next/router";
 import { useEffect } from "react";
 
@@ -10,14 +10,11 @@ const CallBackContainer = () => {
 
       if (!code) return;
 
-      const { error } =
-        await createSupabaseClient().auth.exchangeCodeForSession(code);
+      const success = await exchangeCodeForSession(code);
 
-      if (error) {
-        console.error("Auth error:", error.message);
+      if (!success) {
         return;
       }
-
       // At this point the user IS authenticated
       router.replace("/dashboard");
     };

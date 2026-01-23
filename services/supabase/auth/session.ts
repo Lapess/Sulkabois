@@ -1,7 +1,7 @@
 import CredentialsDto from "@/interfaces/user/auth/CredentialsDto";
 import SignUpDto from "@/interfaces/user/auth/SignUpDto";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import { User } from "@supabase/supabase-js";
+import { AuthError, User } from "@supabase/supabase-js";
 import { addPlayer } from "../players";
 import { Player } from "@/interfaces/user/Player";
 
@@ -21,6 +21,15 @@ export async function inviteUser(email: string) {
         "https://sulkabois-git-feat-signup-lapes-projects.vercel.app/auth/magic-callback",
     },
   });
+}
+export async function exchangeCodeForSession(code: string): Promise<boolean> {
+  const { error } =
+    await createSupabaseClient().auth.exchangeCodeForSession(code);
+  if (error) {
+    console.error("Auth error:", error.message);
+    return false;
+  }
+  return true;
 }
 export async function signUp(credentials: SignUpDto): Promise<boolean> {
   const { data, error } = await supabase.auth.signUp(credentials);
