@@ -17,8 +17,7 @@ export async function inviteUser(email: string) {
     options: {
       // set this to false if you do not want the user to be automatically signed up
       shouldCreateUser: true,
-      emailRedirectTo:
-        "https://sulkabois.vercel.app/auth/login/auth/magic-callback",
+      emailRedirectTo: "https://sulkabois.vercel.app/auth/magic-callback",
     },
   });
 }
