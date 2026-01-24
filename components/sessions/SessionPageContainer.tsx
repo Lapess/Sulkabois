@@ -2,19 +2,10 @@
 import { Session } from "@/types/Session";
 import convertDateStringToLocaleDateString from "@/services/dateStringConverter";
 import { getSessionsBySessionGroupId } from "@/services/supabase/sessions";
-import {
-  Box,
-  Button,
-  Flex,
-  HStack,
-  Link,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Flex, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowRight, LockIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import NewSessionForm from "../forms/NewSessionForm";
-import { inviteUser } from "@/services/supabase/auth/session";
 interface Props {
   sessionGroupId: number;
 }
@@ -36,13 +27,6 @@ const SessionPageContainer = ({ sessionGroupId }: Props) => {
 
   return (
     <VStack>
-      <Button
-        onClick={() =>
-          inviteUser("ville@skolekauneus.fi").then(() => console.log(""))
-        }
-      >
-        Kutsu
-      </Button>
       {sessions?.map((s) => (
         <Link
           key={s.id}
@@ -50,7 +34,7 @@ const SessionPageContainer = ({ sessionGroupId }: Props) => {
           href={"/sessiongroups/" + sessionGroupId + "/sessions/" + s.id}
           w={"90%"}
         >
-          <Box borderWidth={1} borderColor={"orange"} p={5} w={"100%"}>
+          <Box borderWidth={1} borderColor={"orange"} p={3} w={"100%"}>
             <Flex justify={"space-between"}>
               <Text>{convertDateStringToLocaleDateString(s.session_date)}</Text>
               <HStack>
