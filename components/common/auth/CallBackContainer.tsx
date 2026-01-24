@@ -3,12 +3,16 @@ import { exchangeCodeForSession } from "@/services/supabase/auth/session";
 import router from "next/router";
 import { useEffect } from "react";
 
-const CallBackContainer = () => {
+interface Props {
+  code: string | undefined;
+}
+const CallBackContainer = ({ code }: Props) => {
   useEffect(() => {
     const exchange = async () => {
-      const code = new URLSearchParams(window.location.search).get("code");
-
-      if (!code) return;
+      if (!code) {
+        console.log("no code dude");
+        return;
+      }
 
       const success = await exchangeCodeForSession(code);
 
