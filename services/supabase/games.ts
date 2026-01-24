@@ -1,13 +1,28 @@
 import { GameWithTeams } from "@/types/Game";
 import { createSupabaseClient } from "../../lib/supabase/client";
 import { GamePost } from "@/interfaces/GamePost";
+import { getSessionsBySessionGroupId } from "./sessions";
 
 const supabase = createSupabaseClient();
 
-export async function getGamesWithTeamsFull(): Promise<GameWithTeams[] | null> {
+export async function getGamesWithTeamsFullBySessionGroupId(
+  sessionGroupId: number,
+): Promise<GameWithTeams[] | null> {
+  const sessions = await getSessionsBySessionGroupId(sessionGroupId);
+  const sessionIds = sessions?.map((x) => x.id) ?? [];
   const { data, error } = await supabase
     .from("game")
-    .select("*, team(*, player(*))");
+    .select("*, team(*, player(*))")
+    .in("session_id", sessionIds);
+  return data;
+}
+export async function getGamesWithTeamsBySessionId(
+  sessionId: number,
+): Promise<GameWithTeams[] | null> {
+  const { data, error } = await supabase
+    .from("game")
+    .select("*, team(*, player(*))")
+    .eq("session_id", sessionId);
   return data;
 }
 export async function addGame(game: GamePost): Promise<number | null> {

@@ -1,13 +1,20 @@
-import { Player } from "@/types/Player";
+import { Player as SupabasePlayer } from "@/types/Player";
 import { QueryData } from "@supabase/supabase-js";
 import { createSupabaseClient } from "../../lib/supabase/client";
+import { Player } from "@/interfaces/user/Player";
 
 const supabase = createSupabaseClient();
-export async function getPlayers(): Promise<Player[]> {
-  const playersQuery = supabase
+
+export async function addPlayer(player: Player): Promise<boolean> {
+  await supabase
     .from("player")
-    .select(`created_at, id, name, games_won_total`)
+    .insert({ user_id: player.user_id, name: player.name })
     .throwOnError();
+  return true;
+}
+
+export async function getPlayers(): Promise<SupabasePlayer[]> {
+  const playersQuery = supabase.from("player").select("*").throwOnError();
   type Players = QueryData<typeof playersQuery>;
   const { data, error } = await playersQuery;
   if (error) throw error;
@@ -18,19 +25,15 @@ export async function getPlayers(): Promise<Player[]> {
 export async function getTeamPlayers(
   gameId: number,
   courtSide: number,
-): Promise<Player[]> {
+): Promise<SupabasePlayer[]> {
   const { data, error } = await supabase
     .from("team")
-    .select("id, player(created_at, id, name, games_won_total)")
+    .select("id, player(*)")
     .eq("game_id", gameId)
     .eq("court_side", courtSide)
     .throwOnError();
 
-  console.log(
-    "team players:",
-    data.map((x) => x.player),
-  );
-  const players: Player[] = data
+  const players: SupabasePlayer[] = data
     .flatMap((team) => team.player)
     .filter((x) => x != null);
   return players;

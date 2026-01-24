@@ -1,6 +1,6 @@
 "use client";
 import { GameWithTeams } from "@/types/Game";
-import { getGamesWithTeamsFull } from "@/services/supabase/games";
+import { getGamesWithTeamsBySessionId } from "@/services/supabase/games";
 import { useEffect, useState } from "react";
 import TeamPointsContainer from "./TeamPointsContainer";
 
@@ -11,8 +11,8 @@ interface Props {
 export function GamesList({ sessionId, newGameId }: Props) {
   const [games, setGames] = useState<GameWithTeams[]>([]);
   useEffect(() => {
-    getGamesWithTeamsFull().then((data) => {
-      if (data) setGames(data.filter((x) => x.session_id == sessionId));
+    getGamesWithTeamsBySessionId(sessionId).then((data) => {
+      if (data) setGames(data);
     });
   }, [newGameId]);
 

@@ -1,6 +1,7 @@
 import { getUser } from "@/services/supabase/auth/user";
-import { Button, Flex, Link } from "@chakra-ui/react";
+import { Button, Flex, HStack, Link } from "@chakra-ui/react";
 import { LogoutButton } from "../common/auth/LogoutButton";
+import TestMenu from "../Testing/TestMenu";
 
 async function MainMenu() {
   const user = await getUser();
@@ -10,7 +11,10 @@ async function MainMenu() {
       <Button p={5} colorPalette={"black"} variant={"outline"}>
         <Link href="/">Etusivu</Link>
       </Button>
-      {user != null && <LogoutButton />}
+      <HStack>
+        <TestMenu />
+        {user != null && <LogoutButton />}
+      </HStack>
     </Flex>
   );
 }

@@ -34,7 +34,7 @@ const SessionPageContainer = ({ sessionGroupId }: Props) => {
           href={"/sessiongroups/" + sessionGroupId + "/sessions/" + s.id}
           w={"90%"}
         >
-          <Box borderWidth={1} borderColor={"orange"} p={5} w={"100%"}>
+          <Box borderWidth={1} borderColor={"orange"} p={3} w={"100%"}>
             <Flex justify={"space-between"}>
               <Text>{convertDateStringToLocaleDateString(s.session_date)}</Text>
               <HStack>
@@ -47,7 +47,6 @@ const SessionPageContainer = ({ sessionGroupId }: Props) => {
           </Box>
         </Link>
       ))}
-
       <NewSessionForm sessionGroupId={sessionGroupId} />
     </VStack>
   );

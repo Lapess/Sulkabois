@@ -1,5 +1,5 @@
 "use client";
-import CredentialsDto from "@/interfaces/auth/CredentialsDto";
+import CredentialsDto from "@/interfaces/user/auth/CredentialsDto";
 import { signIn } from "@/services/supabase/auth/session";
 import {
   Button,
@@ -34,7 +34,6 @@ const LoginForm = () => {
       setError(
         error instanceof Error ? error.message : "Virhe kirjautumisessa",
       );
-    } finally {
       setIsLoading(false);
     }
   };
