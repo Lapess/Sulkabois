@@ -24,7 +24,6 @@ const SessionPageContainer = ({ sessionGroupId }: Props) => {
       ),
     );
   }, []);
-
   return (
     <VStack>
       {sessions?.map((s) => (

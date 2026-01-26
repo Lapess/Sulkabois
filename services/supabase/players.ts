@@ -1,5 +1,4 @@
 import { Player as SupabasePlayer } from "@/types/Player";
-import { QueryData } from "@supabase/supabase-js";
 import { createSupabaseClient } from "../../lib/supabase/client";
 import { Player } from "@/interfaces/user/Player";
 
@@ -14,12 +13,20 @@ export async function addPlayer(player: Player): Promise<boolean> {
 }
 
 export async function getPlayers(): Promise<SupabasePlayer[]> {
-  const playersQuery = supabase.from("player").select("*").throwOnError();
-  type Players = QueryData<typeof playersQuery>;
-  const { data, error } = await playersQuery;
-  if (error) throw error;
-  const players: Players = data;
-  return players;
+  const { data } = await supabase.from("player").select("*").throwOnError();
+  return data;
+}
+
+export async function getPlayerWithUserId(
+  userId: string,
+): Promise<SupabasePlayer> {
+  const { data } = await supabase
+    .from("player")
+    .select("*")
+    .eq("user_id", userId)
+    .single()
+    .throwOnError();
+  return data;
 }
 
 export async function getTeamPlayers(

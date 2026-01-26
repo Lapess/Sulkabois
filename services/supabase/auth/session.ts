@@ -1,7 +1,7 @@
 import CredentialsDto from "@/interfaces/user/auth/CredentialsDto";
 import SignUpDto from "@/interfaces/user/auth/SignUpDto";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import { AuthError, User } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 import { addPlayer } from "../players";
 import { Player } from "@/interfaces/user/Player";
 
@@ -11,7 +11,7 @@ export async function signIn(credentials: CredentialsDto) {
   const { data, error } = await supabase.auth.signInWithPassword(credentials);
   if (error) throw error;
 }
-export async function inviteUser(email: string) {
+export async function passwordlessSignIn(email: string) {
   const { data, error } = await supabase.auth.signInWithOtp({
     email: email,
     options: {
@@ -20,15 +20,6 @@ export async function inviteUser(email: string) {
       emailRedirectTo: "https://sulkabois.vercel.app/auth/magic-callback",
     },
   });
-}
-export async function exchangeCodeForSession(code: string): Promise<boolean> {
-  const { error } =
-    await createSupabaseClient().auth.exchangeCodeForSession(code);
-  if (error) {
-    console.error("Auth error:", error.message);
-    return false;
-  }
-  return true;
 }
 export async function signUp(credentials: SignUpDto): Promise<boolean> {
   const { data, error } = await supabase.auth.signUp(credentials);

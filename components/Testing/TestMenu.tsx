@@ -1,5 +1,5 @@
 "use client";
-import { inviteUser } from "@/services/supabase/auth/session";
+import { passwordlessSignIn } from "@/services/supabase/auth/session";
 import { Button, Menu } from "@chakra-ui/react";
 
 const TestMenu = () => {
@@ -12,11 +12,7 @@ const TestMenu = () => {
         <Menu.Content>
           <Menu.Item
             value="1"
-            onClick={() =>
-              inviteUser("ville@skolekauneus.fi").then(() =>
-                console.log("invited"),
-              )
-            }
+            onClick={() => passwordlessSignIn("ville@skolekauneus.fi")}
           >
             Kutsu
           </Menu.Item>
