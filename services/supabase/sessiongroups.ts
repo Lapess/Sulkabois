@@ -45,11 +45,11 @@ export async function addSessionGroup(
 
 export async function addUserToSessionGroup(
   user: User,
-  sessionGroup: SessionGroup,
+  sessionGroupId: number,
 ) {
   const { data, error } = await supabase
     .from("user_sessiongroup")
-    .insert({ user_id: user.id, session_group_id: sessionGroup.id })
+    .insert({ user_id: user.id, session_group_id: sessionGroupId })
     .select("*");
   if (error) {
     console.log(error);

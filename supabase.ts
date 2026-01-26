@@ -68,22 +68,54 @@ export type Database = {
           },
         ];
       };
+      invitation: {
+        Row: {
+          created_at: string;
+          email: string;
+          id: number;
+          session_group_id: number;
+        };
+        Insert: {
+          created_at?: string;
+          email: string;
+          id?: number;
+          session_group_id: number;
+        };
+        Update: {
+          created_at?: string;
+          email?: string;
+          id?: number;
+          session_group_id?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "invitations_session_group_id_fkey";
+            columns: ["session_group_id"];
+            isOneToOne: false;
+            referencedRelation: "session_group";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       player: {
         Row: {
           created_at: string;
           id: number;
+          isAdmin: boolean;
           name: string | null;
           user_id: string | null;
         };
         Insert: {
           created_at?: string;
           id?: number;
+          isAdmin?: boolean;
           name?: string | null;
           user_id?: string | null;
         };
         Update: {
           created_at?: string;
           id?: number;
+          isAdmin?: boolean;
           name?: string | null;
           user_id?: string | null;
         };

@@ -47,7 +47,7 @@ const NewSessionGroupForm = () => {
     addSessionGroup(nameRef.current.value).then((sessionGroup) => {
       getSessionUser().then((user) => {
         if (!user || !sessionGroup) return;
-        addUserToSessionGroup(user, sessionGroup).then(() => {
+        addUserToSessionGroup(user, sessionGroup.id).then(() => {
           setIsLoading(false);
           router.push(`/sessiongroups/${sessionGroup.id}`);
         });
