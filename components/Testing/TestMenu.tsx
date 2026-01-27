@@ -1,5 +1,5 @@
 "use client";
-import { passwordlessSignIn } from "@/services/supabase/auth/session";
+import { passwordlessSignIn } from "@/services/supabase/auth/client";
 import { Button, Menu } from "@chakra-ui/react";
 
 const TestMenu = () => {

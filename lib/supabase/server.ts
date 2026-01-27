@@ -1,11 +1,7 @@
-import { createServerClient } from "@supabase/ssr";
+// @/lib/supabase/server.ts
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-/**
- * Especially important if using Fluid compute: Don't put this client in a
- * global variable. Always create a new client within each function when using
- * it.
- */
 export async function createClient() {
   const cookieStore = await cookies();
 
@@ -14,21 +10,21 @@ export async function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
       cookies: {
-        get(name) {
+        get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        set(name, value, options) {
+        set(name: string, value: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value, ...options });
           } catch (error) {
-            // Can fail in Server Components - this is ok
+            // Server Component - ignore
           }
         },
-        remove(name, options) {
+        remove(name: string, options: CookieOptions) {
           try {
             cookieStore.set({ name, value: "", ...options });
           } catch (error) {
-            // Can fail in Server Components - this is ok
+            // Server Component - ignore
           }
         },
       },

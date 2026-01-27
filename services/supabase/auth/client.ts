@@ -8,7 +8,7 @@ import { Player } from "@/interfaces/user/Player";
 const supabase = createSupabaseClient();
 
 export async function signIn(credentials: CredentialsDto) {
-  const { data, error } = await supabase.auth.signInWithPassword(credentials);
+  const { error } = await supabase.auth.signInWithPassword(credentials);
   if (error) throw error;
 }
 export async function passwordlessSignIn(email: string) {

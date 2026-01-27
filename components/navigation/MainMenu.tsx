@@ -1,4 +1,4 @@
-import { getUser } from "@/services/supabase/auth/user";
+import { getUser } from "@/services/supabase/auth/server";
 import { Button, Flex, HStack, Link } from "@chakra-ui/react";
 import { LogoutButton } from "../common/auth/LogoutButton";
 import TestMenu from "../Testing/TestMenu";

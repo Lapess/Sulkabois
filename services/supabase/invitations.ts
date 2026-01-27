@@ -1,6 +1,6 @@
 import { InvitationDto } from "@/interfaces/InvitationDto";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import { passwordlessSignIn } from "./auth/session";
+import { passwordlessSignIn } from "./auth/client";
 import { User } from "@supabase/supabase-js";
 
 const supabase = createSupabaseClient();
