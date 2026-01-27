@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { getUser } from "@/services/supabase/auth/user";
+import { getUser } from "@/services/supabase/auth/server";
 import { redirect } from "next/navigation";
 
 interface Props {

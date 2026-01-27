@@ -1,4 +1,7 @@
-import { exchangeCodeForSession, getUser } from "@/services/supabase/auth/user";
+import {
+  exchangeCodeForSession,
+  getUser,
+} from "@/services/supabase/auth/server";
 import { getInvitations } from "@/services/supabase/invitations";
 import { addUserToSessionGroup } from "@/services/supabase/sessiongroups";
 import { revalidatePath } from "next/cache";

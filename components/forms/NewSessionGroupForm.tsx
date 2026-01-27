@@ -21,7 +21,7 @@ import {
   addSessionGroup,
   addUserToSessionGroup,
 } from "@/services/supabase/sessiongroups";
-import { getSessionUser } from "@/services/supabase/auth/session";
+import { getSessionUser } from "@/services/supabase/auth/client";
 
 const formSchema = z.object({
   name: z.string({ error: "Anna peliryhmälle nimi" }),

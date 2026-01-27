@@ -1,6 +1,6 @@
 "use client";
 import CredentialsDto from "@/interfaces/user/auth/CredentialsDto";
-import { signIn } from "@/services/supabase/auth/session";
+import { signIn } from "@/services/supabase/auth/client";
 import {
   Button,
   Field,
@@ -8,6 +8,8 @@ import {
   Input,
   Spinner,
   VStack,
+  Text,
+  Center,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -29,36 +31,39 @@ const LoginForm = () => {
 
     try {
       await signIn(payload);
-      r.push("/");
+      window.location.href = "/"; // Hard reload
     } catch (error: unknown) {
-      setError(
-        error instanceof Error ? error.message : "Virhe kirjautumisessa",
-      );
+      setError("Virhe kirjautumisessa");
       setIsLoading(false);
     }
   };
 
   return (
     <VStack>
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Fieldset.Root>
-            <Fieldset.Content>
-              <Field.Root>
-                <Field.Label>Sähköpostiosoite</Field.Label>
-                <Input {...register("email")} type="email" />
-              </Field.Root>
-              <Field.Root>
-                <Field.Label>Salasana</Field.Label>
-                <Input {...register("password")} type="password" />
-              </Field.Root>
-            </Fieldset.Content>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Fieldset.Root>
+          <Fieldset.Content>
+            <Field.Root>
+              <Field.Label>Sähköpostiosoite</Field.Label>
+              <Input {...register("email")} type="email" />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>Salasana</Field.Label>
+              <Input {...register("password")} type="password" />
+            </Field.Root>
+          </Fieldset.Content>
+
+          {isLoading ? (
+            <Center>
+              <Spinner />
+            </Center>
+          ) : (
             <Button type="submit">Kirjaudu</Button>
-          </Fieldset.Root>
-        </form>
-      )}
+          )}
+        </Fieldset.Root>
+      </form>
+
+      {error && <Text color={"red"}>{error}</Text>}
     </VStack>
   );
 };

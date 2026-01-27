@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { signOut } from "@/services/supabase/auth/session";
+import { signOut } from "@/services/supabase/auth/client";
 import { Button } from "@chakra-ui/react";
 
 export function LogoutButton() {

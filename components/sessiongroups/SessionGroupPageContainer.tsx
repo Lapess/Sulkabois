@@ -3,7 +3,7 @@ import { SessionGroup } from "@/types/SessionGroup";
 import { getSessionGroupsByUserId } from "@/services/supabase/sessiongroups";
 import { Box, Flex, HStack, Link, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getSessionUser } from "@/services/supabase/auth/session";
+import { getSessionUser } from "@/services/supabase/auth/client";
 import { User } from "@supabase/supabase-js";
 import { ArrowRight } from "lucide-react";
 import NewSessionGroupForm from "../forms/NewSessionGroupForm";
