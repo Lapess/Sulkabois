@@ -7,7 +7,8 @@ import { getPlayerWithUserId } from "@/services/supabase/players";
 async function MainMenu() {
   const user = await getUser();
   let isAdminUser = false;
-  if (user) isAdminUser = (await getPlayerWithUserId(user.id)).isAdmin;
+  if (user)
+    isAdminUser = (await getPlayerWithUserId(user.id))?.isAdmin ?? false;
   return (
     <Flex gap={2} m={2} justify={"space-between"}>
       <Button p={5} colorPalette={"black"} variant={"outline"}>

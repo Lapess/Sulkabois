@@ -20,12 +20,12 @@ export async function getPlayers(): Promise<SupabasePlayer[]> {
 export async function getPlayerWithUserId(
   userId: string,
 ): Promise<SupabasePlayer> {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("player")
     .select("*")
     .eq("user_id", userId)
-    .single()
-    .throwOnError();
+    .single();
+  if (error) console.log(error);
   return data;
 }
 

@@ -1,5 +1,6 @@
 "use client";
 
+import TestMenu from "@/components/Testing/TestMenu";
 import { UserAlreadyExists } from "@/data/auth/errorcodes";
 import SignUpDto from "@/interfaces/user/auth/SignUpDto";
 import { signUp } from "@/services/supabase/auth/client";
@@ -45,7 +46,7 @@ const SignUpForm = () => {
 
     try {
       signUp(payload)
-        .then((x) => r.push("/"))
+        .then((x) => (window.location.href = "/"))
         .catch((error: AuthError) => {
           if (error.code === UserAlreadyExists) setUserExists(true);
           setIsLoading(false);
@@ -100,6 +101,7 @@ const SignUpForm = () => {
           </Fieldset.Root>
         </form>
       )}
+      <TestMenu />
     </VStack>
   );
 };

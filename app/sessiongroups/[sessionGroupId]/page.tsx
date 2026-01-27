@@ -1,3 +1,4 @@
+import RestrictedRender from "@/components/common/auth/RestrictedRender";
 import GeneralDataTable from "@/components/leaderboard/GeneralDataTable";
 import LeaderTable from "@/components/leaderboard/LeaderTable";
 import SessionPageContainer from "@/components/sessions/SessionPageContainer";
@@ -11,7 +12,7 @@ interface Props {
 async function SessionGroupPage({ params }: Props) {
   const { sessionGroupId } = await params;
   return (
-    <>
+    <RestrictedRender>
       <SessionPageContainer sessionGroupId={sessionGroupId} />
       <VStack w={"100%"} gap={4}>
         <GeneralDataTable sessionGroupId={sessionGroupId} />
@@ -40,7 +41,7 @@ async function SessionGroupPage({ params }: Props) {
           py={4}
         />
       </VStack>
-    </>
+    </RestrictedRender>
   );
 }
 

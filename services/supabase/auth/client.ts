@@ -15,9 +15,7 @@ export async function passwordlessSignIn(email: string) {
   const { data, error } = await supabase.auth.signInWithOtp({
     email: email,
     options: {
-      // set this to false if you do not want the user to be automatically signed up
-      shouldCreateUser: true,
-      emailRedirectTo: "https://sulkabois.vercel.app/auth/magic-callback",
+      emailRedirectTo: "http://localhost:3000/auth/magic-callback",
     },
   });
 }
