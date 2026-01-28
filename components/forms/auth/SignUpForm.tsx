@@ -31,7 +31,7 @@ const SignUpForm = () => {
     setIsLoading(true);
     setError(null);
     setUserExists(null);
-
+    // TODO yup validation to every form
     setMatchingPasswords(data.passwordAgain === data.password);
     if (!matchingPasswords) {
       setIsLoading(false);
@@ -101,7 +101,6 @@ const SignUpForm = () => {
           </Fieldset.Root>
         </form>
       )}
-      <TestMenu />
     </VStack>
   );
 };

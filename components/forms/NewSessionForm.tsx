@@ -89,7 +89,7 @@ const NewSessionForm = ({ sessionGroupId }: Props) => {
             variant={"solid"}
             bgColor={"orange"}
           >
-            Uusi
+            Uusi sessio
           </Button>
         </Dialog.Trigger>
         <Portal>
@@ -148,12 +148,4 @@ const NewSessionForm = ({ sessionGroupId }: Props) => {
   );
 };
 
-const playerOptions = createListCollection({
-  items: [
-    {
-      label: "",
-      value: 0,
-    },
-  ],
-});
 export default NewSessionForm;

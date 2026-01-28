@@ -1,7 +1,4 @@
-import {
-  exchangeCodeForSession,
-  verifyOtp,
-} from "@/services/supabase/auth/server";
+import { verifyOtp } from "@/services/supabase/auth/server";
 import { getInvitations } from "@/services/supabase/invitations";
 import { addUserToSessionGroup } from "@/services/supabase/sessiongroups";
 import { NextResponse } from "next/server";
@@ -19,8 +16,10 @@ export async function GET(request: Request) {
       const invitations = await getInvitations(data.user!);
       console.log("invitations count " + invitations.length);
       invitations.forEach((x) =>
-        addUserToSessionGroup(data.user!, x.sessionGroupId),
+        addUserToSessionGroup(data.user!, x.sessionGroupId!),
       );
+      // TODO redirect to the page containing the "set player name form"
+      // After that add player to player table
       return NextResponse.redirect(new URL("/", requestUrl.origin));
     } else
       return NextResponse.redirect(new URL("/auth/login", requestUrl.origin));

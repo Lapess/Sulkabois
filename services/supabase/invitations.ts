@@ -5,14 +5,18 @@ import { User } from "@supabase/supabase-js";
 
 const supabase = createSupabaseClient();
 
-export async function inviteUser(invitation: InvitationDto) {
-  if (await addInvitation(invitation))
-    await passwordlessSignIn(invitation.email);
+export async function inviteUser(invitation: InvitationDto): Promise<boolean> {
+  return (
+    (await addInvitation(invitation)) &&
+    (await passwordlessSignIn(invitation.email))
+  );
 }
 
 export async function addInvitation(
   invitation: InvitationDto,
 ): Promise<boolean> {
+  // TODO handle different invitation types
+  // TODO do not add if already exists
   if (!invitation.email || !invitation.sessionGroupId) return false;
   const { error } = await supabase.from("invitation").insert({
     email: invitation.email,

@@ -11,17 +11,20 @@ export async function signIn(credentials: CredentialsDto) {
   const { error } = await supabase.auth.signInWithPassword(credentials);
   if (error) throw error;
 }
-export async function passwordlessSignIn(email: string) {
+export async function passwordlessSignIn(email: string): Promise<boolean> {
   const { data, error } = await supabase.auth.signInWithOtp({
     email: email,
     options: {
-      emailRedirectTo: "http://localhost:3000/auth/magic-callback",
+      emailRedirectTo: "http://localhost:3000/auth/magic-callback", // TODO should be environment variable
     },
   });
+  if (error) throw error;
+  return data?.session != null;
 }
 export async function signUp(credentials: SignUpDto): Promise<boolean> {
   const { data, error } = await supabase.auth.signUp(credentials);
   // TODO handle error with already existing email
+  // TODO implement email verification
   if (error) throw error;
   const player: Player = {
     user_id: data.user?.id,

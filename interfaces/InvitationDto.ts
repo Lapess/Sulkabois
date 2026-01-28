@@ -1,4 +1,5 @@
 export interface InvitationDto {
   email: string;
-  sessionGroupId: number;
+  sessionGroupId?: number;
+  sessionId?: number;
 }
