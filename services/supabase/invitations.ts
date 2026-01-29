@@ -18,11 +18,12 @@ export async function addInvitation(
   // TODO handle different invitation types
   // TODO do not add if already exists
   if (!invitation.email || !invitation.sessionGroupId) return false;
-  const { error } = await supabase.from("invitation").insert({
+  const { data, error } = await supabase.from("invitation").insert({
     email: invitation.email,
     session_group_id: invitation.sessionGroupId,
   });
-  return error == null;
+  if (error) console.log(error);
+  return data != null;
 }
 
 export async function getInvitations(user: User): Promise<InvitationDto[]> {

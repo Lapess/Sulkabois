@@ -21,11 +21,15 @@ export async function passwordlessSignIn(email: string): Promise<boolean> {
   if (error) throw error;
   return data?.session != null;
 }
+// GENERAL TODO: Handle every errors on api calls -> display error messages and rollback unfinished changes
 export async function signUp(credentials: SignUpDto): Promise<boolean> {
   const { data, error } = await supabase.auth.signUp(credentials);
   // TODO handle error with already existing email
   // TODO implement email verification
-  if (error) throw error;
+  if (error) {
+    console.log(error);
+    throw error;
+  }
   const player: Player = {
     user_id: data.user?.id,
     name: credentials.username,

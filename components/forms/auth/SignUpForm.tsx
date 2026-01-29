@@ -31,7 +31,7 @@ const SignUpForm = () => {
     setIsLoading(true);
     setError(null);
     setUserExists(null);
-    // TODO yup validation to every form
+    // TODO zod validation to every form
     setMatchingPasswords(data.passwordAgain === data.password);
     if (!matchingPasswords) {
       setIsLoading(false);
