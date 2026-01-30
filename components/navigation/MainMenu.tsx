@@ -14,10 +14,7 @@ async function MainMenu() {
       <Button p={5} colorPalette={"black"} variant={"outline"}>
         <Link href="/">Etusivu</Link>
       </Button>
-      <HStack>
-        {isAdminUser && <TestMenu />}
-        {user != null && <LogoutButton />}
-      </HStack>
+      <HStack>{user != null && <LogoutButton />}</HStack>
     </Flex>
   );
 }

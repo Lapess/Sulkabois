@@ -18,8 +18,12 @@ export async function passwordlessSignIn(email: string): Promise<boolean> {
       emailRedirectTo: "http://localhost:3000/auth/magic-callback", // TODO should be environment variable
     },
   });
-  if (error) throw error;
-  return data?.session != null;
+  if (error) {
+    console.log(error);
+    throw error;
+  }
+  console.log("signed up successfully");
+  return data != null;
 }
 // GENERAL TODO: Handle every errors on api calls -> display error messages and rollback unfinished changes
 export async function signUp(credentials: SignUpDto): Promise<boolean> {

@@ -9,6 +9,7 @@ import {
   VStack,
   Text,
   Input,
+  Spinner,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -30,6 +31,8 @@ interface Props {
 
 const InviteUserForm = ({ invitationType, invitationTargetId }: Props) => {
   const [invitationSent, setinvitationSent] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     handleSubmit,
@@ -40,10 +43,17 @@ const InviteUserForm = ({ invitationType, invitationTargetId }: Props) => {
     defaultValues: { userEmail: "" },
   });
   const onSubmit = async (data: any) => {
+    setIsLoading(true);
     inviteUser({
       email: data.userEmail,
       sessionGroupId: invitationTargetId,
-    }).then(setinvitationSent);
+    })
+      .then(setinvitationSent)
+      .catch((err) => {
+        console.log(err.message);
+        setError("Tapahtui virhe");
+      })
+      .finally(() => setIsLoading(false));
   };
 
   let buttonText = "Kutsu käyttäjä";
@@ -106,14 +116,18 @@ const InviteUserForm = ({ invitationType, invitationTargetId }: Props) => {
                       </Fieldset.Root>
                     </Dialog.Body>
                     <Dialog.Footer>
-                      <>
-                        <Dialog.ActionTrigger asChild>
-                          <Button variant="outline">Peruuta</Button>
-                        </Dialog.ActionTrigger>{" "}
-                        <Button type="submit" colorPalette={"green"}>
-                          Lähetä kutsu
-                        </Button>
-                      </>
+                      {isLoading ? (
+                        <Spinner />
+                      ) : (
+                        <>
+                          <Dialog.ActionTrigger asChild>
+                            <Button variant="outline">Peruuta</Button>
+                          </Dialog.ActionTrigger>{" "}
+                          <Button type="submit" colorPalette={"green"}>
+                            Lähetä kutsu
+                          </Button>
+                        </>
+                      )}
                     </Dialog.Footer>
                   </>
                 )}

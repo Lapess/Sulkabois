@@ -3,7 +3,7 @@ import GeneralDataTable from "@/components/leaderboard/GeneralDataTable";
 import LeaderTable from "@/components/leaderboard/LeaderTable";
 import SessionPageContainer from "@/components/sessions/SessionPageContainer";
 import { LeaderBoardType } from "@/enums/LeaderBoardType";
-import { VStack } from "@chakra-ui/react";
+import { Link, VStack } from "@chakra-ui/react";
 
 interface Props {
   params: Promise<{ sessionGroupId: number }>;
@@ -40,6 +40,14 @@ async function SessionGroupPage({ params }: Props) {
           w={"100%"}
           py={4}
         />
+      </VStack>
+      <VStack bg={"black"} p={10}>
+        <Link
+          color={"white"}
+          href={"/sessiongroups/" + sessionGroupId + "/settings"}
+        >
+          Asetukset
+        </Link>
       </VStack>
     </RestrictedRender>
   );

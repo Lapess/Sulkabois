@@ -1,3 +1,4 @@
+"use client";
 import { addPlayer } from "@/services/supabase/players";
 import {
   Button,
@@ -10,6 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -20,6 +22,8 @@ interface Props {
 const NewPlayerForm = ({ userId }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>();
+
+  const router = useRouter();
 
   const formSchema = z.object({
     playerName: z.string().min(3, {
@@ -43,11 +47,11 @@ const NewPlayerForm = ({ userId }: Props) => {
       user_id: userId,
       name: data.playerName,
     })
-      .then(() => console.log("Should navigate somewhere"))
+      .then(() => router.push("/"))
       .catch(() => {
         setError("Virhe");
-        setIsLoading(false);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (

@@ -1,5 +1,8 @@
 import { verifyOtp } from "@/services/supabase/auth/server";
-import { getInvitations } from "@/services/supabase/invitations";
+import {
+  deleteInvitationsByEmail as deleteUserInvitations,
+  getInvitations,
+} from "@/services/supabase/invitations";
 import { addUserToSessionGroup } from "@/services/supabase/sessiongroups";
 import { User } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
@@ -12,8 +15,8 @@ export async function GET(request: Request) {
   if (code) {
     const data = await verifyOtp("", code);
     if (data) {
-      console.log("session established");
       await assignUserToSessionGroups(data.user!);
+      await deleteUserInvitations(data.user!);
       return NextResponse.redirect(
         new URL("/auth/new-player", requestUrl.origin),
       );
