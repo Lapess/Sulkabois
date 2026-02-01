@@ -1,31 +1,29 @@
 "use client";
-import { deleteSession } from "@/services/supabase/sessions";
+import { deleteSessionGroup } from "@/services/supabase/sessiongroups";
 import { Button, CloseButton, Dialog, Portal, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface Props {
-  sessionId: number;
   sessionGroupId: number;
 }
-const SessionDeleteDialog = ({ sessionId, sessionGroupId }: Props) => {
-  const router = useRouter();
+const SessionGroupDeleteDialog = ({ sessionGroupId }: Props) => {
   const [error, setError] = useState<string>();
+  const router = useRouter();
   function handleDelete(): void {
-    deleteSession(sessionId).then((data) => {
-      if (data === true) router.push("/sessiongroups/" + sessionGroupId);
+    deleteSessionGroup(sessionGroupId).then((data) => {
+      if (data === true) router.push("/");
       else {
         setError("Virhe");
       }
     });
   }
-
   return (
     <>
       <Dialog.Root role="alertdialog">
         <Dialog.Trigger asChild>
           <Button variant="outline" colorPalette={"red"} mt={10}>
-            Älä paina tätä nappia
+            Poista peliryhmä
           </Button>
         </Dialog.Trigger>
         <Portal>
@@ -33,11 +31,11 @@ const SessionDeleteDialog = ({ sessionId, sessionGroupId }: Props) => {
           <Dialog.Positioner>
             <Dialog.Content>
               <Dialog.Header>
-                <Dialog.Title>Session poisto</Dialog.Title>
+                <Dialog.Title>Peliryhmän poisto</Dialog.Title>
               </Dialog.Header>
               <Dialog.Body>
-                Haluatko varmasti poistaa session? Kaikki siihen liittyvät pelit
-                poistetaan myös!
+                Haluatko varmasti poistaa peliryhmän? Kaikki siihen liittyvät
+                sessiot ja pelit poistetaan myös!
               </Dialog.Body>
               <Dialog.Footer>
                 <Dialog.ActionTrigger asChild>
@@ -64,4 +62,4 @@ const SessionDeleteDialog = ({ sessionId, sessionGroupId }: Props) => {
   );
 };
 
-export default SessionDeleteDialog;
+export default SessionGroupDeleteDialog;

@@ -16,6 +16,27 @@ export async function getPlayers(): Promise<SupabasePlayer[]> {
   const { data } = await supabase.from("player").select("*").throwOnError();
   return data;
 }
+export async function getPlayersWithSessionGroupId(
+  sessionGroupId: number,
+): Promise<SupabasePlayer[]> {
+  const { data: sessionGroupUsers, error } = await supabase
+    .from("user_sessiongroup")
+    .select("user_id")
+    .eq("session_group_id", sessionGroupId);
+  if (error) {
+    console.log(error);
+    throw error;
+  }
+  const { data } = await supabase
+    .from("player")
+    .select("*")
+    .in(
+      "user_id",
+      sessionGroupUsers.map((x) => x.user_id),
+    )
+    .throwOnError();
+  return data;
+}
 
 export async function getPlayerWithUserId(
   userId: string,

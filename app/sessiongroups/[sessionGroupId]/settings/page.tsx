@@ -1,3 +1,6 @@
+import InviteUserForm from "@/components/forms/InviteUserForm";
+import SessionGroupDeleteDialog from "@/components/sessiongroups/SessionGroupDeleteDialog";
+import { InvitationType } from "@/enums/InvitationType";
 import { getSessionGroupById } from "@/services/supabase/sessiongroups";
 import { Heading, VStack } from "@chakra-ui/react";
 
@@ -11,6 +14,12 @@ async function SessionGroupSettingsPage({ params }: Props) {
     <VStack>
       <Heading size={"3xl"}>{sessionGroup?.name}</Heading>
       <Heading size={"lg"}>Asetukset</Heading>
+
+      <InviteUserForm
+        invitationType={InvitationType.SessionGroup}
+        invitationTargetId={sessionGroupId}
+      />
+      <SessionGroupDeleteDialog sessionGroupId={sessionGroupId} />
     </VStack>
   );
 }

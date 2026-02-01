@@ -1,3 +1,4 @@
+"use client";
 import { InvitationType } from "@/enums/InvitationType";
 import { inviteUser } from "@/services/supabase/invitations";
 import {

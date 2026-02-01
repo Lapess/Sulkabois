@@ -50,10 +50,6 @@ const SessionPageContainer = ({ sessionGroupId }: Props) => {
       ))}
       <HStack>
         <NewSessionForm sessionGroupId={sessionGroupId} />
-        <InviteUserForm
-          invitationType={InvitationType.SessionGroup}
-          invitationTargetId={sessionGroupId}
-        />
       </HStack>
     </VStack>
   );

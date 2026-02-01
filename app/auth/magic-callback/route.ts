@@ -10,8 +10,6 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("token_hash");
-  console.log(code);
-  console.log(code?.substring(5));
   if (code) {
     const data = await verifyOtp("", code);
     if (data) {

@@ -4,6 +4,7 @@ import LeaderTable from "@/components/leaderboard/LeaderTable";
 import SessionPageContainer from "@/components/sessions/SessionPageContainer";
 import { LeaderBoardType } from "@/enums/LeaderBoardType";
 import { Link, VStack } from "@chakra-ui/react";
+import { SettingsIcon } from "lucide-react";
 
 interface Props {
   params: Promise<{ sessionGroupId: number }>;
@@ -14,7 +15,7 @@ async function SessionGroupPage({ params }: Props) {
   return (
     <RestrictedRender>
       <SessionPageContainer sessionGroupId={sessionGroupId} />
-      <VStack w={"100%"} gap={4}>
+      <VStack w={"100%"} gap={4} minH={1000}>
         <GeneralDataTable sessionGroupId={sessionGroupId} />
         <LeaderTable
           type={LeaderBoardType.All}
@@ -46,7 +47,7 @@ async function SessionGroupPage({ params }: Props) {
           color={"white"}
           href={"/sessiongroups/" + sessionGroupId + "/settings"}
         >
-          Asetukset
+          <SettingsIcon />
         </Link>
       </VStack>
     </RestrictedRender>

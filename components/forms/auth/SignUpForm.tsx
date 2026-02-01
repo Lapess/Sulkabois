@@ -1,6 +1,5 @@
 "use client";
 
-import TestMenu from "@/components/Testing/TestMenu";
 import { UserAlreadyExists } from "@/data/auth/errorcodes";
 import SignUpDto from "@/interfaces/user/auth/SignUpDto";
 import { signUp } from "@/services/supabase/auth/client";
