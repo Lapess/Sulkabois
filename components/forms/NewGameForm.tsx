@@ -57,14 +57,14 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
     setIsLoading(true);
     const team1Score = data.team1Score[0];
     const team2Score = data.team2Score[0];
-    const team1: Team[] = data.Penkki.map((x: number) => ({
+    const team1: Team[] = data.CourtSideA.map((x: number) => ({
       points: team1Score,
-      courtSide: CourtSide.Penkki,
+      courtSide: CourtSide.A,
       playerId: x,
     }));
-    const team2: Team[] = data.Padel.map((x: number) => ({
+    const team2: Team[] = data.CourtSideB.map((x: number) => ({
       points: team2Score,
-      courtSide: CourtSide.Padel,
+      courtSide: CourtSide.B,
       playerId: x,
     }));
     const teams = [...team1, ...team2];
@@ -83,17 +83,16 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
   };
   const team1Controller = useController({
     control,
-    name: "Penkki",
+    name: "CourtSideA",
     defaultValue: [],
   });
   const team2Controller = useController({
     control,
-    name: "Padel",
+    name: "CourtSideB",
     defaultValue: [],
   });
   function handleTeam1PlayersChange(value: string[]): void {
     team1Controller.field.onChange(value);
-    console.log(team1PlayerOptions);
     setTeam2PlayerOptions(
       playerOptions.filter((x) => !value.includes(x.value ?? "")),
     );
@@ -125,7 +124,7 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
               <Fieldset.Content>
                 <Flex justify={"space-between"}>
                   <VStack ml={5}>
-                    <Heading fontWeight={"light"}>Penkki</Heading>
+                    <Heading fontWeight={"light"}>Kenttäpuoli A</Heading>
                     <CheckboxGroup
                       minH={"170px"}
                       value={team1Controller.field.value}
@@ -134,10 +133,16 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
                     >
                       <Fieldset.Content>
                         {team1PlayerOptions.map((item) => (
-                          <Checkbox.Root key={item.value} value={item.value}>
+                          <Checkbox.Root
+                            key={item.value}
+                            value={item.value}
+                            size={"lg"}
+                          >
                             <Checkbox.HiddenInput />
                             <Checkbox.Control />
-                            <Checkbox.Label>{item.label}</Checkbox.Label>
+                            <Checkbox.Label>
+                              {item.label?.split(" ")[0]}
+                            </Checkbox.Label>
                           </Checkbox.Root>
                         ))}
                       </Fieldset.Content>
@@ -181,7 +186,7 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
                     ></Controller>
                   </VStack>
                   <VStack mr={5}>
-                    <Heading fontWeight={"light"}>Padel</Heading>
+                    <Heading fontWeight={"light"}>Kenttäpuoli B</Heading>
                     <CheckboxGroup
                       minH={"170px"}
                       value={team2Controller.field.value}
@@ -190,10 +195,16 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
                     >
                       <Fieldset.Content>
                         {team2PlayerOptions.map((item) => (
-                          <Checkbox.Root key={item.value} value={item.value}>
+                          <Checkbox.Root
+                            key={item.value}
+                            value={item.value}
+                            size={"lg"}
+                          >
                             <Checkbox.HiddenInput />
                             <Checkbox.Control />
-                            <Checkbox.Label>{item.label}</Checkbox.Label>
+                            <Checkbox.Label>
+                              {item.label?.split(" ")[0]}
+                            </Checkbox.Label>
                           </Checkbox.Root>
                         ))}
                       </Fieldset.Content>

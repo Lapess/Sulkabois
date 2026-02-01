@@ -1,3 +1,4 @@
+import RestrictedRender from "@/components/common/auth/RestrictedRender";
 import GamePageContainer from "@/components/games/GamePageContainer";
 import SessionDeleteDialog from "@/components/sessions/SessionDeleteDialog";
 import SessionHeading from "@/components/sessions/SessionHeading";
@@ -17,26 +18,28 @@ async function SessionPage({ params, searchParams }: Props) {
   }
 
   return (
-    <VStack>
-      <Link
-        p={2}
-        textAlign={"left"}
-        w={"100%"}
-        href={"/sessiongroups/" + sessionGroupId}
-      >
-        <ArrowLeftCircle />
-      </Link>
-      <SessionHeading sessionId={sessionId} />
-      <GamePageContainer
-        sessionGroupId={sessionGroupId}
-        sessionId={sessionId}
-        playerIds={playerIds}
-      />
-      <SessionDeleteDialog
-        sessionId={sessionId}
-        sessionGroupId={sessionGroupId}
-      />
-    </VStack>
+    <RestrictedRender>
+      <VStack>
+        <Link
+          p={2}
+          textAlign={"left"}
+          w={"100%"}
+          href={"/sessiongroups/" + sessionGroupId}
+        >
+          <ArrowLeftCircle />
+        </Link>
+        <SessionHeading sessionId={sessionId} />
+        <GamePageContainer
+          sessionGroupId={sessionGroupId}
+          sessionId={sessionId}
+          playerIds={playerIds}
+        />
+        <SessionDeleteDialog
+          sessionId={sessionId}
+          sessionGroupId={sessionGroupId}
+        />
+      </VStack>
+    </RestrictedRender>
   );
 }
 

@@ -13,8 +13,8 @@ interface TeamSuggestionProps {
 }
 
 interface Teams {
-  [CourtSide.Padel]: PlayerOption[];
-  [CourtSide.Penkki]: PlayerOption[];
+  [CourtSide.A]: PlayerOption[];
+  [CourtSide.B]: PlayerOption[];
 }
 
 export default function TeamSuggestion({ players }: TeamSuggestionProps) {
@@ -23,8 +23,8 @@ export default function TeamSuggestion({ players }: TeamSuggestionProps) {
     TeamCalculationMethod.Random,
   );
   const [teams, setTeams] = useState<Teams>({
-    [CourtSide.Padel]: [],
-    [CourtSide.Penkki]: [],
+    [CourtSide.A]: [],
+    [CourtSide.B]: [],
   });
   const [error, setError] = useState("");
 
@@ -42,36 +42,36 @@ export default function TeamSuggestion({ players }: TeamSuggestionProps) {
 
     if (players.length < requiredPlayers) {
       setError("Ei tarpeeksi pelaajia sessiossa, valitse toinen pelimuoto.");
-      setTeams({ [CourtSide.Padel]: [], [CourtSide.Penkki]: [] });
+      setTeams({ [CourtSide.B]: [], [CourtSide.A]: [] });
       return;
     }
 
     const shuffled = shuffle(players);
-    let padel: PlayerOption[] = [];
-    let penkki: PlayerOption[] = [];
+    let A: PlayerOption[] = [];
+    let B: PlayerOption[] = [];
 
     switch (gameMode) {
       case GameMode.OneVsOne:
-        padel = shuffled.slice(0, 1);
-        penkki = shuffled.slice(1, 2);
+        A = shuffled.slice(0, 1);
+        B = shuffled.slice(1, 2);
         break;
 
       case GameMode.TwoVsTwo:
-        padel = shuffled.slice(0, 2);
-        penkki = shuffled.slice(2, 4);
+        A = shuffled.slice(0, 2);
+        B = shuffled.slice(2, 4);
         break;
 
       case GameMode.OneVsTwo:
         if (Math.random() < 0.5) {
-          padel = shuffled.slice(0, 2);
-          penkki = shuffled.slice(2, 3);
+          A = shuffled.slice(0, 2);
+          B = shuffled.slice(2, 3);
         } else {
-          penkki = shuffled.slice(0, 2);
-          padel = shuffled.slice(2, 3);
+          B = shuffled.slice(0, 2);
+          A = shuffled.slice(2, 3);
         }
         break;
     }
-    setTeams({ [CourtSide.Padel]: padel, [CourtSide.Penkki]: penkki });
+    setTeams({ [CourtSide.A]: A, [CourtSide.B]: B });
   };
 
   return (
@@ -112,16 +112,16 @@ export default function TeamSuggestion({ players }: TeamSuggestionProps) {
 
       <HStack>
         <VStack align="start">
-          <Box fontWeight="bold">Padel</Box>
-          {teams[CourtSide.Padel].map((p) => (
-            <Box key={p.value}>{p.label}</Box>
+          <Box fontWeight="bold">Kenttäpuoli A</Box>
+          {teams[CourtSide.A].map((p) => (
+            <Box key={p.value}>{p.label?.split(" ")[0]}</Box>
           ))}
         </VStack>
 
         <VStack align="start">
-          <Box fontWeight="bold">Penkki</Box>
-          {teams[CourtSide.Penkki].map((p) => (
-            <Box key={p.value}>{p.label}</Box>
+          <Box fontWeight="bold">Kenttäpuoli B</Box>
+          {teams[CourtSide.B].map((p) => (
+            <Box key={p.value}>{p.label?.split(" ")[0]}</Box>
           ))}
         </VStack>
       </HStack>

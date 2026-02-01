@@ -6,6 +6,8 @@ import { Box, Flex, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowRight, LockIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import NewSessionForm from "../forms/NewSessionForm";
+import InviteUserForm from "../forms/InviteUserForm";
+import { InvitationType } from "@/enums/InvitationType";
 interface Props {
   sessionGroupId: number;
 }
@@ -46,7 +48,9 @@ const SessionPageContainer = ({ sessionGroupId }: Props) => {
           </Box>
         </Link>
       ))}
-      <NewSessionForm sessionGroupId={sessionGroupId} />
+      <HStack>
+        <NewSessionForm sessionGroupId={sessionGroupId} />
+      </HStack>
     </VStack>
   );
 };

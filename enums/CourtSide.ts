@@ -1,4 +1,4 @@
 export enum CourtSide {
-  Penkki = 0,
-  Padel,
+  A = 0,
+  B,
 }

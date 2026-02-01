@@ -4,7 +4,6 @@ import {
   Checkbox,
   CheckboxGroup,
   CloseButton,
-  createListCollection,
   Dialog,
   Fieldset,
   Portal,
@@ -15,7 +14,7 @@ import { useController, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { PlayerOption } from "../../interfaces/PlayerOption";
-import { getPlayers } from "@/services/supabase/players";
+import { getPlayersWithSessionGroupId } from "@/services/supabase/players";
 import { addSession } from "@/services/supabase/sessions";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
@@ -45,7 +44,7 @@ const NewSessionForm = ({ sessionGroupId }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [playerOptions, setPlayerOptions] = useState<PlayerOption[]>();
   useEffect(() => {
-    getPlayers().then((data) => {
+    getPlayersWithSessionGroupId(sessionGroupId).then((data) => {
       if (!data || data.length === 0) return;
       setPlayerOptions(
         data.map((p) => ({
@@ -89,7 +88,7 @@ const NewSessionForm = ({ sessionGroupId }: Props) => {
             variant={"solid"}
             bgColor={"orange"}
           >
-            Uusi
+            Uusi sessio
           </Button>
         </Dialog.Trigger>
         <Portal>
@@ -98,7 +97,7 @@ const NewSessionForm = ({ sessionGroupId }: Props) => {
             <Dialog.Positioner>
               <Dialog.Content>
                 <Dialog.Header>
-                  <Dialog.Title>Uusi sessio!</Dialog.Title>
+                  <Dialog.Title>Uusi sessio</Dialog.Title>
                 </Dialog.Header>
                 <Dialog.Body>
                   <Fieldset.Root invalid={invalid}>
@@ -148,12 +147,4 @@ const NewSessionForm = ({ sessionGroupId }: Props) => {
   );
 };
 
-const playerOptions = createListCollection({
-  items: [
-    {
-      label: "",
-      value: 0,
-    },
-  ],
-});
 export default NewSessionForm;

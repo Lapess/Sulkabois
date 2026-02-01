@@ -7,7 +7,10 @@ import {
 } from "@/leaderboard/calcHelpers";
 import { getTableHeader } from "@/leaderboard/tableHeader";
 import { getGamesWithTeamsFullBySessionGroupId } from "@/services/supabase/games";
-import { getPlayers } from "@/services/supabase/players";
+import {
+  getPlayers,
+  getPlayersWithSessionGroupId,
+} from "@/services/supabase/players";
 import { Box, BoxProps, Spinner, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
@@ -30,7 +33,7 @@ const LeaderTable = ({ type, sessionGroupId, ...rest }: Props) => {
     async function load() {
       setIsLoading(true);
       const [players, games] = await Promise.all([
-        getPlayers(),
+        getPlayersWithSessionGroupId(sessionGroupId),
         getGamesWithTeamsFullBySessionGroupId(sessionGroupId),
       ]);
       let items: TableItem[] = players.map((x) => ({
@@ -65,7 +68,7 @@ const LeaderTable = ({ type, sessionGroupId, ...rest }: Props) => {
             .sort((a, b) => b.winsPercent - a.winsPercent)
             .map((item) => (
               <Table.Row key={item.playerId}>
-                <Table.Cell>{item.playerName}</Table.Cell>
+                <Table.Cell>{item.playerName?.split(" ")[0]}</Table.Cell>
                 <Table.Cell>{item.winsCount}</Table.Cell>
                 <Table.Cell>{item.gamesCount}</Table.Cell>
                 <Table.Cell textAlign="end">{item.winsPercent}</Table.Cell>

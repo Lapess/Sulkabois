@@ -30,7 +30,7 @@ const SignUpForm = () => {
     setIsLoading(true);
     setError(null);
     setUserExists(null);
-
+    // TODO zod validation to every form
     setMatchingPasswords(data.passwordAgain === data.password);
     if (!matchingPasswords) {
       setIsLoading(false);
@@ -45,7 +45,7 @@ const SignUpForm = () => {
 
     try {
       signUp(payload)
-        .then((x) => r.push("/"))
+        .then((x) => (window.location.href = "/"))
         .catch((error: AuthError) => {
           if (error.code === UserAlreadyExists) setUserExists(true);
           setIsLoading(false);

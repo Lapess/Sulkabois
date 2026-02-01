@@ -26,6 +26,7 @@ export async function getSessionGroupsByUserId(
     user_sessiongroup!user_sessiongroup_session_group_id_fkey!inner (user_id)
   `,
     )
+    .eq("deleted", false)
     .eq("user_sessiongroup.user_id", userId);
   return data;
 }
@@ -70,13 +71,12 @@ export async function updateSessionGroup(
   if (error) console.log(error);
   return data ? data[0] : null;
 }
-// TODO SOFT DELETE
 export async function deleteSessionGroup(
   sessionGroupId: number,
 ): Promise<boolean> {
   const { data, error } = await supabase
     .from("session_group")
-    .delete()
+    .update({ deleted: true })
     .eq("id", sessionGroupId);
   if (error) {
     console.log(error);

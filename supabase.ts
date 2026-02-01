@@ -121,6 +121,24 @@ export type Database = {
         };
         Relationships: [];
       };
+      player_group: {
+        Row: {
+          created_at: string;
+          id: number;
+          name: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          name?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          name?: string | null;
+        };
+        Relationships: [];
+      };
       session: {
         Row: {
           created_at: string;
@@ -156,16 +174,19 @@ export type Database = {
       session_group: {
         Row: {
           created_at: string;
+          deleted: boolean;
           id: number;
           name: string | null;
         };
         Insert: {
           created_at?: string;
+          deleted?: boolean;
           id?: number;
           name?: string | null;
         };
         Update: {
           created_at?: string;
+          deleted?: boolean;
           id?: number;
           name?: string | null;
         };
@@ -213,22 +234,45 @@ export type Database = {
           },
         ];
       };
+      user_playergroup: {
+        Row: {
+          created_at: string;
+          player_group_id: number;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          player_group_id: number;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          player_group_id?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_playergroup_player_group_id_fkey";
+            columns: ["player_group_id"];
+            isOneToOne: false;
+            referencedRelation: "player_group";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       user_sessiongroup: {
         Row: {
           created_at: string;
-          id: number;
           session_group_id: number;
           user_id: string;
         };
         Insert: {
           created_at?: string;
-          id?: number;
           session_group_id: number;
           user_id: string;
         };
         Update: {
           created_at?: string;
-          id?: number;
           session_group_id?: number;
           user_id?: string;
         };

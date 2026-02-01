@@ -10,12 +10,12 @@ interface Props {
 const TeamPoints = ({ teamPlayers, points, courtSide, winner }: Props) => {
   return (
     <Box h={"70px"} fontSize={"lg"}>
-      {courtSide == CourtSide.Penkki ? (
+      {courtSide == CourtSide.A ? (
         <HStack gap={3}>
           <VStack w={100} h={"70px"}>
             {teamPlayers.map((x) => (
               <Center h={"100%"} key={x?.id}>
-                <Text>{x?.name}</Text>
+                <Text>{x?.name?.split(" ")[0]}</Text>
               </Center>
             ))}
           </VStack>
@@ -43,7 +43,7 @@ const TeamPoints = ({ teamPlayers, points, courtSide, winner }: Props) => {
           <VStack w={100} h={"70px"}>
             {teamPlayers.map((x) => (
               <Center h={"100%"} key={x?.id}>
-                <Text>{x?.name}</Text>
+                <Text>{x?.name?.split(" ")[0]}</Text>
               </Center>
             ))}
           </VStack>
