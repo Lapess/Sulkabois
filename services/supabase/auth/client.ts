@@ -15,7 +15,8 @@ export async function passwordlessSignIn(email: string): Promise<boolean> {
   const { data, error } = await supabase.auth.signInWithOtp({
     email: email,
     options: {
-      emailRedirectTo: "http://localhost:3000/auth/magic-callback", // TODO should be environment variable
+      // emailRedirectTo: "http://localhost:3000/auth/magic-callback", // TODO should be environment variable
+      emailRedirectTo: "https://sulkabois.vercel.app/auth/magic-callback",
     },
   });
   if (error) {
