@@ -8,8 +8,8 @@ interface Props {
 
 async function RestrictedRender({ children }: Props) {
   const user = await getUser();
-
-  if (!user) redirect("/auth/login");
+  console.log(user);
+  if (user == null) redirect("/auth/login");
 
   return <>{children}</>;
 }

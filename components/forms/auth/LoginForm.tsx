@@ -11,12 +11,10 @@ import {
   Text,
   Center,
 } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const LoginForm = () => {
-  const r = useRouter();
   const { handleSubmit, register } = useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>();
