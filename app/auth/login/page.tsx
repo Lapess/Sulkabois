@@ -1,7 +1,14 @@
 import LoginForm from "@/components/forms/auth/LoginForm";
+import { getUser } from "@/services/supabase/auth/server";
 import { Button, Link, VStack } from "@chakra-ui/react";
+import { redirect } from "next/navigation";
 
 async function LoginPage() {
+  const user = await getUser();
+  if (user != null) {
+    redirect("/");
+  }
+
   return (
     <>
       <LoginForm />
