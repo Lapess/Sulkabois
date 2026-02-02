@@ -15,15 +15,20 @@ const PlayerGroupSelection = () => {
   }, []);
 
   return (
-    <Select.Root collection={playerGroupCollection}>
+    <Select.Root
+      collection={playerGroupCollection}
+      size={"md"}
+      minW={"200px"}
+      defaultValue={[playerGroupCollection?.items[0].value]}
+      // todo kokeile vielä "value"-propilla niin että collection sisältää useamman kuin yhden itemin
+    >
       <Select.HiddenSelect />
       <Select.Control>
         <Select.Trigger>
-          <Select.ValueText>Valitse peliryhmä</Select.ValueText>
+          <Select.ValueText placeholder={"Valitse peliporukka"} />
         </Select.Trigger>
         <Select.IndicatorGroup>
           <Select.Indicator />
-          <Select.ClearTrigger />
         </Select.IndicatorGroup>
       </Select.Control>
 
