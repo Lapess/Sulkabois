@@ -15,10 +15,12 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import {
+  addPlayerGroupToSessionGroup,
   addSessionGroup,
   addUserToSessionGroup,
 } from "@/services/supabase/sessiongroups";
 import { getSessionUser } from "@/services/supabase/auth/client";
+import { usePlayerGroup } from "../context/PlayerGroupContext";
 
 const formSchema = z.object({
   name: z.string({ error: "Anna peliryhmälle nimi" }),
@@ -27,6 +29,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const NewSessionGroupForm = () => {
+  const { selectedPlayerGroup, setSelectedPlayerGroup } = usePlayerGroup();
   const nameRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const { handleSubmit } = useForm<FormData>({
@@ -41,14 +44,26 @@ const NewSessionGroupForm = () => {
       setError("Anna peliryhmälle nimi");
       return;
     }
+    // TODO: Test session group adding for user and player group
     addSessionGroup(nameRef.current.value).then((sessionGroup) => {
-      getSessionUser().then((user) => {
-        if (!user || !sessionGroup) return;
-        addUserToSessionGroup(user, sessionGroup.id).then(() => {
-          setIsLoading(false);
-          router.push(`/sessiongroups/${sessionGroup.id}`);
+      if (!sessionGroup || !selectedPlayerGroup) return;
+      var success = false;
+      if (selectedPlayerGroup == 0) {
+        getSessionUser().then((user) => {
+          if (!user) return;
+          addUserToSessionGroup(user.id, sessionGroup.id).then(() => {
+            success = true;
+          });
         });
-      });
+      } else {
+        addPlayerGroupToSessionGroup(selectedPlayerGroup, sessionGroup.id).then(
+          () => {
+            success = true;
+          },
+        );
+        setIsLoading(false);
+        success && router.push(`/sessiongroups/${sessionGroup!.id}`);
+      }
     });
   };
   return (
