@@ -6,11 +6,11 @@ import { Box, Flex, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowRight, LockIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import NewSessionForm from "../forms/NewSessionForm";
-import InviteUserForm from "../forms/InviteUserForm";
-import { InvitationType } from "@/enums/InvitationType";
+
 interface Props {
   sessionGroupId: number;
 }
+
 const SessionPageContainer = ({ sessionGroupId }: Props) => {
   const [sessions, setSessions] = useState<Session[]>([]);
   useEffect(() => {

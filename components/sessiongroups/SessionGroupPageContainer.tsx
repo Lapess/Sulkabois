@@ -7,8 +7,10 @@ import { getSessionUser } from "@/services/supabase/auth/client";
 import { User } from "@supabase/supabase-js";
 import { ArrowRight } from "lucide-react";
 import NewSessionGroupForm from "../forms/NewSessionGroupForm";
+import { usePlayerGroup } from "../context/PlayerGroupContext";
 
 function SessionGroupPageContainer() {
+  const { selectedPlayerGroup } = usePlayerGroup();
   const [sessionGroups, setSessionGroups] = useState<SessionGroup[]>([]);
   const [user, setUser] = useState<User | null>(null);
 
@@ -19,7 +21,7 @@ function SessionGroupPageContainer() {
     getSessionGroupsByUserId(user?.id ?? "").then((sessionGroups) => {
       setSessionGroups(sessionGroups?.filter((x) => x != null) ?? []);
     });
-  }, [user]);
+  }, [user, selectedPlayerGroup]);
 
   return (
     <>

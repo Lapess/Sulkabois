@@ -12,7 +12,8 @@ async function MainMenu() {
       </Button>
       {user && (
         <HStack>
-          <PlayerGroupSelection /> <LogoutButton />
+          <PlayerGroupSelection />
+          <LogoutButton />
         </HStack>
       )}
     </Flex>
