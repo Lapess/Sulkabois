@@ -17,7 +17,7 @@ import { PlayerOption } from "../../interfaces/PlayerOption";
 import { getPlayersWithSessionGroupId } from "@/services/supabase/players";
 import { addSession } from "@/services/supabase/sessions";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
+import { date, z } from "zod";
 
 const formSchema = z.object({
   players: z.array(z.string()).min(2, {
@@ -83,12 +83,17 @@ const NewSessionForm = ({ sessionGroupId }: Props) => {
         <Dialog.Trigger asChild>
           <Button
             m={10}
-            size={"xl"}
+            size={"2xl"}
             color={"black"}
             variant={"solid"}
             bgColor={"orange"}
           >
-            Uusi sessio
+            <VStack gap={0} p={2}>
+              <Text>Uusi pelisessio</Text>
+              <Text fontSize={"xs"}>
+                {new Date().toLocaleDateString("fi-FI")}
+              </Text>
+            </VStack>
           </Button>
         </Dialog.Trigger>
         <Portal>

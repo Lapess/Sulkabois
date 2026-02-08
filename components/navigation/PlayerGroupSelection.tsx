@@ -23,18 +23,22 @@ const PlayerGroupSelection = () => {
     <Select.Root
       key={playerGroupCollection.items.length} // enforces the component rerender when the collection is updated
       collection={playerGroupCollection}
-      size={"md"}
-      minW={"200px"}
-      defaultValue={[playerGroupCollection?.items[0]?.value.toString()]} // TODO get latest from localstorage?
+      size={"lg"}
       onValueChange={(e) => {
         console.log(e.value[0]);
-        setSelectedPlayerGroup(parseInt(e.value[0]));
+        setSelectedPlayerGroup({
+          name: e.items.find((x) => x.value == e.value[0])?.label ?? "",
+          id: parseInt(e.value[0]),
+        });
       }}
     >
       <Select.HiddenSelect />
       <Select.Control>
         <Select.Trigger>
-          <Select.ValueText placeholder={"Valitse peliporukka"} />
+          <Select.ValueText
+            placeholder={"Aloita valitsemalla peliporukka"}
+            minW={"300px"}
+          />
         </Select.Trigger>
         <Select.IndicatorGroup>
           <Select.Indicator />

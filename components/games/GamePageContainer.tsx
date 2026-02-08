@@ -1,6 +1,6 @@
 "use client";
 import { Player } from "@/types/Player";
-import { getPlayers } from "@/services/supabase/players";
+import { getPlayersWithSessionGroupId } from "@/services/supabase/players";
 import { getSessionById, updateSession } from "@/services/supabase/sessions";
 import { Button, Center, Separator, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ const GamePageContainer = ({ playerIds, sessionId, sessionGroupId }: Props) => {
   const router = useRouter();
   useEffect(() => {
     setIsLoading(true);
-    getPlayers().then((data: Player[]) => {
+    getPlayersWithSessionGroupId(sessionGroupId).then((data: Player[]) => {
       playerIds.length > 0
         ? setSessionPlayers(
             data.filter((x) => playerIds.includes(x.id.toString())),
@@ -61,7 +61,7 @@ const GamePageContainer = ({ playerIds, sessionId, sessionGroupId }: Props) => {
           );
         }}
       >
-        {sessionLocked ? "Avaa sessio" : "Lopeta sessio"}
+        {sessionLocked ? "Avaa pelisessio" : "Lopeta pelisessio"}
       </Button>
     </>
   );

@@ -1,9 +1,10 @@
 "use client";
+import { PlayerGroup } from "@/interfaces/PlayerGroup";
 import { createContext, useContext, ReactNode, useState } from "react";
 
 interface PlayerGroupContextType {
-  selectedPlayerGroup: number | null;
-  setSelectedPlayerGroup: (value: number) => void;
+  selectedPlayerGroup: PlayerGroup | null;
+  setSelectedPlayerGroup: (value: PlayerGroup) => void;
 }
 
 const PlayerGroupContext = createContext<PlayerGroupContextType | undefined>(
@@ -11,9 +12,8 @@ const PlayerGroupContext = createContext<PlayerGroupContextType | undefined>(
 );
 
 export function PlayerGroupProvider({ children }: { children: ReactNode }) {
-  const [selectedPlayerGroup, setSelectedPlayerGroup] = useState<number | null>(
-    null,
-  );
+  const [selectedPlayerGroup, setSelectedPlayerGroup] =
+    useState<PlayerGroup | null>(null);
   return (
     <PlayerGroupContext.Provider
       value={{

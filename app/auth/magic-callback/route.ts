@@ -25,5 +25,5 @@ export async function GET(request: Request) {
 
 async function assignUserToSessionGroups(user: User) {
   const invitations = await getInvitations(user);
-  invitations.forEach((x) => addUserToSessionGroup(user, x.sessionGroupId!));
+  invitations.forEach((x) => addUserToSessionGroup(user.id, x.sessionGroupId!));
 }

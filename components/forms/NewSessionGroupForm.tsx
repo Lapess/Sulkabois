@@ -17,9 +17,7 @@ import { z } from "zod";
 import {
   addPlayerGroupToSessionGroup,
   addSessionGroup,
-  addUserToSessionGroup,
 } from "@/services/supabase/sessiongroups";
-import { getSessionUser } from "@/services/supabase/auth/client";
 import { usePlayerGroup } from "../context/PlayerGroupContext";
 
 const formSchema = z.object({
@@ -29,7 +27,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const NewSessionGroupForm = () => {
-  const { selectedPlayerGroup, setSelectedPlayerGroup } = usePlayerGroup();
+  const { selectedPlayerGroup } = usePlayerGroup();
   const nameRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const { handleSubmit } = useForm<FormData>({
@@ -48,22 +46,23 @@ const NewSessionGroupForm = () => {
     addSessionGroup(nameRef.current.value).then((sessionGroup) => {
       if (!sessionGroup || !selectedPlayerGroup) return;
       var success = false;
-      if (selectedPlayerGroup == 0) {
-        getSessionUser().then((user) => {
-          if (!user) return;
-          addUserToSessionGroup(user.id, sessionGroup.id).then(() => {
-            success = true;
-          });
-        });
-      } else {
-        addPlayerGroupToSessionGroup(selectedPlayerGroup, sessionGroup.id).then(
-          () => {
-            success = true;
-          },
-        );
-        setIsLoading(false);
-        success && router.push(`/sessiongroups/${sessionGroup!.id}`);
-      }
+      // if (selectedPlayerGroup.id == 0) {
+      //   getSessionUser().then((user) => {
+      //     if (!user) return;
+      //     addUserToSessionGroup(user.id, sessionGroup.id).then(() => {
+      //       success = true;
+      //     });
+      //   });
+      // } else {
+      addPlayerGroupToSessionGroup(
+        selectedPlayerGroup.id,
+        sessionGroup.id,
+      ).then(() => {
+        success = true;
+      });
+      setIsLoading(false);
+      success && router.push(`/sessiongroups/${sessionGroup!.id}`);
+      //  }
     });
   };
   return (
@@ -77,7 +76,7 @@ const NewSessionGroupForm = () => {
             variant={"solid"}
             bgColor={"orange"}
           >
-            Uusi
+            Luo peliryhmä
           </Button>
         </Dialog.Trigger>
         <Portal>

@@ -8,7 +8,6 @@ export async function getPlayerGroupListCollection(
   userId: string,
 ): Promise<ListCollection<{ label: string; value: string }>> {
   let playerGroups = await getPlayerGroups(userId);
-  playerGroups = [{ id: 0, name: "Minä" }, ...playerGroups];
   const collection = createListCollection({
     items: playerGroups.map((group) => ({
       label: group.name,

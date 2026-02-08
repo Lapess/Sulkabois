@@ -1,7 +1,6 @@
 import { getUser } from "@/services/supabase/auth/server";
 import { Button, Flex, HStack, Link } from "@chakra-ui/react";
 import { LogoutButton } from "../common/auth/LogoutButton";
-import PlayerGroupSelection from "./PlayerGroupSelection";
 
 async function MainMenu() {
   const user = await getUser();
@@ -12,7 +11,6 @@ async function MainMenu() {
       </Button>
       {user && (
         <HStack>
-          <PlayerGroupSelection />
           <LogoutButton />
         </HStack>
       )}
