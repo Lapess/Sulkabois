@@ -4,6 +4,7 @@ import "./globals.css";
 import { Provider } from "@/components/ui/provider";
 import { Heading } from "@chakra-ui/react";
 import MainMenu from "@/components/navigation/MainMenu";
+import { PlayerGroupProvider } from "@/components/context/PlayerGroupContext";
 
 export const metadata: Metadata = {
   title: "Sulkabois",
@@ -25,11 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased`}>
-        <Provider>
-          <MainMenu />
-          <Heading p={5} fontSize={"3xl"}></Heading>
-          {children}
-        </Provider>
+        <PlayerGroupProvider>
+          <Provider>
+            <MainMenu />
+            <Heading p={5} fontSize={"3xl"}></Heading>
+            {children}
+          </Provider>
+        </PlayerGroupProvider>
       </body>
     </html>
   );

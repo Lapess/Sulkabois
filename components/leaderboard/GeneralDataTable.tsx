@@ -29,15 +29,17 @@ const GeneralDataTable = ({ sessionGroupId }: Props) => {
   return isLoading ? (
     <Spinner />
   ) : (
-    <Table.Root size="sm" my={5}>
-      <Table.Caption captionSide="top">Yleistä</Table.Caption>
+    <Table.Root size="sm" my={5} striped>
+      <Table.Caption captionSide="top" fontSize={"md"} p={2}>
+        Yleistä
+      </Table.Caption>
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeader></Table.ColumnHeader>
           <Table.ColumnHeader></Table.ColumnHeader>
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body color={"darkolivegreen"}>
         {tableItems.map((item) => (
           <Table.Row key={item.id}>
             <Table.Cell>{item.title}</Table.Cell>

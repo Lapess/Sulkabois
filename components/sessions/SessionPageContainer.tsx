@@ -6,13 +6,15 @@ import { Box, Flex, HStack, Link, Text, VStack } from "@chakra-ui/react";
 import { ArrowRight, LockIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import NewSessionForm from "../forms/NewSessionForm";
-import InviteUserForm from "../forms/InviteUserForm";
-import { InvitationType } from "@/enums/InvitationType";
+import SessionBlock from "./SessionBlock";
+import CollapsibleSessions from "./CollapsibleSessions";
+
 interface Props {
   sessionGroupId: number;
 }
+
 const SessionPageContainer = ({ sessionGroupId }: Props) => {
-  const [sessions, setSessions] = useState<Session[]>([]);
+  const [sessions, setSessions] = useState<Session[] | null>(null);
   useEffect(() => {
     getSessionsBySessionGroupId(sessionGroupId).then((sessions) =>
       setSessions(
@@ -28,26 +30,21 @@ const SessionPageContainer = ({ sessionGroupId }: Props) => {
   }, []);
   return (
     <VStack>
-      {sessions?.map((s) => (
-        <Link
-          key={s.id}
-          fontSize={"2xl"}
-          href={"/sessiongroups/" + sessionGroupId + "/sessions/" + s.id}
-          w={"90%"}
-        >
-          <Box borderWidth={1} borderColor={"orange"} p={3} w={"100%"}>
-            <Flex justify={"space-between"}>
-              <Text>{convertDateStringToLocaleDateString(s.session_date)}</Text>
-              <HStack>
-                <Text pr={4}>
-                  {s.game?.length! > 0 ? s.game?.length + " peliä" : ""}
-                </Text>
-                {s.is_locked ? <LockIcon /> : <ArrowRight />}
-              </HStack>
-            </Flex>
-          </Box>
-        </Link>
-      ))}
+      {sessions && sessions.length > 0 ? (
+        <>
+          <CollapsibleSessions sessions={sessions.filter((x) => x.is_locked)} />
+          {sessions
+            ?.filter((s) => !s.is_locked)
+            .map((s) => (
+              <SessionBlock session={s} sessionGroupId={sessionGroupId} />
+            ))}
+        </>
+      ) : sessions === null ? (
+        <Text>Ladataan...</Text>
+      ) : (
+        <Text>Aloita pelit alla olevalla painikkeella!</Text>
+      )}
+
       <HStack>
         <NewSessionForm sessionGroupId={sessionGroupId} />
       </HStack>

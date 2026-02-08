@@ -7,10 +7,7 @@ import {
 } from "@/leaderboard/calcHelpers";
 import { getTableHeader } from "@/leaderboard/tableHeader";
 import { getGamesWithTeamsFullBySessionGroupId } from "@/services/supabase/games";
-import {
-  getPlayers,
-  getPlayersWithSessionGroupId,
-} from "@/services/supabase/players";
+import { getPlayersWithSessionGroupId } from "@/services/supabase/players";
 import { Box, BoxProps, Spinner, Table } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
@@ -54,16 +51,18 @@ const LeaderTable = ({ type, sessionGroupId, ...rest }: Props) => {
   ) : (
     <Box {...rest}>
       <Table.Root size="sm" striped>
-        <Table.Caption captionSide="top">{getTableHeader(type)}</Table.Caption>
+        <Table.Caption fontSize={"md"} captionSide="top" p={2}>
+          {getTableHeader(type)}
+        </Table.Caption>
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader>Pelaaja</Table.ColumnHeader>
             <Table.ColumnHeader>Voitot</Table.ColumnHeader>
             <Table.ColumnHeader>Pelattu</Table.ColumnHeader>
-            <Table.ColumnHeader textAlign="end">Voitto-%</Table.ColumnHeader>
+            <Table.ColumnHeader textAlign="end">%</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
-        <Table.Body>
+        <Table.Body color={"darkolivegreen"}>
           {tableItems
             .sort((a, b) => b.winsPercent - a.winsPercent)
             .map((item) => (

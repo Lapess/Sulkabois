@@ -24,8 +24,8 @@ const SessionDeleteDialog = ({ sessionId, sessionGroupId }: Props) => {
     <>
       <Dialog.Root role="alertdialog">
         <Dialog.Trigger asChild>
-          <Button variant="outline" colorPalette={"red"} mt={10}>
-            Älä paina tätä nappia
+          <Button variant="solid" colorPalette={"red"} mt={10}>
+            Poista pelisessio
           </Button>
         </Dialog.Trigger>
         <Portal>

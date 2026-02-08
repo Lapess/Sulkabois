@@ -6,12 +6,13 @@ import {
 
 export async function getPlayerGroupListCollection(
   userId: string,
-): Promise<ListCollection> {
-  const playerGroups = await getPlayerGroups(userId);
-  return createListCollection({
+): Promise<ListCollection<{ label: string; value: string }>> {
+  let playerGroups = await getPlayerGroups(userId);
+  const collection = createListCollection({
     items: playerGroups.map((group) => ({
       label: group.name,
-      value: group.id,
+      value: group.id.toString(),
     })),
   });
+  return collection;
 }

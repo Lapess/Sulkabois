@@ -3,7 +3,7 @@ import GamePageContainer from "@/components/games/GamePageContainer";
 import SessionDeleteDialog from "@/components/sessions/SessionDeleteDialog";
 import SessionHeading from "@/components/sessions/SessionHeading";
 import { Link, VStack } from "@chakra-ui/react";
-import { ArrowLeftCircle } from "lucide-react";
+import { ArrowLeftCircle, ChevronLeft } from "lucide-react";
 interface Props {
   searchParams: Promise<{ players?: string[] | string }>;
   params: Promise<{ sessionGroupId: number; sessionId: number }>;
@@ -19,15 +19,10 @@ async function SessionPage({ params, searchParams }: Props) {
 
   return (
     <RestrictedRender>
+      <Link px={2} textAlign={"left"} href={"/sessiongroups/" + sessionGroupId}>
+        <ChevronLeft /> Takaisin
+      </Link>
       <VStack>
-        <Link
-          p={2}
-          textAlign={"left"}
-          w={"100%"}
-          href={"/sessiongroups/" + sessionGroupId}
-        >
-          <ArrowLeftCircle />
-        </Link>
         <SessionHeading sessionId={sessionId} />
         <GamePageContainer
           sessionGroupId={sessionGroupId}

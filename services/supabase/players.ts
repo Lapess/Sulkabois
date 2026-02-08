@@ -12,10 +12,6 @@ export async function addPlayer(player: Player): Promise<boolean> {
   return true;
 }
 
-export async function getPlayers(): Promise<SupabasePlayer[]> {
-  const { data } = await supabase.from("player").select("*").throwOnError();
-  return data;
-}
 export async function getPlayersWithSessionGroupId(
   sessionGroupId: number,
 ): Promise<SupabasePlayer[]> {

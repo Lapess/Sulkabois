@@ -14,6 +14,22 @@ export async function getSessionGroupById(
 
   return data ? data[0] : null;
 }
+export async function getSessionGroupsByPlayerGroupId(
+  playerGroupId: number,
+): Promise<SessionGroup[] | null> {
+  if (!playerGroupId) return null;
+  const { data, error } = await supabase
+    .from("session_group")
+    .select(
+      `
+    *,
+    playergroup_sessiongroup!playergroup_sessiongroup_session_group_id_fkey!inner (player_group_id)
+  `,
+    )
+    .eq("deleted", false)
+    .eq("playergroup_sessiongroup.player_group_id", playerGroupId);
+  return data;
+}
 export async function getSessionGroupsByUserId(
   userId: string,
 ): Promise<SessionGroup[] | null> {
@@ -45,12 +61,29 @@ export async function addSessionGroup(
 }
 
 export async function addUserToSessionGroup(
-  user: User,
+  userId: string,
   sessionGroupId: number,
 ) {
   const { data, error } = await supabase
     .from("user_sessiongroup")
-    .insert({ user_id: user.id, session_group_id: sessionGroupId })
+    .insert({ user_id: userId, session_group_id: sessionGroupId })
+    .select("*");
+  if (error) {
+    console.log(error);
+    return null;
+  }
+  return data ? data[0] : null;
+}
+export async function addPlayerGroupToSessionGroup(
+  playerGroupId: number,
+  sessionGroupId: number,
+) {
+  const { data, error } = await supabase
+    .from("playergroup_sessiongroup")
+    .insert({
+      player_group_id: playerGroupId,
+      session_group_id: sessionGroupId,
+    })
     .select("*");
   if (error) {
     console.log(error);

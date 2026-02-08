@@ -255,7 +255,7 @@ const NewGameForm = ({ sessionId, sessionPlayers, onGameAdded }: Props) => {
                 <Spinner size={"sm"} />
               ) : (
                 <Button type="submit" colorPalette={"green"}>
-                  Tallenna
+                  Tallenna peli
                 </Button>
               )}
             </Center>

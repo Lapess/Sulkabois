@@ -12,5 +12,8 @@ export async function getPlayerGroups(userId: string): Promise<PlayerGroup[]> {
     console.log(error);
     throw error;
   }
-  return data;
+  return data.map((x) => ({
+    id: x.player_group.id,
+    name: x.player_group.name,
+  }));
 }

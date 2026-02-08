@@ -9,7 +9,11 @@ async function MainMenu() {
       <Button p={5} colorPalette={"black"} variant={"outline"}>
         <Link href="/">Etusivu</Link>
       </Button>
-      <HStack>{user && <LogoutButton />}</HStack>
+      {user && (
+        <HStack>
+          <LogoutButton />
+        </HStack>
+      )}
     </Flex>
   );
 }
