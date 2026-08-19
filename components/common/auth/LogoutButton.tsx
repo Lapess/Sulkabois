@@ -6,8 +6,10 @@ import { Button } from "@chakra-ui/react";
 
 export function LogoutButton() {
   const router = useRouter();
-  const logout = () => {
-    signOut().then(() => router.push("/auth/login"));
+  const logout = async () => {
+    await signOut();
+    router.refresh();
+    router.push("/auth/login");
   };
 
   return (

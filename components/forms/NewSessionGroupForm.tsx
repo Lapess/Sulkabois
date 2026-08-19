@@ -17,8 +17,10 @@ import { z } from "zod";
 import {
   addPlayerGroupToSessionGroup,
   addSessionGroup,
+  addUserToSessionGroup,
 } from "@/services/supabase/sessiongroups";
 import { usePlayerGroup } from "../context/PlayerGroupContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const formSchema = z.object({
   name: z.string({ error: "Anna peliryhmälle nimi" }),
@@ -28,6 +30,7 @@ type FormData = z.infer<typeof formSchema>;
 
 const NewSessionGroupForm = () => {
   const { selectedPlayerGroup } = usePlayerGroup();
+  const { user } = useAuth();
   const nameRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
   const { handleSubmit } = useForm<FormData>({
@@ -42,27 +45,19 @@ const NewSessionGroupForm = () => {
       setError("Anna peliryhmälle nimi");
       return;
     }
-    // TODO: Test session group adding for user and player group
-    addSessionGroup(nameRef.current.value).then((sessionGroup) => {
+    addSessionGroup(nameRef.current.value).then(async (sessionGroup) => {
       if (!sessionGroup || !selectedPlayerGroup) return;
-      var success = false;
-      // if (selectedPlayerGroup.id == 0) {
-      //   getSessionUser().then((user) => {
-      //     if (!user) return;
-      //     addUserToSessionGroup(user.id, sessionGroup.id).then(() => {
-      //       success = true;
-      //     });
-      //   });
-      // } else {
-      addPlayerGroupToSessionGroup(
-        selectedPlayerGroup.id,
-        sessionGroup.id,
-      ).then(() => {
-        success = true;
-      });
+      if (selectedPlayerGroup.id == 0) {
+        if (!user) return;
+        await addUserToSessionGroup(user.id, sessionGroup.id);
+      } else {
+        await addPlayerGroupToSessionGroup(
+          selectedPlayerGroup.id,
+          sessionGroup.id,
+        );
+      }
       setIsLoading(false);
-      success && router.push(`/sessiongroups/${sessionGroup!.id}`);
-      //  }
+      router.push(`/sessiongroups/${sessionGroup.id}`);
     });
   };
   return (

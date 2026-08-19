@@ -11,10 +11,12 @@ import {
   Text,
   Center,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const LoginForm = () => {
+  const router = useRouter();
   const { handleSubmit, register } = useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>();
@@ -29,7 +31,8 @@ const LoginForm = () => {
 
     try {
       await signIn(payload);
-      window.location.href = "/"; // Hard reload
+      router.push("/");
+      router.refresh();
     } catch (error: unknown) {
       setError("Virhe kirjautumisessa");
       setIsLoading(false);

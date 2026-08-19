@@ -1,7 +1,6 @@
 import CredentialsDto from "@/interfaces/user/auth/CredentialsDto";
 import SignUpDto from "@/interfaces/user/auth/SignUpDto";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import { User } from "@supabase/supabase-js";
 import { addPlayer } from "../players";
 import { Player } from "@/interfaces/user/Player";
 
@@ -43,8 +42,4 @@ export async function signUp(credentials: SignUpDto): Promise<boolean> {
 }
 export async function signOut() {
   await supabase.auth.signOut();
-}
-export async function getSessionUser(): Promise<User | null> {
-  var response = await supabase.auth.getUser();
-  return response.data.user;
 }

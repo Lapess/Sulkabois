@@ -1,23 +1,23 @@
 "use client";
 import { getPlayerGroupListCollection } from "@/data/playergroup/listCollection";
-import { getSessionUser } from "@/services/supabase/auth/client";
 import { createListCollection, ListCollection, Select } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { usePlayerGroup } from "../context/PlayerGroupContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const PlayerGroupSelection = () => {
   const { setSelectedPlayerGroup } = usePlayerGroup();
+  const { user } = useAuth();
 
   const [playerGroupCollection, setPlayerGroupCollection] = useState<
     ListCollection<{ label: string; value: string }>
   >(createListCollection({ items: [{ label: "", value: "" }] }));
   useEffect(() => {
-    getSessionUser().then((user) => {
-      getPlayerGroupListCollection(user?.id!).then((collection) => {
-        setPlayerGroupCollection(collection);
-      });
+    if (!user?.id) return;
+    getPlayerGroupListCollection(user.id).then((collection) => {
+      setPlayerGroupCollection(collection);
     });
-  }, []);
+  }, [user]);
 
   return (
     <Select.Root

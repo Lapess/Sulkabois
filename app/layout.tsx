@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import "./globals.css";
+import { AuthProvider } from "@/components/common/auth/AuthProvider";
 import { Provider } from "@/components/ui/provider";
 import { Heading } from "@chakra-ui/react";
 import MainMenu from "@/components/navigation/MainMenu";
 import { PlayerGroupProvider } from "@/components/context/PlayerGroupContext";
+import { getUser } from "@/services/supabase/auth/server";
 
 export const metadata: Metadata = {
   title: "Sulkabois",
@@ -18,21 +19,24 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getUser();
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased`}>
-        <PlayerGroupProvider>
-          <Provider>
-            <MainMenu />
-            <Heading p={5} fontSize={"3xl"}></Heading>
-            {children}
-          </Provider>
-        </PlayerGroupProvider>
+        <Provider>
+          <AuthProvider initialUser={user}>
+            <PlayerGroupProvider>
+              <MainMenu />
+              <Heading p={5} fontSize={"3xl"}></Heading>
+              {children}
+            </PlayerGroupProvider>
+          </AuthProvider>
+        </Provider>
       </body>
     </html>
   );

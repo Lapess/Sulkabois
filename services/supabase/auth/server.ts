@@ -1,11 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
 import { Session, User } from "@supabase/supabase-js";
+import { cache } from "react";
 
-export async function getUser(): Promise<User | null> {
+export const getUser = cache(async (): Promise<User | null> => {
   const supabaseServerClient = await createClient();
   const { data } = await supabaseServerClient.auth.getUser();
   return data.user;
-}
+});
 
 export async function exchangeCodeForSession(
   code: string,
