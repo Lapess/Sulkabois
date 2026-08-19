@@ -1,5 +1,5 @@
 import { getUser } from "@/services/supabase/auth/server";
-import { Button, Flex, HStack, Link } from "@chakra-ui/react";
+import { Button, Flex, HStack, Link, Text } from "@chakra-ui/react";
 import { LogoutButton } from "../common/auth/LogoutButton";
 
 async function MainMenu() {
@@ -11,6 +11,7 @@ async function MainMenu() {
       </Button>
       {user && (
         <HStack>
+          {user.player?.name && <Text>{user.player.name}</Text>}
           <LogoutButton />
         </HStack>
       )}

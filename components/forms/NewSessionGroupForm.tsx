@@ -19,8 +19,8 @@ import {
   addSessionGroup,
   addUserToSessionGroup,
 } from "@/services/supabase/sessiongroups";
-import { usePlayerGroup } from "../context/PlayerGroupContext";
 import { useAuth } from "@/hooks/useAuth";
+import { PlayerGroup } from "@/interfaces/PlayerGroup";
 
 const formSchema = z.object({
   name: z.string({ error: "Anna peliryhmälle nimi" }),
@@ -28,8 +28,11 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-const NewSessionGroupForm = () => {
-  const { selectedPlayerGroup } = usePlayerGroup();
+interface Props {
+  playerGroup: PlayerGroup | null;
+}
+
+const NewSessionGroupForm = ({ playerGroup }: Props) => {
   const { user } = useAuth();
   const nameRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
@@ -39,34 +42,37 @@ const NewSessionGroupForm = () => {
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const onSubmit = async (data: any) => {
+  const onSubmit = async () => {
     setIsLoading(true);
     if (!nameRef.current?.value) {
       setError("Anna peliryhmälle nimi");
+      setIsLoading(false);
       return;
     }
-    addSessionGroup(nameRef.current.value).then(async (sessionGroup) => {
-      if (!sessionGroup || !selectedPlayerGroup) return;
-      if (selectedPlayerGroup.id == 0) {
-        if (!user) return;
-        await addUserToSessionGroup(user.id, sessionGroup.id);
-      } else {
-        await addPlayerGroupToSessionGroup(
-          selectedPlayerGroup.id,
-          sessionGroup.id,
-        );
-      }
+    const sessionGroup = await addSessionGroup(nameRef.current.value);
+    if (!sessionGroup) {
       setIsLoading(false);
-      router.push(`/sessiongroups/${sessionGroup.id}`);
-    });
+      return;
+    }
+    if (!playerGroup) {
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+      await addUserToSessionGroup(user.id, sessionGroup.id);
+    } else {
+      await addPlayerGroupToSessionGroup(playerGroup.id, sessionGroup.id);
+    }
+    setIsLoading(false);
+    router.push(`/sessiongroups/${sessionGroup.id}`);
   };
   return (
     <>
       <Dialog.Root>
         <Dialog.Trigger asChild>
           <Button
-            m={10}
-            size={"xl"}
+            mt={4}
+            size={"lg"}
             color={"black"}
             variant={"solid"}
             bgColor={"orange"}
@@ -80,7 +86,10 @@ const NewSessionGroupForm = () => {
             <Dialog.Positioner>
               <Dialog.Content>
                 <Dialog.Header>
-                  <Dialog.Title>Uusi peliryhmä</Dialog.Title>
+                  <Dialog.Title>
+                    Uusi peliryhmä
+                    {playerGroup?.name ? ` · ${playerGroup.name}` : ""}
+                  </Dialog.Title>
                 </Dialog.Header>
                 <Dialog.Body>
                   <Fieldset.Root>
@@ -88,6 +97,7 @@ const NewSessionGroupForm = () => {
                       <VStack>
                         <Text>Peliryhmän nimi</Text>
                         <Input type="text" ref={nameRef} />
+                        {error && <Text color={"red"}>{error}</Text>}
                       </VStack>
                     </Fieldset.Content>
                   </Fieldset.Root>
@@ -96,7 +106,7 @@ const NewSessionGroupForm = () => {
                   <Dialog.ActionTrigger asChild>
                     <Button variant="outline">Peruuta</Button>
                   </Dialog.ActionTrigger>{" "}
-                  <Button type="submit" colorPalette={"green"}>
+                  <Button type="submit" colorPalette={"green"} loading={isLoading}>
                     Tallenna
                   </Button>
                 </Dialog.Footer>

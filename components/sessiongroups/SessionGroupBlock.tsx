@@ -1,6 +1,4 @@
 import { PlayerGroup } from "@/interfaces/PlayerGroup";
-import { getSessionsBySessionGroupId } from "@/services/supabase/sessions";
-import { Session } from "@/types/Session";
 import { SessionGroup } from "@/types/SessionGroup";
 import {
   Box,
@@ -13,17 +11,15 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { ChevronRight, DotIcon } from "lucide-react";
-import { useEffect, useState } from "react";
 
 interface Props {
   sessionGroup: SessionGroup;
   playerGroup: PlayerGroup | null;
 }
 const SessionGroupBlock = ({ sessionGroup, playerGroup }: Props) => {
-  const [sessions, setSessions] = useState<Session[] | null>([]);
-  useEffect(() => {
-    getSessionsBySessionGroupId(sessionGroup.id).then(setSessions);
-  }, []);
+  const sessionCount = sessionGroup.session?.length ?? 0;
+  const ownerName = playerGroup?.name ?? sessionGroup.playerGroup?.name;
+
   return (
     <>
       <Link
@@ -37,11 +33,11 @@ const SessionGroupBlock = ({ sessionGroup, playerGroup }: Props) => {
             <Stack>
               <Text>{sessionGroup.name}</Text>
               <HStack gap={4} w={"100%"}>
-                <Text fontSize={"xs"}>{playerGroup?.name}</Text>
-                <DotIcon />
+                {ownerName && <Text fontSize={"xs"}>{ownerName}</Text>}
+                {ownerName && <DotIcon />}
                 <Text fontSize={"xs"}>
-                  {sessions?.length} pelikerta
-                  {sessions?.length! > 1 ? "a" : ""}
+                  {sessionCount} pelikerta
+                  {sessionCount !== 1 ? "a" : ""}
                 </Text>
               </HStack>
             </Stack>

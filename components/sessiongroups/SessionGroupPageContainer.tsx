@@ -1,45 +1,51 @@
 "use client";
-import { SessionGroup } from "@/types/SessionGroup";
-import { 
-  getSessionGroupsByUserId,
-} from "@/services/supabase/sessiongroups";
-import { Spinner } from "@chakra-ui/react";
+import { SessionGroupsByPlayerGroup } from "@/types/SessionGroup";
+import { getSessionGroupsGroupedByPlayerGroup } from "@/services/supabase/sessiongroups";
+import { Heading, Spinner, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import NewSessionGroupForm from "../forms/NewSessionGroupForm"; 
+import NewSessionGroupForm from "../forms/NewSessionGroupForm";
 import SessionGroupBlock from "./SessionGroupBlock";
 
 function SessionGroupPageContainer() {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [sessionGroups, setSessionGroups] = useState<SessionGroup[]>([]);
+  const [sessionGroupsByPlayerGroup, setSessionGroupsByPlayerGroup] = useState<
+    SessionGroupsByPlayerGroup[]
+  >([]);
 
   useEffect(() => {
+    if (!user?.id) return;
     setIsLoading(true);
-    getSessionGroupsByUserId(user?.id ?? "")
-      .then((sessionGroups: SessionGroup[] | null) => {
-        setSessionGroups(
-          sessionGroups?.filter((x: SessionGroup) => x != null) ?? [],
-        );
+    getSessionGroupsGroupedByPlayerGroup(user.id)
+      .then((groups) => {
+        setSessionGroupsByPlayerGroup(groups ?? []);
       })
       .finally(() => setIsLoading(false));
   }, [user]);
 
   return (
     <>
-      {sessionGroups?.length > 0 && (
-        <>
-          {sessionGroups?.map((s) => (
+      {sessionGroupsByPlayerGroup.map((group) => (
+        <VStack
+          key={group.playerGroup?.id ?? "personal"}
+          w={"100%"}
+          gap={3}
+          mb={6}
+        >
+          <Heading fontSize={"lg"} w={"90%"}>
+            {group.playerGroup?.name ?? "Omat peliryhmät"}
+          </Heading>
+          {group.sessionGroups.map((sessionGroup) => (
             <SessionGroupBlock
-              key={s.id}
-              playerGroup={s.}
-              sessionGroup={s}
+              key={sessionGroup.id}
+              playerGroup={group.playerGroup}
+              sessionGroup={sessionGroup}
             />
           ))}
-          <NewSessionGroupForm />
-        </>
-      )}
-
+          <NewSessionGroupForm playerGroup={group.playerGroup} />
+        </VStack>
+      ))}
       {isLoading && <Spinner />}
     </>
   );

@@ -1,3 +1,4 @@
+import { PlayerGroup } from "@/interfaces/PlayerGroup";
 import { Database } from "@/supabase";
 import { SessionRow } from "./Session";
 
@@ -6,4 +7,10 @@ export type SessionGroupRow =
 
 export type SessionGroup = SessionGroupRow & {
   session: SessionRow[] | null;
+  playerGroup?: PlayerGroup | null;
+};
+
+export type SessionGroupsByPlayerGroup = {
+  playerGroup: PlayerGroup | null;
+  sessionGroups: SessionGroup[];
 };

@@ -1,6 +1,8 @@
 "use client";
 
 import { createSupabaseClient } from "@/lib/supabase/client";
+import { getPlayerWithUserId } from "@/services/supabase/players";
+import { AppUser } from "@/types/User";
 import { User } from "@supabase/supabase-js";
 import {
   createContext,
@@ -11,7 +13,7 @@ import {
 } from "react";
 
 type AuthContextValue = {
-  user: User | null;
+  user: AppUser | null;
   isLoading: boolean;
 };
 
@@ -19,11 +21,17 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 interface AuthProviderProps {
   children: ReactNode;
-  initialUser: User | null;
+  initialUser: AppUser | null;
+}
+
+async function withPlayer(user: User | null): Promise<AppUser | null> {
+  if (!user) return null;
+  const player = await getPlayerWithUserId(user.id);
+  return { ...user, player: player ?? null };
 }
 
 export function AuthProvider({ children, initialUser }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>(initialUser);
+  const [user, setUser] = useState<AppUser | null>(initialUser);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -34,13 +42,22 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
     const supabase = createSupabaseClient();
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      const authUser = session?.user ?? null;
+      if (
+        event === "INITIAL_SESSION" &&
+        initialUser?.id === authUser?.id
+      ) {
+        setUser(initialUser);
+        setIsLoading(false);
+        return;
+      }
+      setUser(await withPlayer(authUser));
       setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [initialUser]);
 
   return (
     <AuthContext.Provider value={{ user, isLoading }}>
