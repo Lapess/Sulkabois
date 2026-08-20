@@ -3,7 +3,6 @@
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { getPlayerWithUserId } from "@/services/supabase/players";
 import { AppUser } from "@/types/User";
-import { User } from "@supabase/supabase-js";
 import {
   createContext,
   ReactNode,
@@ -24,12 +23,6 @@ interface AuthProviderProps {
   initialUser: AppUser | null;
 }
 
-async function withPlayer(user: User | null): Promise<AppUser | null> {
-  if (!user) return null;
-  const player = await getPlayerWithUserId(user.id);
-  return { ...user, player: player ?? null };
-}
-
 export function AuthProvider({ children, initialUser }: AuthProviderProps) {
   const [user, setUser] = useState<AppUser | null>(initialUser);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,22 +35,48 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
     const supabase = createSupabaseClient();
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       const authUser = session?.user ?? null;
-      if (
-        event === "INITIAL_SESSION" &&
-        initialUser?.id === authUser?.id
-      ) {
+      if (event === "INITIAL_SESSION" && initialUser?.id === authUser?.id) {
         setUser(initialUser);
         setIsLoading(false);
         return;
       }
-      setUser(await withPlayer(authUser));
+      if (event === "TOKEN_REFRESHED") {
+        setIsLoading(false);
+        return;
+      }
+      if (!authUser) {
+        setUser(null);
+        setIsLoading(false);
+        return;
+      }
+      setUser((prev) =>
+        prev?.id === authUser.id
+          ? { ...authUser, player: prev.player }
+          : { ...authUser, player: null },
+      );
       setIsLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, [initialUser]);
+
+  useEffect(() => {
+    if (!user?.id || user.player) return;
+
+    let cancelled = false;
+    getPlayerWithUserId(user.id).then((player) => {
+      if (cancelled) return;
+      setUser((prev) =>
+        prev?.id === user.id ? { ...prev, player: player ?? null } : prev,
+      );
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id, user?.player]);
 
   return (
     <AuthContext.Provider value={{ user, isLoading }}>
