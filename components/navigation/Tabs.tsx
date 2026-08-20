@@ -15,10 +15,10 @@ const Tabs = ({ sessionGroupId }: { sessionGroupId: number }) => {
       minHeight={"80vh"}
     >
       <ChakraTabs.List>
-        <ChakraTabs.Trigger value="tab-2">Statistiikka</ChakraTabs.Trigger>
-        <ChakraTabs.Trigger value="tab-1">Aiemmat pelit</ChakraTabs.Trigger>
+        <ChakraTabs.Trigger value="tab-1">Statistiikka</ChakraTabs.Trigger>
+        <ChakraTabs.Trigger value="tab-2">Aiemmat pelit</ChakraTabs.Trigger>
       </ChakraTabs.List>
-      <ChakraTabs.Content value="tab-2">
+      <ChakraTabs.Content value="tab-1">
         <VStack w={"100%"} gap={4} minH={1000}>
           <GeneralDataTable sessionGroupId={sessionGroupId} />
           <LeaderTable
@@ -47,7 +47,7 @@ const Tabs = ({ sessionGroupId }: { sessionGroupId: number }) => {
           />
         </VStack>
       </ChakraTabs.Content>{" "}
-      <ChakraTabs.Content value="tab-1">
+      <ChakraTabs.Content value="tab-2">
         <SessionPageContainer sessionGroupId={sessionGroupId} />
       </ChakraTabs.Content>
     </ChakraTabs.Root>
