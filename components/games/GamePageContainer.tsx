@@ -61,7 +61,7 @@ const GamePageContainer = ({ playerIds, sessionId, sessionGroupId }: Props) => {
           );
         }}
       >
-        {sessionLocked ? "Avaa pelisessio" : "Lopeta pelisessio"}
+        {sessionLocked ? "Muokkaa" : "Valmista tuli!"}
       </Button>
     </>
   );

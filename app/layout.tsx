@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Raleway } from "next/font/google";
 import { AuthProvider } from "@/components/common/auth/AuthProvider";
 import { Provider } from "@/components/ui/provider";
 import { Heading } from "@chakra-ui/react";
 import MainMenu from "@/components/navigation/MainMenu";
-import { PlayerGroupProvider } from "@/components/context/PlayerGroupContext";
 import { getUser } from "@/services/supabase/auth/server";
 
 export const metadata: Metadata = {
@@ -13,10 +12,11 @@ export const metadata: Metadata = {
     "Leaderboard-äppi paljastaa kauden parhaan (ja huonoimman) pelaajan.",
 };
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const raleway = Raleway({
+  variable: "--font-raleway",
   display: "swap",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export default async function RootLayout({
@@ -27,14 +27,15 @@ export default async function RootLayout({
   const user = await getUser();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+      <body
+        className={`${raleway.className} antialiased`}
+        style={{ backgroundColor: "#f0f0f0", margin: 0, padding: 0 }}
+      >
         <Provider>
           <AuthProvider initialUser={user}>
-            <PlayerGroupProvider>
-              <MainMenu />
-              <Heading p={5} fontSize={"3xl"}></Heading>
-              {children}
-            </PlayerGroupProvider>
+            <MainMenu />
+            <Heading p={5} fontSize={"3xl"}></Heading>
+            {children}
           </AuthProvider>
         </Provider>
       </body>

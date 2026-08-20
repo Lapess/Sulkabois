@@ -1,8 +1,5 @@
-import { PlayerGroup } from "@/interfaces/PlayerGroup";
 import convertDateStringToLocaleDateString from "@/services/dateStringConverter";
-import { getSessionsBySessionGroupId } from "@/services/supabase/sessions";
 import { Session } from "@/types/Session";
-import { SessionGroup } from "@/types/SessionGroup";
 import {
   Box,
   Flex,
@@ -12,9 +9,9 @@ import {
   Spacer,
   Stack,
   Center,
+  Wrap,
 } from "@chakra-ui/react";
-import { ArrowRight, ChevronRight, DotIcon, LockIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ChevronRight, UsersIcon } from "lucide-react";
 
 interface Props {
   session: Session;
@@ -22,10 +19,6 @@ interface Props {
   borderColor?: string;
 }
 const SessionBlock = ({ session, sessionGroupId, borderColor }: Props) => {
-  const [sessions, setSessions] = useState<Session[] | null>([]);
-  useEffect(() => {
-    getSessionsBySessionGroupId(sessionGroupId).then(setSessions);
-  }, []);
   return (
     <>
       <Link

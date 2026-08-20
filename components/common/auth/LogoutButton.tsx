@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { signOut } from "@/services/supabase/auth/client";
-import { Button } from "@chakra-ui/react";
+import { Button, Center, Text } from "@chakra-ui/react";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -13,8 +13,10 @@ export function LogoutButton() {
   };
 
   return (
-    <Button colorPalette={"red"} variant={"outline"} onClick={logout}>
-      Kirjaudu ulos
+    <Button onClick={logout} variant={"outline"} color={"orange"}>
+      <Center>
+        <Text>Kirjaudu ulos</Text>
+      </Center>
     </Button>
   );
 }

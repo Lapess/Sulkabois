@@ -15,8 +15,9 @@ import { ChevronRight, DotIcon } from "lucide-react";
 interface Props {
   sessionGroup: SessionGroup;
   playerGroup: PlayerGroup | null;
+  firstItem: boolean;
 }
-const SessionGroupBlock = ({ sessionGroup, playerGroup }: Props) => {
+const SessionGroupBlock = ({ sessionGroup, playerGroup, firstItem }: Props) => {
   const sessionCount = sessionGroup.session?.length ?? 0;
   const ownerName = playerGroup?.name ?? sessionGroup.playerGroup?.name;
 
@@ -39,6 +40,14 @@ const SessionGroupBlock = ({ sessionGroup, playerGroup }: Props) => {
                   {sessionCount} pelikerta
                   {sessionCount !== 1 ? "a" : ""}
                 </Text>
+                {firstItem && (
+                  <>
+                    <DotIcon />
+                    <Text fontSize={"xs"} color={"green.500"}>
+                      Aktiivinen
+                    </Text>
+                  </>
+                )}
               </HStack>
             </Stack>
             <Spacer />
