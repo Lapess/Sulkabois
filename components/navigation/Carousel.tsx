@@ -39,10 +39,11 @@ const Carousel = ({ sessionGroupsByPlayerGroup }: Props) => {
           </ChakraCarousel.Item>
         ))}
       </ChakraCarousel.ItemGroup>
-
-      <ChakraCarousel.Control justifyContent="center" gap="4">
-        <ChakraCarousel.Indicators />
-      </ChakraCarousel.Control>
+      {sessionGroupsByPlayerGroup.length > 1 && (
+        <ChakraCarousel.Control justifyContent="center" gap="4">
+          <ChakraCarousel.Indicators />
+        </ChakraCarousel.Control>
+      )}
     </ChakraCarousel.Root>
   );
 };

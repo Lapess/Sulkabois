@@ -1,6 +1,6 @@
 import { getUser } from "@/services/supabase/auth/server";
 import { Button, Center, Flex, HStack, Link, Text } from "@chakra-ui/react";
-import { LogoutButton } from "../common/auth/LogoutButton";
+import { BurgerMenu } from "./BurgerMenu";
 
 async function MainMenu() {
   const user = await getUser();
@@ -14,11 +14,11 @@ async function MainMenu() {
       {user && (
         <HStack>
           {user.player?.name && (
-            <Text pr={2} color={"white"}>
-              {user.player.name.split(" ")[0]}
+            <Text pr={2} color={"white"} fontSize={"sm"}>
+              Hei, {user.player.name.split(" ")[0]}
             </Text>
           )}
-          <LogoutButton />
+          <BurgerMenu />
         </HStack>
       )}
     </Flex>
