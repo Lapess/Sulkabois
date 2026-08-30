@@ -6,8 +6,11 @@
     "start": "next start",
     "lint": "eslint .",
     "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:migrate:prod": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:push:prod": "drizzle-kit push",
+    "db:push:prod:explain": "drizzle-kit push --explain --verbose",
     "db:studio": "drizzle-kit studio",
     "db:studio:prod": "drizzle-kit studio"
   },

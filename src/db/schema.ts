@@ -39,6 +39,7 @@ export const sessions = pgTable("session", {
   session_date: text().notNull(),
   session_group_id: integer().references(() => sessionGroups.id, {
     name: "session_session_group_id_fkey",
+    onDelete: "cascade",
   }),
 });
 
@@ -48,7 +49,11 @@ export const games = pgTable("game", {
   full_game: boolean().notNull(),
   session_id: integer()
     .notNull()
-    .references(() => sessions.id, { name: "game_session_id_fkey" }),
+    .references(() => sessions.id, {
+      name: "game_session_id_fkey",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
 });
 
 export const teams = pgTable("team", {
@@ -57,10 +62,18 @@ export const teams = pgTable("team", {
   court_side: integer().notNull(),
   game_id: integer()
     .notNull()
-    .references(() => games.id, { name: "team_game_id_fkey" }),
+    .references(() => games.id, {
+      name: "team_game_id_fkey",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   player_id: integer()
     .notNull()
-    .references(() => players.id, { name: "team_player_id_fkey" }),
+    .references(() => players.id, {
+      name: "team_player_id_fkey",
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
   points: integer().notNull(),
 });
 
@@ -72,6 +85,7 @@ export const invitations = pgTable("invitation", {
     .notNull()
     .references(() => sessionGroups.id, {
       name: "invitations_session_group_id_fkey",
+      onDelete: "cascade",
     }),
 });
 
@@ -83,6 +97,8 @@ export const userPlayerGroups = pgTable(
       .notNull()
       .references(() => playerGroups.id, {
         name: "user_playergroup_player_group_id_fkey",
+        onDelete: "cascade",
+        onUpdate: "cascade",
       }),
     user_id: uuid().notNull(),
   },
@@ -97,6 +113,8 @@ export const userSessionGroups = pgTable(
       .notNull()
       .references(() => sessionGroups.id, {
         name: "user_sessiongroup_session_group_id_fkey",
+        onDelete: "cascade",
+        onUpdate: "cascade",
       }),
     user_id: uuid().notNull(),
   },
@@ -110,11 +128,15 @@ export const playerGroupSessionGroups = pgTable(
       .notNull()
       .references(() => playerGroups.id, {
         name: "playergroup_sessiongroup_player_group_id_fkey",
+        onDelete: "cascade",
+        onUpdate: "cascade",
       }),
     session_group_id: integer()
       .notNull()
       .references(() => sessionGroups.id, {
         name: "playergroup_sessiongroup_session_group_id_fkey",
+        onDelete: "cascade",
+        onUpdate: "cascade",
       }),
   },
   (table) => [
