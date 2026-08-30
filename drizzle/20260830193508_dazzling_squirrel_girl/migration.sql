@@ -1,0 +1,3 @@
+-- Baseline: public tables already exist (db-first).
+-- Keep snapshot.json so later `db:generate` diffs against this schema.
+-- Do not CREATE or DROP tables here.

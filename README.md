@@ -99,6 +99,68 @@ Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can b
 
 > Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
 
+## Local vs production env
+
+Keep two env files. Do not overwrite one with the other.
+
+| File | Used by |
+|---|---|
+| `.env.local` | `npm run dev`, local Drizzle commands |
+| `.env.prod` | `*:prod` Drizzle commands |
+
+Next.js does not load `.env.prod`. For the deployed app, set the same variables in the host dashboard (Vercel, etc.).
+
+Each file needs:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+DATABASE_URL=
+```
+
+Local values come from `npx supabase status` (API URL, publishable key, DB URL). There must be no spaces around `=`. Restart `npm run dev` after changing `.env.local`.
+
+### Local Supabase
+
+```bash
+npx supabase start
+npx supabase status
+npm run dev
+```
+
+Studio: [http://127.0.0.1:54323](http://127.0.0.1:54323)  
+Mailpit (magic links): [http://127.0.0.1:54324](http://127.0.0.1:54324)
+
+### Drizzle
+
+`generate` writes SQL files under `./drizzle`. `migrate` applies those files. `push` syncs `schema.ts` straight to the database with no SQL to review.
+
+| Command | Env file | What it does |
+|---|---|---|
+| `npm run db:generate` | `.env.local` | Writes SQL only; does not touch any database |
+| `npm run db:migrate` | `.env.local` | Applies pending SQL in `./drizzle` to the local container |
+| `npm run db:migrate:prod` | `.env.prod` | Applies the same pending SQL to hosted Supabase |
+| `npm run db:push` | `.env.local` | Live schema sync to the local container |
+| `npm run db:push:prod:explain` | `.env.prod` | Dry-run of push against hosted; no writes |
+| `npm run db:push:prod` | `.env.prod` | Live schema sync to hosted Supabase |
+| `npm run db:studio` | `.env.local` | Drizzle Studio against local |
+| `npm run db:studio:prod` | `.env.prod` | Drizzle Studio against hosted |
+
+`generate` compares `schema.ts` to the last snapshot in `./drizzle`, not to the live database. The first generate always emits `CREATE TABLE` for every table. That SQL must not be applied: local and prod already have those tables. The first folder is a **baseline** (snapshot only; `migration.sql` is a no-op). Stamp it with `npm run db:migrate` locally and `npm run db:migrate:prod` (or CI) so Drizzle records it as applied. Later generates will only emit the diff.
+
+For production schema changes after the baseline, use migrate, not push:
+
+1. Edit `src/db/schema.ts`.
+2. `npm run db:generate` and read the SQL in `./drizzle`.
+3. `npm run db:migrate` against local and confirm the app still works.
+4. `npm run db:migrate:prod` only after that SQL looks correct.
+
+`db:migrate:prod` applies every unapplied file in `./drizzle`. It does not print a dry-run. Review the SQL before you run it.
+
+CI is `.github/workflows/migrate.yml`. It runs `drizzle-kit migrate` on push to `main`. Add a repository secret named `DATABASE_URL` (the hosted connection string). Do not commit `.env.prod`.
+
+`drizzle-kit push` is a live schema sync, not a reviewed migration. Do not run `db:push:prod` unless `db:push:prod:explain` prints no SQL. Never pass `--force`. Config is locked to the `public` schema so push cannot touch Supabase `auth` / `storage` / `realtime`.
+
 ## Feedback and issues
 
 Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
